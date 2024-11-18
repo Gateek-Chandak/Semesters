@@ -1,0 +1,66 @@
+Here’s a visualization of the assignments and topics for each week of the semester:
+
+**Week 1 (Sept. 4 - 6)**
+- **Key Topics**: Course Outline, Definitions of Probability, Sample Space, Simple and Compound Events
+- **Sections**: 1.1, 1.2
+- **Notes**: No tutorial on Friday, Sept. 6
+
+**Week 2 (Sept. 9 - 13)**
+- **Key Topics**: Probability/Odds of an Event, Addition and Multiplication Rules for Counting, Permutations and Combinations
+- **Sections**: 1.2, 1.3
+- **Notes**: Open tutorial on introductory material on Friday, Sept. 13
+
+**Week 3 (Sept. 16 - 20)**
+- **Key Topics**: Review of Set Theory, De Morgan’s Laws, Addition Rules for Unions of Events, Mutually Exclusive Events, Independent Events
+- **Sections**: 2.1, 2.2, 2.3
+- **Notes**: Quiz 1 on Friday, Sept. 20 (covers material to the end of Chapter 1)
+
+**Week 4 (Sept. 23 - 27)**
+- **Key Topics**: Conditional Probability, Product Rules for Intersections of Events, Law of Total Probability, Tree Diagrams, Bayes’ Rule
+- **Sections**: 2.4
+- **Notes**: Open tutorial on topics TBA – Piazza Poll on Friday, Sept. 27
+
+**Week 5 (Sept. 30 - Oct. 4)**
+- **Key Topics**: Discrete Random Variables, Probability Mass Functions, Cumulative Distribution Functions, Functions of a Random Variable
+- **Sections**: 3.1, 3.2, 3.3
+- **Notes**: Quiz 2 on Friday, Oct. 4 (focuses on Chapter 2 material)
+
+**Week 6 (Oct. 7 - 11)**
+- **Key Topics**: Expectation and Its Properties, Moments of a Distribution, Moment Generating Functions, Mean, Variance, Standard Deviation, Discrete Uniform Distribution
+- **Sections**: 3.4, 3.5
+- **Notes**: Term Test 1 on Thursday, Oct. 10 (covers material up to the end of Section 3.3). No tutorial on Friday, Oct. 11.
+
+**Week 7 (Oct. 21 - 25)**
+- **Key Topics**: Bernoulli Trials, Binomial Distribution, Hypergeometric Distribution, Geometric Distribution, Negative Binomial Distribution, Poisson Distribution
+- **Sections**: 3.5
+- **Notes**: Quiz 3 on Friday, Oct. 25 (focuses on material from Section 3.4)
+
+**Week 8 (Oct. 28 - Nov. 1)**
+- **Key Topics**: Joint Probability Mass Functions, Marginal Probability Mass Functions, Multinomial Distribution, Functions of Two or More Random Variables, Independent Random Variables
+- **Sections**: 4.1, 4.2
+- **Notes**: Open tutorial on topics TBA – Piazza Poll on Friday, Nov. 1
+
+**Week 9 (Nov. 4 - 8)**
+- **Key Topics**: Expectation and Its Properties, Covariance, Correlation, Linear Combinations of Random Variables, Indicator Random Variables, Conditional Probability Distributions
+- **Sections**: 4.3, 4.4, 4.5
+- **Notes**: Quiz 4 on Friday, Nov. 8 (focuses on material from Sections 3.5, 4.1 & 4.2)
+
+**Week 10 (Nov. 11 - 15)**
+- **Key Topics**: Law of Total Expectation, Continuous Random Variables, Probability Density Functions, Cumulative Distribution Functions, Functions of a Random Variable
+- **Sections**: 4.6, 5.1, 5.2, 5.3
+- **Notes**: Term Test 2 on Thursday, Nov. 14 (covers up to the end of Section 4.5). No tutorial on Friday, Nov. 15.
+
+**Week 11 (Nov. 18 - 22)**
+- **Key Topics**: Expectation and Its Properties, Moments of a Distribution, Moment Generating Functions, Mean, Variance, Standard Deviation, Continuous Uniform Distribution, Exponential Distribution, Normal Distribution
+- **Sections**: 5.4, 5.5
+- **Notes**: Open tutorial on topics TBA – Piazza Poll on Friday, Nov. 22
+
+**Week 12 (Nov. 25 - 29)**
+- **Key Topics**: Markov’s Inequality, Chebyshev’s Inequality, Jensen’s Inequality, Convergence in Probability, The Weak Law of Large Numbers, The Central Limit Theorem
+- **Sections**: 6.1, 6.2, 6.3
+- **Notes**: Quiz 5 on Friday, Nov. 29 (focuses on material to the end of Chapter 5)
+
+**Week 13 (Dec. 2)**
+- **Key Topics**: Applications of the Central Limit Theorem
+- **Sections**: 6.3
+- **Notes**: Dec. 6-19 Final Exam Period – Do not make travel plans until the final exam schedule has been posted.
