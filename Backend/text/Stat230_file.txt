@@ -1,0 +1,624 @@
+Probability Fall 2024
+STAT 230
+Published Sep 03, 2024
+Class Schedule
+Course
+Meet Days
+Meet Time
+Location
+Instructor(s)
+STAT 230 001
+[LEC]
+Mon, Wed, Fri
+Sep 4 - Dec 3
+11:30AM -
+12:20PM
+DC 1350
+J. Adcock
+STAT 230 002
+[LEC]
+Mon, Wed, Fri
+Sep 4 - Dec 3
+09:30AM -
+10:20AM
+STC 0010
+B. Lashkari
+STAT 230 003
+[LEC]
+Mon, Wed, Fri
+Sep 4 - Dec 3
+01:30PM -
+02:20PM
+MC 1085
+P. Shuldiner
+STAT 230 004
+[LEC]
+Mon, Wed, Fri
+Sep 4 - Dec 3
+03:30PM -
+04:20PM
+B1 271
+S. Drekic
+STAT 230 005
+[LEC]
+Mon, Wed, Fri
+Sep 4 - Dec 3
+12:30PM -
+01:20PM
+RCH 302
+G. Rice
+STAT 230 101
+[TUT]
+Fridays
+Sep 4 - Dec 3
+02:30PM -
+03:20PM
+EXP 1689
+J. Adcock
+STAT 230 102
+[TUT]
+Fridays
+Sep 4 - Dec 3
+11:30AM -
+12:20PM
+STC 0050
+B. Lashkari
+STAT 230 103
+[TUT]
+Fridays
+Sep 4 - Dec 3
+08:30AM -
+09:20AM
+STC 0010
+P. Shuldiner
+STAT 230 104
+[TUT]
+Fridays
+Sep 4 - Dec 3
+01:30PM -
+02:20PM
+DC 1350
+S. Drekic
+STAT 230 105
+[TUT]
+Fridays
+Sep 4 - Dec 3
+09:30AM -
+10:20AM
+EIT 1015
+G. Rice
+schedule data automatically refreshed daily
+jradcock@uwaterl…
+blashkari@uwater…
+pavel.shuldiner@…
+sdrekic@uwaterlo…
+grice@uwaterloo.…
+jradcock@uwaterl…
+blashkari@uwater…
+pavel.shuldiner@…
+sdrekic@uwaterlo…
+grice@uwaterloo.…
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+1/12
+
+Instructor & TA (Teaching Assistant) Information
+Instructors:
+James Adcock, E-mail: jradcock@uwaterloo.ca (mailto:jradcock@uwaterloo.ca) , Office: M3 3019
+Banafsheh Lashkari, E-mail: blashkari@uwaterloo.ca (mailto:blashkari@uwaterloo.ca) , Office: M3 3108
+Pavel Shuldiner, E-mail: pavel.shuldiner@uwaterloo.ca (mailto:pavel.shuldiner@uwaterloo.ca) , Office: M3
+4108
+Steve Drekic, E-mail: sdrekic@uwaterloo.ca (mailto:sdrekic@uwaterloo.ca) , Office: M3 3117
+Greg Rice, E-mail: grice@uwaterloo.ca (mailto:grice@uwaterloo.ca) , Office: M3 4117
+Instructional Support Coordinator (ISC):
+Funmilayo Adeku (she/her), E-mail: fadeku@uwaterloo.ca (mailto:fadeku@uwaterloo.ca) , Office: M3 2128
+Contact directly for: remark requests, accommodations (including illness), issues with LEARN, Crowdmark,
+and Piazza.
+Weekly Office Hours: 
+Instructor office hours will be announced in class and posted on the course website on LEARN
+(https://learn.uwaterloo.ca/d2l/home) .
+Please also note that Piazza will be used for answering questions throughout the term.  The discussion
+board will be monitored, but students are also encouraged to answer questions posted, giving their
+perspective. To join the Piazza forum for this course, go here
+(https://piazza.com/uwaterloo.ca/fall2024/stat230) .
+If you need to communicate with your instructor directly for other/personal reasons, please send an e-mail
+instead.
+Course Description
+Calendar Description for STAT 230:
+This course provides an introduction to probability models including sample spaces, mutually exclusive
+and independent events, conditional probability and Bayes' Theorem. The named distributions (Discrete
+Uniform, Hypergeometric, Binomial, Negative Binomial, Geometric, Poisson, Continuous Uniform,
+Exponential, Normal (Gaussian), and Multinomial) are used to model real phenomena. Discrete and
+continuous univariate random variables and their distributions are discussed. Joint probability functions,
+marginal probability functions, and conditional probability functions of two or more discrete random
+variables and functions of random variables are also discussed. Students learn how to calculate and
+interpret means, variances and covariances particularly for the named distributions. The Central Limit
+Theorem is used to approximate probabilities.
+View requirements for STAT 230 (https://acal.fast.uwaterloo.ca/course/1249/STAT/230)
+Post-requisite: 
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+2/12
+
+STAT 231 relies very heavily on the concepts from STAT 230. It is recommended that you take STAT 231 as
+soon as possible after completing STAT 230. To move forward to STAT 231, you only need a passing grade
+(50%) in STAT 230. However, to take upper-year STAT courses such as 330, 333, 334, or 340, you need a
+minimum grade of 60% in STAT 230.
+Learning Outcomes
+Upon successful completion of this course, you will be able to:
+Define a probability model and determine probabilities of events using counting techniques.
+Distinguish between mutually exclusive and independent events, and calculate conditional probabilities
+using Bayes’ Rule.
+Distinguish between discrete and continuous random variables.
+Define and use probability mass functions/probability density functions and cumulative distribution
+functions to determine probabilities of events.
+Use moment generating functions as a tool to determine expected values.
+Define and use joint probability mass functions, marginal probability mass functions, and conditional
+probability mass functions to determine probabilities of events involving two or more discrete random
+variables.
+Use the law of total expectation to calculate expected values through the principle of conditioning.
+Use the named distributions (Discrete Uniform, Binomial, Hypergeometric, Geometric, Negative Binomial,
+Poisson, Continuous Uniform, Exponential, Normal, and Multinomial) to model real-life phenomena.
+Calculate and interpret means, variances, and covariances, particularly for the named distributions.
+Understand the theory behind several important inequalities in probability and what the Weak Law of
+Large Numbers conveys.
+Define the Central Limit Theorem and use it to approximate probabilities.
+Tentative Course Schedule
+The following table provides a tentative schedule for the material you are responsible for in STAT 230,
+along with sections in the Course Notes indicated. The material in this course is cumulative and you are
+expected to attend all the lectures, read all the posted lecture notes, and do the end-of-section problems
+in order to learn the material and prepare for the quizzes, term tests, and final exam. This learning consists
+of you taking the time to carefully read the lecture notes on your own, making sure you understand the
+concepts and steps demonstrated in the lectures to tackle examples, and then solving the end-of-section
+problems. Solutions to the end-of-section problems will be posted in a timely fashion on the course
+website on LEARN (https://learn.uwaterloo.ca/d2l/home) . However, it is expected that you attempt the
+problems on your own first prior to consulting the provided solutions. The weeks for tutorials, tutorial
+quizzes, and term tests are also provided.  Please be sure to take note of the important dates indicated
+below.
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+3/12
+
+Week
+Key Topics
+Sections
+Notes
+Week 1
+(Sept. 4 - 6)
+Course Outline
+Register for Piazza
+Definitions of Probability,
+Sample Space, Simple and
+Compound Events
+1.1, 1.2
+No tutorial to take place on Friday,
+Sept. 6
+Week 2
+(Sept. 9 - 13)
+Probability/Odds of an
+Event, Addition and
+Multiplication Rules for
+Counting, Permutations
+and Combinations
+1.2, 1.3
+Open tutorial:  Introductory Material
+Friday, Sept. 13
+Week 3
+(Sept. 16 - 20)
+Review of Set Theory, De
+Morgan’s Laws, Addition
+Rules for Unions of Events,
+Mutually Exclusive Events,
+Independent Events
+2.1, 2.2, 2.3
+Quiz 1 to take place during tutorial
+period on Friday, Sept. 20 (to cover
+material to the end of Chapter 1)
+Week 4
+(Sept. 23 - 27)
+Conditional Probability,
+Product Rules for
+Intersections of Events,
+Law of Total Probability,
+Tree Diagrams, Bayes’
+Rule
+2.4
+Open tutorial:  Topics TBA – Piazza
+Poll
+Friday, Sept. 27
+Week 5
+(Sept. 30 - Oct.
+4)
+Discrete Random
+Variables, Probability Mass
+Functions, Cumulative
+Distribution Functions,
+Functions of a Random
+Variable
+3.1, 3.2, 3.3
+Quiz 2 to take place during tutorial
+period on Friday, Oct. 4 (to focus on
+Chapter 2 material)
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+4/12
+
+Week
+Key Topics
+Sections
+Notes
+Week 6
+(Oct. 7 - 11)
+Expectation and Its
+Properties, Moments of a
+Distribution, Moment
+Generating Functions,
+Mean, Variance, Standard
+Deviation, Discrete
+Uniform Distribution
+3.4, 3.5
+Term Test 1 to take place on
+Thursday, Oct. 10 from 4:45 to 6:15
+pm (to cover material up to the end
+of Section 3.3)
+No tutorial to take place on Friday,
+Oct. 11
+READING WEEK (Saturday, October 12, 2024, to Sunday, October 20, 2024)
+Week 7
+(Oct. 21 - 25)
+Bernoulli Trials, Binomial
+Distribution,
+Hypergeometric
+Distribution, Geometric
+Distribution, Negative
+Binomial Distribution,
+Poisson Distribution
+3.5
+Quiz 3 to take place during tutorial
+period on Friday, Oct. 25 (to focus on
+material from Section 3.4)
+Week 8
+(Oct. 28 - Nov.
+1)
+Joint Probability Mass
+Functions, Marginal
+Probability Mass
+Functions, Multinomial
+Distribution, Functions of
+Two or More Random
+Variables, Independent
+Random Variables
+4.1, 4.2
+Open Tutorial:  Topics TBA – Piazza
+Poll
+Friday, Nov. 1
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+5/12
+
+Week
+Key Topics
+Sections
+Notes
+Week 9
+(Nov. 4 - 8)
+Expectation and Its
+Properties, Covariance,
+Correlation, Linear
+Combinations of Random
+Variables, Indicator
+Random Variables,
+Conditional Probability
+Distributions
+4.3, 4.4, 4.5
+Quiz 4 to take place during tutorial
+period on Friday, Nov. 8 (to focus on
+material from Sections 3.5, 4.1 & 4.2)
+Week 10
+(Nov. 11 - 15)
+Law of Total Expectation,
+Continuous Random
+Variables, Probability
+Density Functions,
+Cumulative Distribution
+Functions, Functions of a
+Random Variable
+4.6, 5.1, 5.2,
+5.3
+Term Test 2 to take place on
+Thursday, Nov. 14 from 4:45 to 6:15
+pm (to cover up to the end of Section
+4.5)
+No tutorial to take place on Friday,
+Nov. 15
+Week 11
+(Nov.18 - 22)
+Expectation and Its
+Properties, Moments of a
+Distribution, Moment
+Generating Functions,
+Mean, Variance, Standard
+Deviation, Continuous
+Uniform Distribution,
+Exponential Distribution,
+Normal Distribution
+5.4, 5.5
+Open Tutorial:  Topics TBA – Piazza
+Poll
+Friday, Nov. 22
+Week 12
+(Nov. 25 - 29)
+Markov’s Inequality,
+Chebyshev’s Inequality,
+Jensen’s Inequality,
+Convergence in
+Probability, The Weak Law
+of Large Numbers, The
+Central Limit Theorem
+6.1, 6.2, 6.3
+Quiz 5 to take place during tutorial
+period on Friday, Nov. 29 (to focus on
+material to the end of Chapter 5)
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+6/12
+
+Week
+Key Topics
+Sections
+Notes
+Week 13
+(Dec. 2)
+Applications of the Central
+Limit Theorem
+6.3
+Dec. 6-19
+Final Exam Period – Do not make travel plans until the final exam schedule has
+been posted
+Texts / Materials
+Title / Name
+Notes / Comments
+Required
+STAT 230 Course Notes (Fall
+2024 Edition)
+Will be posted in an ongoing
+fashion on the course website on
+LEARN chapter by chapter
+Yes
+Out-of-Class Workload:
+As in any university course, much of your learning will take place outside of class time. Each week, you
+have 3 hours of lectures. Therefore, you should plan to spend 3 to 6 hours each week in out-of-class
+learning. This learning consists mostly of making sure you understand the concepts and steps that were
+introduced and used in class to solve examples and then solving problems from the Course Notes on your
+own.
+Missed Lectures:
+If you miss lectures, then you are responsible for reaching out to a classmate in order to find out what was
+missed.  Also, please note that instructors may annotate lecture slides during class time, but these
+annotations will generally not be available on LEARN (https://learn.uwaterloo.ca/d2l/home) after the
+lecture.
+Student Assessment
+Grading Scheme 1
+Component
+Value
+Tutorial Quizzes (best 3 of 5)
+15% (5% each)
+Term Test 1
+20%
+Term Test 2
+20%
+Final Exam
+45%
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+7/12
+
+Grading Scheme 2
+Component
+Value
+Tutorial Quizzes (best 3 of 5)
+21% (7% each)
+Best Term Test
+27%
+Worst Term Test
+12%
+Final Exam
+40%
+There are two grading schemes in place, so as to minimize the impact of a poor performance on either of
+the two term tests. (See below for details.)
+All assessments will be graded and returned electronically using Crowdmark. If you have a question
+regarding the marking of an assessment, you should first check the posted solutions on the LEARN
+(https://learn.uwaterloo.ca/d2l/home) website. If you still have a question, then you should follow the
+procedure which will be posted on the LEARN (https://learn.uwaterloo.ca/d2l/home) website once an
+assessment has been graded and feedback has been returned to you. From the time an assessment is
+returned to you, you have one week to appeal a grade (no exceptions will be made for any reason).
+Students must write BOTH term tests in order to qualify for Scheme 2. Otherwise, Scheme 1 will
+automatically be used. (See below for how your final grade is determined if you miss any term tests.) A
+student’s final grade in STAT 230 is the maximum of the two grades calculated using Scheme 1 and
+Scheme 2.
+A 2.5-hour final cumulative examination will be held during the final exam period, in December. Please do
+not make any travel plans before the final exam schedule is posted.
+Information regarding the tutorial quizzes, term tests, and final exam (e.g., room locations) will be posted
+on the course website on LEARN (https://learn.uwaterloo.ca/d2l/home) .
+Students must present a valid Student ID card to write all tutorial quizzes, term tests, and the final exam.
+For the tutorial quizzes, term tests, and final exam, only a non-programmable, non-graphical, Math-faculty
+approved calculator with a pink-tie or blue goggle sticker will be allowed.
+If you miss a Tutorial Quiz for whatever reason, there is no need to e-mail the instructor. Keep in mind that
+your Quiz Mark for the course will be comprised by taking your best 3 out of 5 quizzes.
+If you miss a Term Test due to illness or extenuating circumstances, you must send an e-mail to Funmilayo
+Adeku at fadeku@uwaterloo.ca (mailto:fadeku@uwaterloo.ca) within 48 hours of the missed Term Test. For
+a missed Term Test with proper documentation, the weight will be shifted to the Final Exam.
+If you miss the Final Exam due to illness or extenuating circumstances, you must send an e-mail to
+Funmilayo Adeku at fadeku@uwaterloo.ca (mailto:fadeku@uwaterloo.ca) within 48 hours of the missed
+Final Exam. If you miss the Final Exam with proper documentation, then the Mathematics Faculty INC
+Grade Policy (https://uwaterloo.ca/math/current-undergraduates/regulations-and-procedures/incomplete-
+procedure) will apply. Normally, if you have not earned a passing grade on your term work and you do not
+write the Final Exam, then you will receive a mark of DNW (Did Not Write) for the course.
+Missed term tests without proper documentation are automatically awarded a grade of 0. 
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+8/12
+
+If you miss both term tests and you do not write the final exam, you will be ineligible for an INC. In this
+case, you will automatically receive a grade of DNW.
+In the case of illness, you may declare your absence or submit a completed University of Waterloo
+Verification of Illness Form (VIF) to the Math Undergraduate Office, MC 4022. Remember that you must
+send an e-mail to Funmilayo Adeku at fadeku@uwaterloo.ca (mailto:fadeku@uwaterloo.ca) within 48 hours
+of a missed term test or final exam.  No documentation is needed for a missed quiz, as we are taking your
+best 3 out of 5 quizzes.
+See Faculty of Mathematics' Accommodations (https://uwaterloo.ca/math/accommodations/submission)
+webpage.
+In the case of extenuating circumstances, you must provide sufficient documentation via e-mail to
+Funmilayo Adeku at fadeku@uwaterloo.ca (mailto:fadeku@uwaterloo.ca)  as soon as possible to verify the
+circumstances surrounding your absence.
+Assignment Screening
+No assignment screening will be used in this course.
+Administrative Policy
+Intellectual Property and Copyright Notice:
+Students should be aware that this course contains the intellectual property of their instructor, TA, and/or
+the University of Waterloo. Intellectual property includes items such as:
+Lecture content, spoken and written (and any audio/video recording thereof);
+Lecture handouts, presentations, and other materials prepared for the course;
+Questions or solution sets from various types of assessments (e.g., assignments, quizzes, tests,
+final exam); and
+Work protected by copyright (e.g., any work authored/used by the instructor/TA, with permission of
+the copyright owner).
+These materials are made available for the personal use of students registered in the Fall 2024 offering of
+STAT 230. Students may not distribute or reproduce these materials for commercial or non-commercial
+means. Failure to abide by these conditions is a breach of copyright and an academic offence (see Policy
+71 ((https://uwaterloo.ca/secretariat/policies-procedures-guidelines/policy-71) ).
+Mental Health Support: 
+The Faculty of Math encourages students to seek out mental health support if needed.
+On-campus Resources: 
+Campus Wellness  (https://uwaterloo.ca/campus-wellness/ )
+Counselling Services: counselling.services@uwaterloo.ca, 519-888-4567 ext. 32655
+MATES: one-to-one peer support program offered by Waterloo Undergraduate Student
+Association (WUSA) and Counselling Services: mates@wusa.ca (mailto:mates@wusa.ca)
+Health Services: located across the creek from the Student Life Centre, 519-888-4096.
+Off-campus Resources:
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+9/12
+
+Good2Talk (24/7): Free confidential help line for post-secondary students. Phone: 1-866-925-
+5454(Ontario and Nova Scotia only)
+Here 24/7: Mental Health and Crisis Service Team. Phone: 1-844-437-3247 (Waterloo Region
+only)
+OK2BME: set of support services for lesbian, gay, bisexual, transgender or questioning teens.
+Phone: 519-884-0000 extension 213 (Waterloo Region only)
+EMPOWER ME 1-833-628-5589 for CDN./USA other countries see:
+http://studentcare.ca/rte/en/IHaveAPlan_WUSA_EmpowerMe_EmpowerMe
+EMPOWER ME in China: China North 108007142831; China South 108001402851
+Diversity: 
+It is our intent that students from all diverse backgrounds and perspectives be well served by this course,
+and that students’ learning needs be addressed both in and out of class. We recognize the immense value
+of the diversity in identities, perspectives, and contributions that students bring, and the benefit it has on
+our educational environment. Your suggestions are encouraged and appreciated. Please let us know ways
+to improve the effectiveness of the course for you personally or for other students or student groups. In
+particular:
+We will gladly honour your request to address you by an alternate/preferred name or gender
+pronoun. Please advise us of this preference early in the semester so we may make appropriate
+changes to our records.
+We will honour your religious holidays and celebrations. Please inform of us these at the start of the
+course.
+We will follow AccessAbility Services guidelines and protocols on how to best support students with
+different learning needs.
+Territorial Acknowledgement:
+The University of Waterloo acknowledges that much of our work takes place on the traditional territory of
+the Neutral, Anishinaabeg, and Haudenosaunee peoples. Our main campus is situated on the Haldimand
+Tract, the land granted to the Six Nations that includes six miles on each side of the Grand River. Our active
+work toward reconciliation takes place across our campuses through research, learning, teaching, and
+community building, and is co-ordinated within the Office of Indigenous Relations.
+(https://uwaterloo.ca/indigenous)
+Generative AI:
+This course includes the independent development and practice of specific skills. Therefore, the use
+of Generative artificial intelligence (GenAI) trained using large language models (LLM) or other methods to
+produce text, images, music, or code, like Chat GPT, DALL-E, or GitHub CoPilot, is not permitted in this
+class. Unauthorized use in this course, such as running course materials through GenAI or using GenAI to
+complete a course assessment is considered a violation of Policy 71
+(https://uwaterloo.ca/secretariat/policies-procedures-guidelines/policy-71)  (plagiarism or unauthorized
+aids or assistance). Work produced with the assistance of AI tools does not represent the author’s original
+work and is therefore in violation of the fundamental values of academic integrity including honesty, trust,
+respect, fairness, responsibility and courage (ICAI (https://academicintegrity.org/images/pdfs/20019_ICAI-
+Fundamental-Values_R12.pdf) , n.d.). 
+You should be prepared to show your work. To demonstrate your learning, you should keep your rough
+notes, including research notes, brainstorming, and drafting notes. You may be asked to submit these
+notes along with earlier drafts of their work, either through saved drafts or saved versions of a document. If
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+10/12
+
+the use of GenAI is suspected where not permitted, you may be asked to meet with your instructor or TA to
+provide explanations to support the submitted material as being your original work. Through this process, if
+you have not sufficiently supported your work, academic misconduct allegations may be brought to the
+Associate Dean. 
+In addition, you should be aware that the legal/copyright status of generative AI inputs and outputs is
+unclear. More information is available from the Copyright Advisory
+Committee: https://uwaterloo.ca/copyright-at-waterloo/teaching/generative-artificial-intelligence
+(https://uwaterloo.ca/copyright-at-waterloo/teaching/generative-artificial-intelligence) 
+Students are encouraged to reach out to campus supports if they need help with their coursework
+including: 
+Student Success Office (https://uwaterloo.ca/student-success/resources)  for help with skills like
+notetaking and time management
+Writing and Communication Centre (https://uwaterloo.ca/writing-and-communication-
+centre/services-0/services-undergraduate-students)  for assignments with writing or presentations
+AccessAbility Services (https://uwaterloo.ca/accessability-services/students)  for documented
+accommodations
+Library (https://uwaterloo.ca/library/research-supports/quick-start-guide)  for research-based
+assignments
+University Policy
+Academic integrity: In order to maintain a culture of academic integrity, members of the University of
+Waterloo community are expected to promote honesty, trust, fairness, respect and responsibility. [Check
+the Office of Academic Integrity (https://uwaterloo.ca/academic-integrity/) for more information.]
+Grievance: A student who believes that a decision affecting some aspect of their university life has been
+unfair or unreasonable may have grounds for initiating a grievance. Read Policy 70, Student Petitions and
+Grievances, Section 4 (https://uwaterloo.ca/secretariat/policies-procedures-guidelines/policy-70) . When
+in doubt, please be certain to contact the department’s administrative assistant who will provide further
+assistance.
+Discipline: A student is expected to know what constitutes academic integrity to avoid committing an
+academic offence, and to take responsibility for their actions. [Check the Office of Academic Integrity
+(https://uwaterloo.ca/academic-integrity/) for more information.] A student who is unsure whether an action
+constitutes an offence, or who needs help in learning how to avoid offences (e.g., plagiarism, cheating) or
+about “rules” for group work/collaboration should seek guidance from the course instructor, academic
+advisor, or the undergraduate associate dean. For information on categories of offences and types of
+penalties, students should refer to Policy 71, Student Discipline (https://uwaterloo.ca/secretariat/policies-
+procedures-guidelines/policy-71) . For typical penalties, check Guidelines for the Assessment of Penalties
+(https://uwaterloo.ca/secretariat/guidelines/guidelines-assessment-penalties) .
+Appeals: A decision made or penalty imposed under Policy 70, Student Petitions and Grievances
+(https://uwaterloo.ca/secretariat/policies-procedures-guidelines/policy-70) (other than a petition) or Policy
+71, Student Discipline (https://uwaterloo.ca/secretariat/policies-procedures-guidelines/policy-71) may be
+appealed if there is a ground. A student who believes they have a ground for an appeal should refer to
+Policy 72, Student Appeals (https://uwaterloo.ca/secretariat/policies-procedures-guidelines/policy-72) .
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+11/12
+
+Note for students with disabilities: AccessAbility Services (https://uwaterloo.ca/accessability-services/) ,
+located in Needles Hall, Room 1401, collaborates with all academic departments to arrange appropriate
+accommodations for students with disabilities without compromising the academic integrity of the
+curriculum. If you require academic accommodations to lessen the impact of your disability, please register
+with AccessAbility Services at the beginning of each academic term.
+Turnitin.com: Text matching software (Turnitin®) may be used to screen assignments in this course.
+Turnitin® is used to verify that all materials and sources in assignments are documented. Students'
+submissions are stored on a U.S. server, therefore students must be given an alternative (e.g., scaffolded
+assignment or annotated bibliography), if they are concerned about their privacy and/or security. Students
+will be given due notice, in the first week of the term and/or at the time assignment details are provided,
+about arrangements and alternatives for the use of Turnitin in this course.
+It is the responsibility of the student to notify the instructor if they, in the first week of term or at the time
+assignment details are provided, wish to submit alternate assignment.
+©University of Waterloo
+11/17/24, 6:51 PM
+Course Outline - Probability
+https://outline.uwaterloo.ca/view/n4gqvz
+12/12
+

@@ -1,0 +1,200 @@
+UNIVERSITY OF WATERLOO
+Computing and Financial Management
+School of Accounting and Finance
+CFM 101 - Introduction to Financial Data Analytics
+Fall 2024
+Instructor:
+Prof. James Thompson
+Ofﬁce:
+HH 289D
+Ofﬁce hours:
+TBA and by appointment
+Email:
+james@uwaterloo.ca
+Course web page:
+Access via LEARN
+Lectures:
+Section 001
+MW 1:00 p.m. to 2:20 p.m.
+HH 1102
+Prerequisite:
+Computing and Financial Management Students only
+Antirequisite:
+AFM 121, COMM 101
+Text:
+S. Cleary S, Canadian Securities Exam: Fast Track Study Guide
+(Third Edition), Wiley, 2009 (digital version available for free)
+Course evaluation:
+Assignment #1
+Sept 23 at 9am
+5%
+Assignment #2
+Oct 11 at 9am*
+7%
+(*accepted until Oct 14 at 9am without penalty)
+Assignment #3
+Nov 4 at 9am
+7%
+Group Assignment
+Nov 23 at 9am
+16%
+Midterm Exam
+Oct 22 at 7pm-8:30pm, Location TBA
+15% or 20%, see note below
+Final Exam
+Timing and Location TBA
+40% or 35%, see note below
+Classroom/Online contribution
+10%
+Important Notes:
+1. Your overall exam grade will be calculated as follows max{(15% Midterm,40% Final),(20% Midterm,35% Final)}. Thus,
+if you perform well on the midterm, it will be worth more, if you perform poorly, weight will be shifted to the ﬁnal.
+2. Assignments will not be accepted after the due date and time. Please leave yourself plenty of time to submit.
+3. In the (hopefully extremely unlikely) event that in-person learning is prohibited (either temporarily or for the remainder
+of the semester), all in-person students will immediately switch to online. The midterm and ﬁnal will switch to remote
+writing, and all assignments will proceed unaffected. Classroom/Online contribution will continue if we switch to fully
+online. It is advisable that students do not wait until later in the semester to start contributing to our class.
+4. The grade I assign for your classroom/online contribution is a careful, but subjective (on my part) assessment of the
+value of your input to the classroom learning over the whole course. This contribution includes the following interrelated
+aspects of your input.
+Attendance & Punctuality. The following applies regardless if you are taking the course in-person or online. You may
+have isolated occasions where you unavoidably miss a class. This is acceptable. If the occasion is foreseeable, a brief
+explanatory email to me before class is polite and expected. Otherwise, a brief explanatory email to me after class is next
+best. You are responsible for catching up on missed material. This requires more than just reading the notes. You are
+strongly advised to ﬁnd a trusted colleague who will help you understand what was covered in class. Repeated absences,
+particularly absences without notiﬁcation or unjustiﬁed absences, may have a negative impact on your class contribution
+grade.
+Class Preparation. You are expected to be ready for class having already read any assigned materials, attempted any
+questions assigned, and prepared with your own questions.
+Class oral contribution. This involves making a meaningful contribution to the learning of the class, whether you are
+attending in person or synchronously online. This can be achieved in many ways, including: i) answering direct questions
+posed to the class ii) participating in class discussions on issues we are addressing iii) raising questions or comments that
+
+CFM 101
+Fall 2023
+help the class better understand the issues or gain a different perspective on material covered. Note that due do the class
+size, everyone is not expected to participate every class (nor would this be possible).
+Listening to others and respecting their points of view is an essential part of engaging in class.
+Emphasis will be placed on the quality of contribution.
+Additional Venues to earn Classroom Contribution Grades. Your classroom contribution grade can also be helped by
+contributing to tutorials, and by thoughtfully contributing to our online discussion site, Piazza.
+5. Assigned chapter readings will reinforce the material covered in class. The most difﬁcult and important topics will be
+covered in class, but time constraints do not permit coverage of all topics at the same level of detail. However, you are
+responsible for all assigned chapter readings regardless of whether the material has been covered in class. You are also
+responsible for topics not in the text but covered in the lectures (see class schedule for more information).
+6. SAF Process for Requesting Accommodation for Missed Assessments: UW’s policy regarding requests for accommo-
+dation can be found at http://ugradcalendar.uwaterloo.ca/page/Acad-Regs-Accommodations.
+Please note that SAF policy/practices are meant to be consistent with this.
+Required supporting documentation is uploaded within the Request for Academic Accommodation web form (Accommo-
+dations for illness or extenuating circumstances https://uwaterloo.ca/arts/undergraduate/student-support/
+academic-considerations-and-accommodations-illness-or#submit-other). Submissions must
+be complete and accurate. Please refer to the web form for links and additional information regarding the illness doc-
+umentation requirements and process. The web form is regularly updated to guide students in making requests for
+accommodation as processes change.
+The university identiﬁes acceptable grounds for being excused from a course expectation and it is very limited. Accord-
+ingly, students must understand that when accommodation is granted, it will typically be on a limited basis. For other
+requests for accommodations that do not ﬁt within the explicitly identiﬁed university identiﬁed grounds, (e.g., death of
+a family member), appropriate documentation should still be provided within a reasonable time period to your course
+instructor or a SAF advisor (as directed). *CFM students only: you can begin by consulting the CFM advisor. The SAF
+Administrative Coordinator and Advisor may co-ordinate the review of accommodation requests that do not ﬁt the within
+the broader Veriﬁcation of Illness process. SAF will maintain a record of missed exams by student (name, ID ), so that
+unusual situations can be identiﬁed and addressed.
+If you believe you experience extenuating circumstances which have affected your academic record, you may wish to
+speak with your academic advisor. Do NOT wait until the end of the term once ﬁnal grades are in. The sooner you let
+someone know that there are ongoing circumstances, typically the easier it is for you to document, exhibit necessary
+proactivity and timeliness and, in some cases, there may be more options available than if you leave to the end of a term.
+The University of Waterloo INC grade process will be followed, where all course requirements are not completed during
+the term.
+Note: For all valid missed assessments, the weight will be transferred to the ﬁnal exam.
+7. Requests for re-grading of the Exam/test must be made within one week after it has been given back and must be in
+writing. Note that the instructor reserves the right to re-grade the entire exam, and raise or lower the grade originally
+assigned. This is important as “shopping” for a higher grade is a bad strategy and has, in the past, resulted in lower
+grades.
+8. The ﬁnal Exam/test will be comprehensive.
+9. Note on avoidance of academic offences: All students registered in the courses of the Faculty of Arts are expected to
+know what constitutes an academic offence, to avoid committing academic offences, and to take responsibility for their
+academic actions. When the commission of an offence is established, disciplinary penalties will be imposed in accord
+with Policy #71 (Student Academic Discipline). For information on categories of offences and types of penalties, students
+are directed to consult Policy #71
+(https://uwaterloo.ca/secretariat/policies-procedures-guidelines/policy-71). If you
+need help in learning what constitutes an academic offence; how to avoid offences such as plagiarism, cheating, and
+double submission; how to follow appropriate rules with respect to “group work” and collaboration; or if you need
+clariﬁcation of aspects of the discipline policy, ask your TA and/or your course instructor for guidance. Other resources
+regarding the discipline policy are your academic advisor and the Undergraduate Associate Dean. Students who believe
+that they have been wrongfully or unjustly penalized have the right to grieve; refer to Policy #70, Student Grievance,
+https://uwaterloo.ca/secretariat/policies-procedures-guidelines/policy-70.
+
+CFM 101
+Fall 2023
+10. Generative artiﬁcial intelligence (GenAI) trained using large language models (LLM) or other methods to produce text,
+images, music, or code, like Chat GPT, DALL-E, or GitHub CoPilot, may be used in this course for assignments with
+proper documentation, citation, and acknowledgement. Permitted uses of and expectations for using GenAI will be dis-
+cussed in class and outlined on assignment instructions. Recommendations for how to cite generative AI in student work
+at the University of Waterloo may be found through the Library:
+https://subjectguides.uwaterloo.ca/chatgpt_generative_ai. Please be aware that generative AI
+is known to falsify references to other work and may fabricate facts and inaccurately express ideas. GenAI generates
+content based on the input of other human authors and may therefore contain inaccuracies or reﬂect biases. In addition,
+you should be aware that the legal/copyright status of generative AI inputs and outputs is unclear. Exercise caution when
+using large portions of content from AI sources, especially images. More information is available from the Copyright
+Advisory Committee:
+https://uwaterloo.ca/copyright-at-waterloo/teaching/generative-artificial-intelligence
+You are accountable for the content and accuracy of all work you submit in this class, including any supported by gener-
+ative AI.
+11. For Assignments and exams. You will provide both code as well as output. The output must be produced from the code.
+Output that is not produced by the provided code is indicative of an academic offence. You need to be careful. Any
+time you change your code, you must re-generate your output. Failure to do so will lead to an academic dishonesty
+investigation.
+12. Note for students with disabilities: The Ofﬁce for Persons with Disabilities (OPD), located in Needles Hall, Room 1132,
+collaborates with all academic departments to arrange appropriate accommodations for students with disabilities without
+compromising the academic integrity of the curriculum. If you require academic accommodations to lessen the impact
+of your disability, please register with the OPD at the beginning of each academic term.
+Course Description
+This course is an introduction to ﬁnance for Computing and Financial Management Students. Given the computational interests
+of CFM students, this course will explore concepts using the python programming language. In addition, the course will
+explore non-traditional ﬁnance topics such as cryptocurrencies and their relationship with ﬁnance. At the conclusion of the
+course, students will have a broad overview of ﬁnance topics. Students will dive deeper into many of the topics in AFM 272.
+In addition, students will be able to locate, manipulate, and visualize ﬁnancial data using multiple freely available sources and
+the most widely used data analytics libraries within python.
+Tentative Class Schedule
+Class
+Subject
+Chapter Readings
+1-2
+Course introduction and The Capital Market
+Chapter 1
+2-3
+The Canadian Securities Industry
+Chapter 2
+4-5
+Common and Preferred Securities
+Chapter 8
+6-9
+Equities Securities and Equity Trading
+Chapter 9
+10-11
+Time Value of Money
+No assigned reading
+12
+Fixed Income Securities Features and Types
+Chapter 6
+13-14
+Fixed Income Securities Pricing and Trading
+Chapter 7
+15-16
+Portfolio Approach
+Chapter 15
+17-18
+Derivatives
+Chapter 10
+19-20
+Money, Blockchain, and Cryptocurrencies
+No assigned reading
+21
+Canadian Taxation
+Chapter 25
+22
+Team Competition Results and Course Wrap-up
+No assigned reading
+Please note: the timing of each chapter may not be exact. Please bring notes for one class ahead in case we progress faster than
+anticipated.
+

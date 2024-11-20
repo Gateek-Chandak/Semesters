@@ -1,0 +1,24 @@
+Grading Scheme A:
+- Assignment 1, 2.86%
+- Assignment 2, 2.86%
+- Assignment 3, 2.86%
+- Assignment 4, 2.86%
+- Assignment 5, 2.86%
+- Assignment 6, 2.86%
+- Assignment 7, 2.86%
+- Midterm exam, 30%
+- Final exam, 50%
+
+Note: For Assignments (Best 7 out of 9), each assignment is worth 2.86% (20% total/7).
+
+Grading Scheme B:
+- Assignment 1, 2.86%
+- Assignment 2, 2.86%
+- Assignment 3, 2.86%
+- Assignment 4, 2.86%
+- Assignment 5, 2.86%
+- Assignment 6, 2.86%
+- Assignment 7, 2.86%
+- Final exam, 80%
+
+Note: For Assignments (Best 7 out of 9), each assignment is worth 2.86% (20% total/7).

@@ -1,0 +1,17 @@
+Grading Scheme 1:
+- Quiz 1, 5%
+- Quiz 2, 5%
+- Quiz 3, 5%
+- Term Test 1, 20%
+- Term Test 2, 20%
+- Final Exam, 45%
+
+Grading Scheme 2:
+- Quiz 1, 7%
+- Quiz 2, 7%
+- Quiz 3, 7%
+- Best Term Test (either Term Test 1 or Term Test 2), 27%
+- Worst Term Test (either Term Test 1 or Term Test 2), 12%
+- Final Exam, 40%
+
+(Note: Only the best 3 out of 5 quizzes are considered in each grading scheme, with equal weighting per quiz.)
