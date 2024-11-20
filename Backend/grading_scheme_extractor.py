@@ -45,7 +45,7 @@ def extract_course_info(file_paths):
       ]
   )
 
-
+    # Save files to output folder
     output_path = os.path.join('output', f"{file.split('/')[1].split('_')[0]}_assignments.txt")
     with open(output_path, mode='w', newline='') as f:
             f.write(response['choices'][0]['message']['content']) 

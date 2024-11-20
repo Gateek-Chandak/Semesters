@@ -26,16 +26,14 @@ def json_convert(file_name):
                     
 
 def convert_files(files):
+    json_payload = {}
+
     for file in files:
+        course = file.split('_')[0]
         parsed_data = json_convert(file)
         json_data = json.dumps(parsed_data, indent=4)
-        print(json_data)
+        json_payload[course] = json_data
+        print(f"converting {file} to JSON")
+    
+    return json_payload
 
-
-
-files = [ "CFM101_assignments.txt",
-          "Math239_assignments.txt",
-          "Stat230_assignments.txt"      
-]
-
-payload = convert_files(files)
