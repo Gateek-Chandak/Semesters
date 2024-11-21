@@ -15,38 +15,45 @@ prompt = """
             Assessment, Weight. 
             If there are 2 grade schemes, seperate them and create two plans. Remember if something is best x our of y, each assesment is only worth a fraction of the total
             percentage that the assesments are worth.
-            Example:
-            Grading Scheme 1:
+            FORMAT IT EXACTLY AS FOLLOWS:
+            Grading Scheme #:
             - Assignment 1, 5%
             - Assignment 2, 5%
             - Quiz 1, 7%
             - Midterm 1, 15%
             - Final Exam, 20%
 
+            Grading Scheme #:
+            - Assignment 1, 5%
+            - Assignment 2, 5%
+            - Quiz 1, 7%
+            - Midterm 1, 15%
+            - Final Exam, 20%
+
+            Do not use any of the following characters or words: *()[]|!@#$^&* 
         """
 
 # This function uses the OpenAI API to read a text file and extract assignment information
-def extract_course_info(file_paths):
-  for file in file_paths:
-    with open(file, 'r') as t:
-        text = t.read()
+def extract_course_info(text):
 
     response = openai.ChatCompletion.create(
-      model="gpt-4o", 
-      messages=[
-          {
-              "role": "system",
-              "content": ( prompt )
-          },
-          {
-              "role": "user",
-              "content": text 
-          }
-      ]
-  )
+        model="gpt-4o", 
+        messages=[
+            {
+                "role": "system",
+                "content": ( prompt )
+            },
+            {
+                "role": "user",
+                "content": text 
+            }
+        ]
+    )
 
-    # Save files to output folder
-    output_path = os.path.join('output', f"{file.split('/')[1].split('_')[0]}_assignments.txt")
-    with open(output_path, mode='w', newline='') as f:
-            f.write(response['choices'][0]['message']['content']) 
-            print(f"Assignment file created to {output_path}")
+    return response['choices'][0]['message']['content']
+
+    # # Save files to output folder
+    # output_path = os.path.join('output', f"{file.split('/')[1].split('_')[0]}_assignments.txt")
+    # with open(output_path, mode='w', newline='') as f:
+    #         f.write() 
+    #         print(f"Assignment file created to {output_path}")
