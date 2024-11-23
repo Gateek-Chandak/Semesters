@@ -37,7 +37,7 @@ prompt = """
 def extract_course_info(text):
 
     response = openai.ChatCompletion.create(
-        model="gpt-4o", 
+        model="gpt-4o-mini", 
         messages=[
             {
                 "role": "system",

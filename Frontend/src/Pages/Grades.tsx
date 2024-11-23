@@ -3,16 +3,8 @@ import axios from "axios";
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import {
-    Table,
-    TableBody,
-    TableCaption,
-    TableFooter,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-  } from "@/components/ui/table"
+
+import GradeSchemeCard from "@/components/GradeSchemeCard";
 
 // Individual Grade Scheme
 interface GradingScheme {
@@ -80,35 +72,13 @@ const GradesPage = () => {
 
             <div className="flex gap-5 items-center">
                 <Input type="file" accept=".pdf" onChange={handleFileChange} className="hover:border-gray-200 border-gray-100"/>
-                <Button onClick={handleFileUpload} className="w-2/12">Get Grading Scheme</Button>
+                <Button onClick={handleFileUpload} className="w-2/12">Generate</Button>
             </div>
 
             <div className="flex justify-center gap-5 h-full">
                 {Object.entries(gradingSchemes).map(([schemeName, schemeDetails]) => {
                     return (
-                        <div key={schemeName} className="w-1/2 border border-gray-100 px-5 pt-4 rounded-3xl">
-                            <h1 className="text-center mb-4 font-bold">{schemeName}</h1>
-                            <Table className="my-4">
-                                <TableHeader>
-                                    <TableRow>  
-                                        <TableHead className="text-center">Name</TableHead>
-                                        <TableHead className="text-center">Weight</TableHead>
-                                        <TableHead className="text-center">Grade</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                {Object.entries(schemeDetails).map(([assessmentName, weight]) => {
-                                    return (
-                                        <TableBody key={assessmentName}>
-                                            <TableRow>
-                                                <TableCell className="text-center">{assessmentName}</TableCell>
-                                                <TableCell className="text-center">{weight}</TableCell>
-                                                <TableCell className="text-center"> <Input type="text" placeholder="" className="w-14 inline" />  %</TableCell>
-                                            </TableRow>
-                                        </TableBody>
-                                    )
-                                })}
-                            </Table>
-                        </div>
+                        <GradeSchemeCard schemeName={schemeName} schemeDetails={schemeDetails}/>
                     )
                 })}
             </div>
