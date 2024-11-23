@@ -5,7 +5,6 @@ import GradesPage from './Pages/Grades'
 function App() {
   return (
     <div className="">
-        UW STUDY BUDDY
         <GradesPage />
     </div>
   )
