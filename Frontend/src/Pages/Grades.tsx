@@ -3,6 +3,7 @@ import axios from "axios";
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
+import { Skeleton } from "@/components/ui/skeleton";
 
 import GradeSchemeCard from "@/components/GradeSchemeCard";
 
@@ -19,7 +20,8 @@ interface GradeSchemes {
 
 const GradesPage = () => {
 
-    const [error, setError] = useState<string | null>("NO FILE SELECTED")
+    const [error, setError] = useState<string | null>("Select A File")
+    const [isUploading, setIsUploading] = useState<boolean>(false)
 
     const [uploadedFile, setUploadedFile] = useState<File | null>(null)
     const [gradingSchemes, setGradeSchemes] = useState<GradeSchemes>({})
@@ -42,7 +44,7 @@ const GradesPage = () => {
     const handleFileUpload = async (): Promise<void>  => {
 
         if (uploadedFile) {
-            setError("Uploading File")
+            setIsUploading(true)
             const formData = new FormData();
             formData.append('pdf', uploadedFile);
 
@@ -52,8 +54,9 @@ const GradesPage = () => {
                     'Content-Type': 'multipart/form-data',
                   },
                 })
-                setError(null)
+                setIsUploading(false)
                 setGradeSchemes(response.data)
+                setError(null)
                 console.log('File uploaded successfully:', response.data)
 
             } catch (error) {
@@ -66,23 +69,55 @@ const GradesPage = () => {
     }
 
     return ( 
-        <div className="mx-20 my-5 flex flex-col gap-10">
+        <div className="px-20 py-5 flex flex-col gap-10 w-full h-screen">
             
             {error && <p className="w-full text-center">{error}</p>}
 
             <div className="flex gap-5 items-center">
-                <Input type="file" accept=".pdf" onChange={handleFileChange} className="hover:border-gray-200 border-gray-100"/>
+                <Input type="file" accept=".pdf" onChange={handleFileChange} className="hover:border-gray-200 hover:bg-gray-50 border-gray-100"/>
                 <Button onClick={handleFileUpload} className="w-2/12">Generate</Button>
             </div>
 
-            <div className="flex justify-center gap-5 h-full">
-                {Object.entries(gradingSchemes).map(([schemeName, schemeDetails]) => {
-                    return (
-                        <GradeSchemeCard schemeName={schemeName} schemeDetails={schemeDetails}/>
-                    )
-                })}
-            </div>
 
+            {isUploading && 
+                    <div className="flex justify-center gap-5 h-full">
+                        <div className="w-4/5 border border-gray-100 px-7 pt-4 pb-6 rounded-3xl shadow-sm flex flex-col items-center justify-around" style={{ height: "35rem", overflowY: "auto" }}>
+                            <Skeleton className="h-4 w-1/2" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                        </div>
+                        <div className="w-4/5 border border-gray-100 px-7 pt-4 pb-6 rounded-3xl shadow-sm flex flex-col items-center justify-around" style={{ height: "35rem", overflowY: "auto" }}>
+                            <Skeleton className="h-4 w-1/2" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                            <Skeleton className="h-4 w-full" />
+                        </div>
+                    </div>
+                }
+            {!isUploading && 
+                <div className="flex justify-center gap-5 h-full">
+                    {Object.entries(gradingSchemes).map(([schemeName, schemeDetails]) => {
+                        return (
+                            <GradeSchemeCard schemeName={schemeName} schemeDetails={schemeDetails}/>
+                        )
+                    })}
+                </div>
+            }
         </div>
      );
 }

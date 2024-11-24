@@ -41,8 +41,8 @@ const GradeSchemeCard: React.FC<GradeSchemeCardProps> = ( {schemeName, schemeDet
     // const totalRows = Object.entries(schemeDetails).length;
 
     return ( 
-        <div key={schemeName} className="w-4/5 border border-gray-100 px-5 pt-4 rounded-3xl" style={{ height: "35rem", overflowY: "auto" }}>
-            <h1 className="text-center mb-4 font-bold">{schemeName}</h1>
+        <div key={schemeName} className="w-4/5 border border-gray-100 px-5 pt-4 rounded-3xl shadow-sm" style={{ height: "35rem", overflowY: "auto" }}>
+            <h1 className="text-center mb-4 font-medium">{schemeName}</h1>
             <Table className="my-4">
                 <TableHeader>
                     <TableRow>  
