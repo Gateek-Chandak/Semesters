@@ -10,7 +10,7 @@ createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <SidebarProvider>
         <SideBar />
-        <main className='w-full'>
+        <main className='w-full h-dvh'>
           <SidebarTrigger />
           <App />
           <Toaster />

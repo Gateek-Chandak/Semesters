@@ -24,13 +24,16 @@ import {
 import { Input } from "./ui/input";
 
 // Interfaces & Types
-interface GradingScheme {
-    [name: string]: number;
+interface Assessment {
+    assessmentName: string; // Name of the assessment
+    weight: number;         // Weight of the assessment
+    grade: number | undefined;   // Grade for the assessment (null if not graded)
   }
 
 type GradeSchemeCardProps = {
     schemeName: string;
-    schemeDetails: GradingScheme;
+    schemeDetails: Assessment[];
+    key: string;
 };
 
 const GradeSchemeCard: React.FC<GradeSchemeCardProps> = ( {schemeName, schemeDetails} ) => {
@@ -41,7 +44,7 @@ const GradeSchemeCard: React.FC<GradeSchemeCardProps> = ( {schemeName, schemeDet
     // const totalRows = Object.entries(schemeDetails).length;
 
     return ( 
-        <div key={schemeName} className="w-4/5 border border-gray-100 px-5 pt-4 rounded-3xl shadow-sm" style={{ height: "35rem", overflowY: "auto" }}>
+        <div className="w-4/5 border border-gray-100 px-5 pt-4 rounded-3xl shadow-sm" style={{ height: "35rem", overflowY: "auto" }}>
             <h1 className="text-center mb-4 font-medium">{schemeName}</h1>
             <Table className="my-4">
                 <TableHeader>
@@ -51,13 +54,13 @@ const GradeSchemeCard: React.FC<GradeSchemeCardProps> = ( {schemeName, schemeDet
                         <TableHead className="text-center">Grade</TableHead>
                     </TableRow>
                 </TableHeader>
-                {Object.entries(schemeDetails).slice(startIndex, startIndex + rowsPerPage).map(([assessmentName, weight]) => {
+                {schemeDetails.slice(startIndex, startIndex + rowsPerPage).map((assessment) => {
                     return (
-                        <TableBody key={assessmentName}>
+                        <TableBody key={assessment.assessmentName}>
                             <TableRow>
-                                <TableCell className="text-center">{assessmentName}</TableCell>
-                                <TableCell className="text-center">{weight}</TableCell>
-                                <TableCell className="text-center"> <Input type="text" placeholder="" className="w-14 inline" />  %</TableCell>
+                                <TableCell className="text-center">{assessment.assessmentName}</TableCell>
+                                <TableCell className="text-center">{assessment.weight}</TableCell>
+                                <TableCell className="text-center"> <Input type="text" value={assessment.grade} placeholder="" className="w-14 inline" />  %</TableCell>
                             </TableRow>
                         </TableBody>
                     )

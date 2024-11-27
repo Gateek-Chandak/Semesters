@@ -8,14 +8,17 @@ import {
 
 const SideBar = () => {
     return ( 
-        <Sidebar>
-            <SidebarHeader />
-            <SidebarContent>
-                <SidebarGroup />
-                <SidebarGroup />
-            </SidebarContent>
-            <SidebarFooter />
-        </Sidebar>
+        <div className="h-dvh">
+            <Sidebar>
+                <SidebarHeader />
+                <SidebarContent>
+                    <SidebarGroup />
+                    <SidebarGroup />
+                </SidebarContent>
+                <SidebarFooter />
+            </Sidebar>
+        </div>
+       
      );
 }
  
