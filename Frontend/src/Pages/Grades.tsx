@@ -7,6 +7,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 import GradeSchemeCard from "@/components/GradeSchemeCard";
 
+import { useToast } from "@/hooks/use-toast";
+
 // Individual Grade Scheme
 interface GradingScheme {
     [name: string]: number;
@@ -19,6 +21,8 @@ interface GradeSchemes {
 
 
 const GradesPage = () => {
+    
+    const { toast } = useToast()
 
     const [error, setError] = useState<string | null>("Select A File")
     const [isUploading, setIsUploading] = useState<boolean>(false)
@@ -57,21 +61,37 @@ const GradesPage = () => {
                 setIsUploading(false)
                 setGradeSchemes(response.data)
                 setError(null)
+                toast({
+                    variant: "success",
+                    title: "File Uplaod Successful",
+                    description: "Your file has been processed and the data has been uploaded.",
+                  })
                 console.log('File uploaded successfully:', response.data)
 
             } catch (error) {
-            setError(`Error uploading file: ${error}`)
+                setError(`Error Uploading File`)
+                toast({
+                    variant: "destructive",
+                    title: "File Uplaod Error",
+                    description: "There was an error uploading your file. \n Please try again.",
+                  })
+                setIsUploading(false)
+                console.log(error)
             }
 
         } else {
             setError('Please select a file first')
+            toast({
+                variant: "destructive",
+                title: "File Upload Error",
+                description: "Please select a file first.",
+              })
         }
     }
 
     return ( 
         <div className="px-20 py-5 flex flex-col gap-10 w-full h-screen">
             
-            {error && <p className="w-full text-center">{error}</p>}
 
             <div className="flex gap-5 items-center">
                 <Input type="file" accept=".pdf" onChange={handleFileChange} className="hover:border-gray-200 hover:bg-gray-50 border-gray-100"/>

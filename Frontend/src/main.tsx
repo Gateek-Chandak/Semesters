@@ -4,6 +4,7 @@ import './index.css'
 import App from './App.tsx'
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 import SideBar from './components/Sidebar'
+import { Toaster } from "@/components/ui/toaster"
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -12,6 +13,7 @@ createRoot(document.getElementById('root')!).render(
         <main className='w-full'>
           <SidebarTrigger />
           <App />
+          <Toaster />
         </main>
     </SidebarProvider>
   </StrictMode>,
