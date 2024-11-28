@@ -15,7 +15,7 @@ class PDFUploadView(APIView):
             return Response({"error": "No file uploaded"}, status=400)
 
         grading_scheme_data = create_course_grading_schemes(uploaded_file)
-        if not isinstance(grading_scheme_data, dict):
+        if not isinstance(grading_scheme_data, dict) and (grading_scheme_data != "no grading scheme found"):
             return Response({"error": "Invalid data returned from PDF processing"}, status=400)
 
         return Response(grading_scheme_data, status=200)

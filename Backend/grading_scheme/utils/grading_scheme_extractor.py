@@ -8,6 +8,7 @@ openai.api_key = os.getenv('OPENAI_API_KEY')
 
 prompt = """
             Help me break down how I will be graded in this course
+            Warning: The file presented may not have any grading scheme data. If you do not detect any grading scheme data, please return the text "no grading scheme found".
 
             Only list out the information on the assessments I will be assessed on. I want a seperate line item for each assesment. That means
             breaking down 3 quizzes into quiz 1,2,3.

@@ -8,6 +8,9 @@ def create_course_grading_schemes(file):
 
     grading_scheme = grading_scheme_extractor.extract_course_info(text)
 
+    if (grading_scheme == "no grading scheme found"):
+        return "no grading scheme found"
+        
     payload = json_converter.json_convert(grading_scheme)
 
     return payload

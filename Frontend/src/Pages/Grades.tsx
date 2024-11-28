@@ -13,15 +13,16 @@ import GradeSchemeCard from "@/components/GradeSchemeCard";
 import { useToast } from "@/hooks/use-toast";
 
 // Interface to define the structure of an individual assessment
-interface Assessment {
+export interface Assessment {
   assessmentName: string; // The name of the assessment (e.g., "Midterm 1")
   weight: number; // The weight of the assessment (e.g., 20%)
-  grade: number | undefined; // The grade for the assessment (null or undefined if not graded)
+  grade: number; // The grade for the assessment (null or undefined if not graded)
 }
 
 // Interface to define the structure of a grading scheme
-interface GradingScheme {
+export interface GradingScheme {
   schemeName: string; // The name of the grading scheme (e.g., "Grading Scheme 0")
+  schemeGrade: number; // The overall grade associated with the grading scheme
   schemeDetails: Assessment[]; // Array of assessments within this grading scheme
 }
 
@@ -53,16 +54,17 @@ const GradesPage = () => {
   const formatGradingSchemes = (gradingSchemes: GradeSchemesJSON): GradeSchemes => {
     // Converts the raw data into an array of GradingScheme objects
     const formatted = Object.entries(gradingSchemes).map(([schemeName, schemeDetails]) => ({
-      schemeName: schemeName, // Assign the grading scheme name
+      schemeName: schemeName, // Assign the grading scheme name,
+      schemeGrade: 0,
       schemeDetails: Object.entries(schemeDetails).map(([assessmentName, weight]) => ({
         assessmentName, // Assign the assessment name (e.g., "Midterm 1")
         weight, // Assign the weight of the assessment
-        grade: undefined, // Default grade is undefined (not graded yet)
+        grade: 0
       })),
     }));
     
     // Log the formatted grading schemes to the console
-    console.log(formatted);
+    //console.log(formatted);
     return formatted;
   };
 
@@ -104,16 +106,25 @@ const GradesPage = () => {
         // Handle the successful response
         setIsUploading(false); // Stop showing the "Uploading" status
         console.log(response.data); // Log the response from the server
-        const formattedData = formatGradingSchemes(response.data); // Format the response data
-        setGradeSchemes(formattedData); // Update the state with the formatted grading schemes
-        setError(null); // Reset any error messages
 
-        // Show a success toast notification
-        toast({
-          variant: "success",
-          title: "File Upload Successful",
-          description: "Your file has been processed and the data has been uploaded.",
-        });
+        if (response.data === "no grading scheme found") {
+          setGradeSchemes([])
+          setError("File not a syllabus")
+          toast({
+            variant: "destructive",
+            title: "File Upload Unsuccessful",
+            description: "Your file is not a syllabus",
+          });
+        } else {
+          const formattedData = formatGradingSchemes(response.data);
+          setGradeSchemes(formattedData);
+          setError(null); 
+          toast({
+            variant: "success",
+            title: "File Upload Successful",
+            description: "Your file has been processed and the data has been uploaded.",
+          });
+        }
       } catch (error) {
         // Handle any errors during the file upload
         setError("Error Uploading File"); // Set the error message
@@ -146,7 +157,7 @@ const GradesPage = () => {
           onChange={handleFileChange} // Handle file change
           className="hover:border-gray-200 hover:bg-gray-50 border-gray-100"
         />
-        <Button onClick={handleFileUpload} className="w-2/12">Generate</Button> {/* Button to trigger file upload */}
+        <Button onClick={handleFileUpload} className="w-2/12">Upload</Button> {/* Button to trigger file upload */}
       </div>
 
       {/* Show skeleton loaders when uploading */}
@@ -182,6 +193,7 @@ const GradesPage = () => {
                 key={scheme.schemeName} // Use the scheme name as the key
                 schemeName={scheme.schemeName} // Pass the scheme name as a prop
                 schemeDetails={scheme.schemeDetails} // Pass the scheme details (assessments) as a prop
+                schemeGrade={scheme.schemeGrade} // Pass the scheme grade as a prop
               />
             );
           })}
