@@ -50,23 +50,6 @@ const GradesPage = () => {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
   const [gradingSchemes, setGradeSchemes] = useState<GradeSchemes>([]);
 
-  // Function to format the raw grading schemes data into the required structure
-  const formatGradingSchemes = (gradingSchemes: GradeSchemesJSON): GradeSchemes => {
-    // Converts the raw data into an array of GradingScheme objects
-    const formatted = Object.entries(gradingSchemes).map(([schemeName, schemeDetails]) => ({
-      schemeName: schemeName, // Assign the grading scheme name,
-      schemeGrade: 0,
-      schemeDetails: Object.entries(schemeDetails).map(([assessmentName, weight]) => ({
-        assessmentName, // Assign the assessment name (e.g., "Midterm 1")
-        weight, // Assign the weight of the assessment
-        grade: 0
-      })),
-    }));
-    
-    // Log the formatted grading schemes to the console
-    //console.log(formatted);
-    return formatted;
-  };
 
   // Handler for file input change (when the user selects a file)
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
@@ -85,6 +68,24 @@ const GradesPage = () => {
     }
   };
 
+  // Function to format the raw grading schemes data into the required structure
+  const formatGradingSchemes = (gradingSchemes: GradeSchemesJSON): GradeSchemes => {
+    // Converts the raw data into an array of GradingScheme objects
+    const formatted = Object.entries(gradingSchemes).map(([schemeName, schemeDetails]) => ({
+      schemeName: schemeName, // Assign the grading scheme name,
+      schemeGrade: 0,
+      schemeDetails: Object.entries(schemeDetails).map(([assessmentName, weight]) => ({
+        assessmentName, // Assign the assessment name (e.g., "Midterm 1")
+        weight, // Assign the weight of the assessment
+        grade: 0
+      })),
+    }));
+    
+    // Log the formatted grading schemes to the console
+    //console.log(formatted);
+    return formatted;
+  };
+
   // Function to handle file upload when the user clicks the "Generate" button
   const handleFileUpload = async (): Promise<void> => {
     if (uploadedFile) {
@@ -97,7 +98,7 @@ const GradesPage = () => {
 
       try {
         // Send the file to the backend API endpoint for processing
-        const response = await axios.post("http://127.0.0.1:8000/api/upload-pdf/", formData, {
+        const response = await axios.post("http://localhost:4000/api/upload-pdf/", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Ensure the right content type for file upload
           },
@@ -105,9 +106,20 @@ const GradesPage = () => {
 
         // Handle the successful response
         setIsUploading(false); // Stop showing the "Uploading" status
-        console.log(response.data); // Log the response from the server
+        console.log(response); // Log the response from the server
 
-        if (response.data === "no grading scheme found") {
+        const formattedData = formatGradingSchemes(response.data);
+        setGradeSchemes(formattedData);
+        setError(null); 
+        toast({
+          variant: "success",
+          title: "File Upload Successful",
+          description: "Your file has been processed and the data has been uploaded.",
+        });
+      } catch (error: any) {
+        setIsUploading(false); // Stop showing the "Uploading" status
+
+        if (error.response.data.error === "no grading scheme found") {
           setGradeSchemes([])
           setError("File not a syllabus")
           toast({
@@ -116,24 +128,14 @@ const GradesPage = () => {
             description: "Your file is not a syllabus",
           });
         } else {
-          const formattedData = formatGradingSchemes(response.data);
-          setGradeSchemes(formattedData);
-          setError(null); 
+          setError(error.response.data.error); // Set the error message
           toast({
-            variant: "success",
-            title: "File Upload Successful",
-            description: "Your file has been processed and the data has been uploaded.",
+            variant: "destructive",
+            title: "File Upload Error",
+            description: "There was an error uploading your file. Please try again.",
           });
         }
-      } catch (error) {
-        // Handle any errors during the file upload
-        setError("Error Uploading File"); // Set the error message
-        toast({
-          variant: "destructive",
-          title: "File Upload Error",
-          description: "There was an error uploading your file. Please try again.",
-        });
-        setIsUploading(false); // Stop showing the "Uploading" status
+
         console.log(error); // Log the error to the console
       }
     } else {
