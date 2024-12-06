@@ -98,7 +98,7 @@ const GradesPage = () => {
 
       try {
         // Send the file to the backend API endpoint for processing
-        const response = await axios.post("http://localhost:4000/api/upload-pdf/", formData, {
+        const response = await axios.post("http://localhost:4000/api/pdf/upload-pdf/", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Ensure the right content type for file upload
           },
