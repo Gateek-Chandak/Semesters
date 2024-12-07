@@ -7,7 +7,7 @@ const app = express();
 
 // ROUTES
 const pdfRoutes = require('./routes/pdfRoutes');
-const calendarRoutes = require('./routes/calendarRoutes');
+const googleOAuthRoutes = require('./routes/googleOAuthRoutes');
 
 // GLOBAL CONSTANTS
 const PORT = 4000;
@@ -31,7 +31,7 @@ app.use((req, res, next) => {
 const upload = multer({ storage: multer.memoryStorage() });
 
 app.use("/api/pdf/", pdfRoutes)
-app.use("/api/google-calendar/", calendarRoutes)
+app.use("/api/auth/", googleOAuthRoutes)
 
 // START SERVER
 app.listen(PORT, () => {
