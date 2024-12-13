@@ -2,18 +2,11 @@ const express = require("express");
 const router = express.Router();
 
 // PACKAGES
-const { google, oauth2_v2 } = require('googleapis')
-const path = require('path');
 const jwt = require('jsonwebtoken')
 const cookie = require('cookie')
-const axios = require('axios')
+const {oauth2Client} = require('../inits/googleOAuthInit')
 
 require('dotenv').config();
-
-// Extract the OAuth 2.0 Client 
-const oauth2Client = new google.auth.OAuth2(process.env.CLIENT_ID,
-                                            process.env.SECRET_ID,
-                                            process.env.REDIRECT);
 
 // GET: Log-in route for initial user setup/log-in
 router.get('/log-in', (req, res) => {
@@ -21,8 +14,7 @@ router.get('/log-in', (req, res) => {
     const url = oauth2Client.generateAuthUrl({
         access_type: 'offline',
         scope: [
-            'https://www.googleapis.com/auth/calendar.calendarlist.readonly',
-            'https://www.googleapis.com/auth/calendar.app.created',
+            'https://www.googleapis.com/auth/calendar',
             'https://www.googleapis.com/auth/userinfo.profile',
             'https://www.googleapis.com/auth/userinfo.email'
         ],
@@ -43,26 +35,28 @@ router.get('/redirect', async (req, res) => {
         const response = await oauth2Client.getToken(code);
         await oauth2Client.setCredentials(response.tokens);
 
-        // get access token to use API's
-        const access_token = oauth2Client.credentials.access_token;
-
         // get user data for identification
-        const oauth2 = google.oauth2({
-            auth: oauth2Client,
-            version: 'v2'
-        });
-        const userInfo = await oauth2.userinfo.get()
-        const { id, email, name } = await userInfo.data;
+        // const oauth2 = google.oauth2({
+        //     auth: oauth2Client,
+        //     version: 'v2'
+        // });
+  
+        // // const { access_token, refresh_token, expiry_date } = oauth2Client.credentials
+        // const userInfo = await oauth2.userinfo.get()
+        // const { id, email, name } = await userInfo.data;
 
-        // create JWT token to store in cookie with all user data
-        const token = jwt.sign(
-            { id , email, name, access_token },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' } 
-        );
+        // // create JWT token to store in cookie with all user data
+        // const token = jwt.sign(
+        //     { id , name, tokens },
+        //     process.env.JWT_SECRET,
+        //     { expiresIn: '1h' } 
+        // );
 
-        // create browser cookie to hold user data + jwt token for future authentications
-        res.setHeader('Set-Cookie', cookie.serialize('authToken', token, {
+        // encrypt accessTokens using JWT to store the users google credentials
+        const accessToken = jwt.sign(oauth2Client.credentials, process.env.JWT_SECRET, { expiresIn: '1h' })
+
+        // create browser cookie to hold user jwt token for user credentials in order to verify future authentications
+        res.setHeader('Set-Cookie', cookie.serialize('accessToken', accessToken, {
             httpOnly: true,  
             secure: true,    
             sameSite: 'Strict', 
@@ -76,39 +70,6 @@ router.get('/redirect', async (req, res) => {
         console.log(err);
         res.status(500).json({error: 'Authentication failed' })
     }
-})
-
-// GET: retrieve user data (NEEDS TO BE SET UP STILL)
-router.get('/get-data', async (req, res) => {
-
-    // parse cookies and get authToken
-    const cookies = cookie.parse(req.headers.cookie || '');
-    const token = cookies.authToken;
-
-    if (!token) {
-        return res.status(401).json({ error: 'Unauthorized' });
-    }
-
-    // verify the token, then use decoded access_token to retrive API data
-    jwt.verify(token, process.env.JWT_SECRET, async (err, decoded) => {
-
-        if (err) {
-            return res.status(401).json({ error: 'Invalid token' });
-        }
-
-        // get data from google calendar (TEMP)
-        try {
-            const response = await axios.get(`https://www.googleapis.com/calendar/v3/users/me/calendarList`, {
-                headers: {
-                    Authorization: `Bearer ${decoded.access_token}`    
-                }           
-            });
-
-            res.status(200).json({ user: response.data });
-        } catch (error) {
-            res.status(500).json( { error: "error fetching data" } )
-        }
-    });
 })
 
 module.exports = router;

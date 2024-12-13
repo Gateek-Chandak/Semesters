@@ -1,13 +1,12 @@
 // IMPORTS
 const express = require('express');
 const cors = require('cors');
-const multer = require('multer')
-
 const app = express();
 
 // ROUTES
 const pdfRoutes = require('./routes/pdfRoutes');
 const googleOAuthRoutes = require('./routes/googleOAuthRoutes');
+const calendarRoutes = require('./routes/calendarRoutes');
 
 // GLOBAL CONSTANTS
 const PORT = 4000;
@@ -27,11 +26,10 @@ app.use((req, res, next) => {
     next(); 
 });
 
-// POST (upload-pdf for grading scheme)
-const upload = multer({ storage: multer.memoryStorage() });
-
+// ROUTES
 app.use("/api/pdf/", pdfRoutes)
 app.use("/api/auth/", googleOAuthRoutes)
+app.use("/api/calendar/", calendarRoutes)
 
 // START SERVER
 app.listen(PORT, () => {

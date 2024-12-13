@@ -9,12 +9,10 @@ const HomePage = () => {
 
     const getData = async () => {
         try {
-            const response = await axios.get("http://localhost:4000/api/auth/get-data", {
+            const response = await axios.get("http://localhost:4000/api/calendar/create-calendar", {
                 withCredentials: true,
-                method: 'GET'
             })
-
-            const data = await response.data.user
+            const data = await response.data
             console.log(data)
         } catch {
             navigate("/")
@@ -22,10 +20,8 @@ const HomePage = () => {
     }
 
     useEffect(() => {
-
-        
-
         getData()
+
     }, [])
 
     return ( 
