@@ -31,7 +31,7 @@ router.get('/create-calendar', async (req, res) => {
     }
 })
 
-router.get('/create-calendar', async (req, res) => {
+router.get('/create-events', async (req, res) => {
     // parse HTTP req header
     const cookies = cookie.parse(req.headers.cookie || '');
     // get accessToken from cookies

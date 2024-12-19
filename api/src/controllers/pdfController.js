@@ -1,55 +1,132 @@
 const { spawn } = require('child_process');
+const Configuration = require('openai');
+const OpenAIApi = require('openai')
+require("dotenv").config();
 
-// Upload a PDF 
-const uploadPDF = async (req, res) => {
-    if (!req.file) {
-        return res.status(400).json({ error: 'No file uploaded' });
+const prompt = `
+Help me break down how I will be graded in this course. The semester begins on September 6th and ends on December 2nd. 
+Warning: The file presented may not have any grading scheme data. If you do not detect any grading scheme data, please return the text no assessment schedule found
+
+Only list out the information on the assessments I will be assessed on. I want a separate line item for each assessment. That means
+breaking down 3 quizzes into quiz 1, 2, 3. If there are any weekly assessments, make sure to break it down, week by week.
+Follow this method for each line item.
+Assessment, Weight. 
+Make sure the weights add up to 100
+If there are 2 grade schemes, separate them and create two plans. Remember if something is best x out of y, each assessment is only worth a fraction of the total
+percentage that the assessments are worth.
+If there is no date and time for an assessment, insert: null
+FORMAT IT EXACTLY AS FOLLOWS:
+
+{
+  "gradingSchemes": [
+    {
+      "schemeName": "Grading Scheme 1",
+      "assessments": [
+        {
+          "assessmentName": string,
+          "weight": number,
+          "dueDate": ISO 8601 Standard format
+        }
+      ]
+    },
+    {
+      "schemeName": "Grading Scheme 2",
+      "assessments": [
+        {
+          "assessmentName": string,
+          "weight": number,
+          "dueDate": ISO 8601 Standard Format
+        }
+      ]
     }
-
-    const fileBuffer = req.file.buffer;
-
-    // Spawn a Python process to execute the script
-    const pythonProcess = spawn('python3', ['src/pythonScripts/gradingSchemes/main.py']);
-
-    pythonProcess.stdin.write(fileBuffer);
-    pythonProcess.stdin.end();
-
-    let output = '';
-
-    // Collect data from stdout
-    pythonProcess.stdout.on('data', (data) => {
-    output += data.toString();
-    });
-
-    // Handle the process exit
-    pythonProcess.on('close', (code) => {
-    // If the script execution is unsuccessful, return a 500 error
-    if (code !== 0) {
-        return res.status(500).json({ error: 'An unknown error occurred' });
-    }
-
-    // Try to parse the Python script's JSON output
-    let result;
-    try {
-        result = JSON.parse(output);
-    } catch (err) {
-        console.error('Error parsing Python output:', err);
-        return res.status(500).json({ error: 'An unknown error occurred' });
-    }
-
-    // Handle the case when no grading scheme is found
-    if (result === 'no grading scheme found') {
-        return res.status(400).json({ error: 'no grading scheme found' });
-    }
-
-    // Python script returns an error
-    if (result.error) {
-        return res.status(500).json({ error: result.error });
-    }
-
-    // Send the processed grading scheme data
-    return res.status(200).json(result);
-    });
+  ]
 }
 
-module.exports = { uploadPDF };
+DO NOT PRINT ANYTHING OTHER THAN THE JSON OBJECT
+
+`
+
+// OPEN AI CONFIG
+const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
+});
+
+const openai = new OpenAIApi(configuration);
+
+const callOpenAI = async (prompt, content) => {
+  try {
+    const response = await openai.chat.completions.create({
+      model: "gpt-4o", // Specify the model (e.g., "gpt-4", "gpt-3.5-turbo")
+      messages: [
+        { role: "system", content: `You are a pdf assistant, the content is ${content}` },
+        { role: "user", content: prompt },
+      ],
+    });
+
+    let result = await response.choices[0].message.content;
+
+    if (result.startsWith("```json")) {
+      result = result.replace(/^```json/, "").replace(/```$/, "").trim();
+    }
+
+    return result;
+  } catch (error) {
+    return error.response?.data || error.message;
+  }
+}
+
+const retrieve_schedule = async (req, res) => {
+  if (!req.file || !req.file.buffer) {
+    return res.status(400).json({ error: 'No valid file uploaded' });
+  }
+
+  const fileBuffer = req.file.buffer;
+  const pythonProcess = spawn('python3', ['src/pythonScripts/calendarSchedules/main.py']);
+  let output = '';
+  let errorOutput = '';
+
+  pythonProcess.stdin.write(fileBuffer);
+  pythonProcess.stdin.end();
+
+  pythonProcess.stdout.on('data', (data) => {
+    output += data.toString();
+  });
+
+  pythonProcess.stderr.on('data', (data) => {
+    errorOutput += data.toString();
+  });
+
+  pythonProcess.on('close', async (code) => {
+    if (code !== 0 || errorOutput) {
+      console.error('Python script error:', errorOutput);
+      return res.status(500).json({ error: 'Error processing PDF', details: errorOutput });
+    }
+
+    try {
+
+      const result = await callOpenAI(prompt, output)
+
+      if (result === "no assessment schedule found") {
+        return res.status(400).json({ error: 'No grading scheme found' });
+      }
+
+      if (result.error) {
+        return res.status(500).json({ error: result.error });
+      }
+
+      console.log(result)
+      return res.status(200).json(result);
+
+    } catch (err) {
+      console.error('Error parsing JSON:', err);
+      return res.status(500).json({ error: 'Invalid JSON from Python script' });
+    }
+  });
+
+  pythonProcess.on('error', (err) => {
+    console.error('Failed to start Python process:', err);
+    return res.status(500).json({ error: 'Failed to process PDF' });
+  });
+};
+
+module.exports = { retrieve_schedule };

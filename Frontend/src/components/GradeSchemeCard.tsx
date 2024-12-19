@@ -23,7 +23,7 @@ type GradeSchemeCardProps = {
 
 const GradeSchemeCard: React.FC<GradeSchemeCardProps> = ( {schemeName, schemeDetails, schemeGrade} ) => {
 
-    const rowsPerPage = 20;
+    const rowsPerPage = 100;
     const startIndex: number = 0
 
     const [localScheme, setLocalScheme] = useState<GradingScheme>({schemeName, schemeGrade, schemeDetails})

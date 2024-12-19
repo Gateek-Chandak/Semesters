@@ -3,10 +3,9 @@ const router = express.Router();
 const multer = require('multer');
 
 // Controller functions
-const { uploadPDF } = require('../controllers/pdfController');
+const { retrieve_schedule } = require('../controllers/pdfController');
 
 const upload = multer({ storage: multer.memoryStorage() });
 
-router.post('/upload-pdf/', upload.single('pdf'), uploadPDF);
-
+router.post('/upload-schedule/', upload.single('pdf'), retrieve_schedule);
 module.exports = router;

@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster"
 // import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
 // import SideBar from './components/Sidebar'
 
-import HomePage from './Pages/HomePages/Home';
+import CoursePage from './Pages/HomePages/CoursePage';
 import LandingPage from './Pages/LandingPages/Landing';
 
 function App() {
@@ -14,7 +14,7 @@ function App() {
       <div className="h-full">
         <Routes>
           <Route path="/" element={<LandingPage />} />
-          <Route path="/home" element={<HomePage />} />
+          <Route path="/home" element={<CoursePage />} />
         </Routes>
         <Toaster />
       </div>

@@ -5,39 +5,26 @@ import axios from "axios";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-
-// Importing GradeSchemeCard component to display each grading scheme
-import GradeSchemeCard from "@/components/GradeSchemeCard";
-
-// Importing a custom toast hook to display notifications
 import { useToast } from "@/hooks/use-toast";
+import GradeSchemeCard from "@/components/GradeSchemeCard";
 
 // Interface to define the structure of an individual assessment
 export interface Assessment {
-  assessmentName: string; // The name of the assessment (e.g., "Midterm 1")
-  weight: number; // The weight of the assessment (e.g., 20%)
-  grade: number; // The grade for the assessment (null or undefined if not graded)
+  assessmentName: string; 
+  weight: number; 
+  due_date: string;
+  grade: number; 
 }
 
-// Interface to define the structure of a grading scheme
 export interface GradingScheme {
-  schemeName: string; // The name of the grading scheme (e.g., "Grading Scheme 0")
-  schemeGrade: number; // The overall grade associated with the grading scheme
-  schemeDetails: Assessment[]; // Array of assessments within this grading scheme
+  schemeName: string; 
+  schemeGrade: number;
+  schemeDetails: Assessment[]; 
 }
 
-// Type for an array of grading schemes
+
 type GradeSchemes = GradingScheme[];
 
-// Interface for the raw JSON data format received from the server
-interface AssessmentJSON {
-  [assessmentName: string]: number; // Assessment name as the key, weight as the value
-}
-
-// Interface for the overall structure of grading schemes in the raw JSON data
-interface GradeSchemesJSON {
-  [schemeName: string]: AssessmentJSON; // Scheme name as the key, assessment details as the value
-}
 
 // The main component for the Grades page
 const GradesPage = () => {
@@ -68,22 +55,36 @@ const GradesPage = () => {
     }
   };
 
-  // Function to format the raw grading schemes data into the required structure
-  const formatGradingSchemes = (gradingSchemes: GradeSchemesJSON): GradeSchemes => {
-    // Converts the raw data into an array of GradingScheme objects
-    const formatted = Object.entries(gradingSchemes).map(([schemeName, schemeDetails]) => ({
-      schemeName: schemeName, // Assign the grading scheme name,
-      schemeGrade: 0,
-      schemeDetails: Object.entries(schemeDetails).map(([assessmentName, weight]) => ({
-        assessmentName, // Assign the assessment name (e.g., "Midterm 1")
-        weight, // Assign the weight of the assessment
-        grade: 0
-      })),
-    }));
+  const formatGradingSchemes = (data: any) => {
+      // Ensure grading_schemes is present and an array
+      if (!data) {
+        console.error("Invalid or missing grading_schemes:", data);
+        return []; // Return an empty array if grading_schemes is missing or not an array
+      }
     
-    // Log the formatted grading schemes to the console
-    //console.log(formatted);
-    return formatted;
+      return data.gradingSchemes.map((scheme: any) => {
+        if (!scheme.assessments || !Array.isArray(scheme.assessments)) {
+          console.error("Invalid assessments array:", scheme);
+          return {
+            schemeName: scheme.schemeName,
+            schemeGrade: 0,
+            schemeDetails: [], // Return empty details if assessments are missing or invalid
+          };
+        }
+    
+        const schemeDetails: Assessment[] = scheme.assessments.map((assessment: any) => ({
+          assessmentName: assessment.assessmentName,
+          weight: assessment.weight,
+          due_date: assessment.dueDate,
+          grade: 0,  // Assuming initial grade is 0
+        }));
+    
+        return {
+          schemeName: scheme.schemeName,
+          schemeGrade: 0, // Placeholder for the calculated grade
+          schemeDetails: schemeDetails
+        };
+      });
   };
 
   // Function to handle file upload when the user clicks the "Generate" button
@@ -98,17 +99,19 @@ const GradesPage = () => {
 
       try {
         // Send the file to the backend API endpoint for processing
-        const response = await axios.post("http://localhost:4000/api/pdf/upload-pdf/", formData, {
+        const response = await axios.post("http://localhost:4000/api/pdf/upload-schedule/", formData, {
           headers: {
             "Content-Type": "multipart/form-data", // Ensure the right content type for file upload
           },
         });
 
+        const data = await response.data
+        const json = await JSON.parse(data)
+        console.log(json)
         // Handle the successful response
         setIsUploading(false); // Stop showing the "Uploading" status
-        console.log(response); // Log the response from the server
 
-        const formattedData = formatGradingSchemes(response.data);
+        const formattedData = formatGradingSchemes(json);
         setGradeSchemes(formattedData);
         setError(null); 
         toast({
@@ -116,6 +119,7 @@ const GradesPage = () => {
           title: "File Upload Successful",
           description: "Your file has been processed and the data has been uploaded.",
         });
+
       } catch (error: any) {
         setIsUploading(false); // Stop showing the "Uploading" status
 
@@ -150,7 +154,7 @@ const GradesPage = () => {
   };
 
   return (
-    <div className="px-20 py-5 flex flex-col gap-10 w-full h-screen">
+    <div className="px-20 py-5 flex flex-col gap-10 w-full h-fit">
       {/* File input section */}
       <div className="flex gap-5 items-center">
         <Input
