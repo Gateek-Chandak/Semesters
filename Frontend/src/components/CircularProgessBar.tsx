@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react"
+
 interface CircularProgressProps {
     percentage: number
     label: string
@@ -8,6 +10,20 @@ interface CircularProgressProps {
     const circumference = 2 * Math.PI * 70
     const strokeDasharray = circumference
     const strokeDashoffset = circumference - (percentage / 100) * circumference
+
+    const [strokeColour, setStrokeColour] = useState<string>('currentColor')
+
+    useEffect(() => {
+      if (percentage == 0) {
+        setStrokeColour('currentColor')
+      } else if (percentage < 50) {
+        setStrokeColour('red')
+      } else if (percentage >= 50 && percentage < 65) {
+        setStrokeColour('orange')
+      } else if (percentage >= 65) {
+        setStrokeColour('green')
+      }
+    }, [percentage])
   
     return (
       <div className="flex flex-col items-center text-center p-6">
@@ -27,7 +43,7 @@ interface CircularProgressProps {
               cx="120"
               cy="95"
               r="70"
-              stroke="currentColor"
+              stroke={strokeColour}
               strokeWidth="7"
               fill="none"
               strokeLinecap="round"
@@ -38,7 +54,7 @@ interface CircularProgressProps {
               className="text-primary transition-all duration-1000 ease-out"
             />
           </svg>
-          <span className="absolute text-5xl font-bold">{percentage}%</span>
+          <span className="absolute text-4xl font-bold" style={{color: strokeColour}}>{percentage}%</span>
         </div>
         <p className="text-sm font-light">{description}</p>
 

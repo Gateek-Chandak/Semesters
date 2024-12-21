@@ -15,6 +15,7 @@ Make sure the weights add up to 100
 If there are 2 grade schemes, separate them and create two plans. Remember if something is best x out of y, each assessment is only worth a fraction of the total
 percentage that the assessments are worth.
 If there is no date and time for an assessment, insert: null
+If one of the schemes have a weight of 0, still add that item just make the weight 0.
 FORMAT IT EXACTLY AS FOLLOWS:
 
 {
