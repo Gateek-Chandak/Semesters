@@ -7,7 +7,7 @@ interface CircularProgressProps {
   }
   
   export function CircularProgress({ percentage, label, description }: CircularProgressProps) {
-    const circumference = 2 * Math.PI * 70
+    const circumference = 2 * Math.PI * 75
     const strokeDasharray = circumference
     const strokeDashoffset = circumference - (percentage / 100) * circumference
 
@@ -33,7 +33,7 @@ interface CircularProgressProps {
             <circle
               cx="120"
               cy="95"
-              r="70"
+              r="75"
               stroke="currentColor"
               strokeWidth="7"
               fill="none"
@@ -42,7 +42,7 @@ interface CircularProgressProps {
             <circle
               cx="120"
               cy="95"
-              r="70"
+              r="75"
               stroke={strokeColour}
               strokeWidth="7"
               fill="none"
