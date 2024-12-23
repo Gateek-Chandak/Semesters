@@ -6,7 +6,6 @@ Things left to do:
 - upload pdf in top right
 */
 
-
 import { useState, useEffect } from 'react';
 import { addHours } from 'date-fns';
 import { v4 as uuid } from 'uuid'
@@ -42,6 +41,7 @@ import {
   } from "@/components/ui/carousel"
 import { Card } from "@/components/ui/card"
 import { CircularProgress } from "@/components/CircularProgessBar";
+import { useParams } from 'react-router-dom';
 
 type IncomingAssessments = {
     assessmentName: string,
@@ -166,12 +166,16 @@ const CoursePage = () => {
         ]
     }
 
+    let { term , course} = useParams()
+
+    term = term.replace(/-/g, ' ').toUpperCase();
+    course = course.replace(/-/g, ' ').toUpperCase();
+
     const courseColour: string = 'green'
 
     const grades = [100, 90, 80, 70, 60, 50]
 
-    const [title, setTitle] = useState<string>("")
-    const [subtitle, setSubtitle] = useState<string>("")
+    const [isEditing, setIsEditing] = useState<boolean>(false)
 
     const [gradingSchemes, setGradingSchemes] = useState<GradingScheme[]>([])
     const [calendarEvents, setCalendarEvents] = useState<CalendarEvent[]>([])
@@ -185,7 +189,7 @@ const CoursePage = () => {
     const formatGradingScheme = (courseInfo: IncomingCourseInfo) => {
         return courseInfo.gradingSchemes.map((scheme) => ({
             schemeName: scheme.schemeName,
-            course: title,
+            course: course,
             grade: 0,
             assessments: scheme.assessments.map((assessment) => ({
                 assessmentName: assessment.assessmentName,
@@ -205,10 +209,118 @@ const CoursePage = () => {
                 end: addHours(new Date(assessment.dueDate), 0.5), // Add 2 hours to create the end time
                 title: assessment.assessmentName,
                 color: 'green' as CalendarEvent["color"], // Assign a default color or make dynamic
-                course: title
+                course: course
             }));
     };
+    
+    const updateAssessmentName = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
+        const inputValue = e.target.value.trim().slice(0, 25);
+    
+        // Update the gradingSchemes state to reflect the new assessment name
+        const updatedSchemes = gradingSchemes.map((scheme) => {
+            const updatedAssessments = scheme.assessments.map((assessment) => {
+                if (assessment.assessmentName === assessmentName) {
+                    return { ...assessment, assessmentName: inputValue }; // Update the assessment name
+                }
+                return assessment;
+            });
+    
+            return {
+                ...scheme,
+                assessments: updatedAssessments,
+            };
+        });
+    
+        setGradingSchemes(updatedSchemes); // Save the updated schemes in the state
+    };
+    
+    const updateAssessmentDueDate = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
+        const inputValue = e.target.value.trim();
+        const updatedSchemes = gradingSchemes.map((scheme) => {
+            const updatedAssessments = scheme.assessments.map((assessment) => {
+            if (assessment.assessmentName === assessmentName) {
+                return { ...assessment, dueDate: inputValue }; // Update due date
+            }
+            return assessment;
+            });
+            return {
+                ...scheme,
+                assessments: updatedAssessments,
+            };
+        });
 
+        setGradingSchemes(updatedSchemes);
+    };
+
+    const updateAssessmentWeight = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
+        const inputValue = parseFloat(e.target.value.trim());
+        let updatedSchemes;
+
+        if (inputValue > 100) {
+            return;
+        }
+    
+        // If input is not a valid number, set weight to 0
+        if (isNaN(inputValue)) {
+            updatedSchemes = gradingSchemes.map((scheme) => {
+                const updatedAssessments = scheme.assessments.map((assessment) => {
+                    if (assessment.assessmentName === assessmentName) {
+                        return { ...assessment, weight: 0 }; // Set weight to 0
+                    }
+                    return assessment;
+                });
+                return {
+                    ...scheme,
+                    assessments: updatedAssessments,
+                };
+            });
+        } else {
+            // If input is valid, update the weight
+            updatedSchemes = gradingSchemes.map((scheme) => {
+                const updatedAssessments = scheme.assessments.map((assessment) => {
+                    if (assessment.assessmentName === assessmentName) {
+                        return { ...assessment, weight: inputValue }; // Update weight
+                    }
+                    return assessment;
+                });
+                return {
+                    ...scheme,
+                    assessments: updatedAssessments,
+                };
+            });
+        }
+        console.log(updatedSchemes)
+        // Recalculate grades based on updated weights
+        updatedSchemes = updatedSchemes.map((scheme) => {
+            let totalGrade = 0;
+            let totalWeight = 0;
+    
+            const updatedAssessments = scheme.assessments.map((assessment) => {
+                // Calculate the total grade and weight for completed assessments
+                if (assessment.grade !== null && assessment.grade !== undefined) {
+                    totalGrade += (assessment.grade * assessment.weight) / 100;
+                    totalWeight += assessment.weight;
+                }
+                return assessment;
+            });
+    
+            // Calculate final grade, scaled to completed assessments
+            const finalGrade = totalWeight > 0 ? (totalGrade / Math.min(100, totalWeight)) * 100 : 0;
+            console.log(finalGrade)
+            return {
+                ...scheme,
+                assessments: updatedAssessments,
+                grade: parseFloat(finalGrade.toFixed(2)), // Round to 2 decimal places
+            };
+        });
+    
+        setGradingSchemes(updatedSchemes);
+
+        if (targetGrade) {
+            gradeButtonAction(targetGrade, updatedSchemes);
+        }
+    };
+    
     const updateGrade = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
         const inputValue = e.target.value.trim();
         const parsedValue = inputValue === "" ? null : parseFloat(parseFloat(inputValue).toFixed(2));
@@ -238,6 +350,11 @@ const CoursePage = () => {
                 return assessment;
             });
     
+            // Ensure totalWeight doesn't exceed 100
+            if (totalWeight > 100) {
+                totalWeight = 100;
+            }
+    
             // Calculate final grade, scaled to completed assessments
             const finalGrade = totalWeight > 0 ? (totalGrade / totalWeight) * 100 : 0;
     
@@ -247,12 +364,14 @@ const CoursePage = () => {
                 grade: parseFloat(finalGrade.toFixed(2)), // Round to 2 decimal places
             };
         });
+    
         setGradingSchemes(updatedSchemes);
-        if(targetGrade) {
-            gradeButtonAction(targetGrade, updatedSchemes)
+    
+        if (targetGrade) {
+            gradeButtonAction(targetGrade, updatedSchemes);
         }
     };
-
+    
     const updateTargetGrade = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trim();
         const parsedValue = inputValue === "" ? 0 : parseFloat(inputValue);
@@ -282,7 +401,7 @@ const CoursePage = () => {
     
             // If no remaining weight, we don't need to calculate the required grade
             if (remainingWeight === 0) {
-                setGradeNeeded(null);
+                setGradeNeeded(0);
                 return;
             }
     
@@ -407,11 +526,12 @@ const CoursePage = () => {
         // Set the lowest grade needed, rounded to 2 decimal places
         if (minGradeNeeded !== null) {
             setGradeNeeded(parseFloat(minGradeNeeded.toFixed(2)));
-        } else if (minGradeNeeded && parseFloat(minGradeNeeded.toFixed(2)) < 0) {
+        }
+        if (minGradeNeeded && minGradeNeeded < 0) {
             setGradeNeeded(0)
         }
     }
-    
+   
     
     // In your useEffect to set the initial grading schemes
     useEffect(() => {
@@ -420,9 +540,6 @@ const CoursePage = () => {
     
         setGradingSchemes(formattedGradingSchemes); // Initial set of grading schemes
         setCalendarEvents(formattedCalendarEvents);
-
-        setTitle(CourseInfo.courseTitle)
-        setSubtitle(CourseInfo.courseSubtitle)
     }, []);
     
     // For highest course grade
@@ -439,12 +556,11 @@ const CoursePage = () => {
 
 
     return ( 
-        <div className="w-full h-dvh min-h-fit px-10 pt-[120px] bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
+        <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
             <div className='max-w-[1840px]'>
                 <div className="flex flex-row items-center justify-start gap-3 text-3xl">
-                    <h1 className={`font-bold text-${courseColour}-600`}>{title}</h1>
-                    <h1 className="">{subtitle}</h1>
-                    <h1 className='text-muted-foreground ml-auto'>Fall 2024</h1>
+                    <h1 className={`font-bold text-${courseColour}-600`}>{course}</h1>
+                    <h1 className="">template for now</h1>
                 </div>
                 <div className="mt-12 lg:mb-16 w-full h-fit grid grid-cols-1 grid-rows-2 mb-20 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 gap-10 justify-between">
                     <Card className="w-[100%] px-6col-span-1 md:col-span-2 lg:col-span-1">
@@ -508,13 +624,19 @@ const CoursePage = () => {
                                 {(gradingSchemes.length > 0) && gradingSchemes.map((scheme, index) => (
                                         <CarouselItem className="pt-3 rounded-2xl bg-card text-card-foreground" key={index}>
                                             <h1 className="mr-auto py-5 px-14 text-lg font-medium">{scheme.schemeName}</h1>
-                                            <div className='flex flex-row justify-end -top-14 pr-6 relative'>
-                                                <Button className='ml-auto '>+ Add Deliverable</Button>
+                                            <div className='ml-auto flex flex-row justify-end -top-14 pr-6 relative gap-3'>
+                                                <Button className='px-5 bg-white text-black border-2 border-black hover:bg-gray-100'
+                                                        onClick={() => setIsEditing(!isEditing)}
+                                                        >
+                                                        {isEditing ? "Save Changes" : "Edit"}
+                                                </Button>
+                                                {/* {isEditing && <Button className=''>Dicard Changes</Button>} */}
+                                                {!isEditing && <Button className=''>+ Add New Deliverable</Button>}
                                             </div>
                                             <div className="w-full h-[33.5rem] overflow-y-auto" >
                                                 <Table className="my-4">
-                                                    <TableHeader>
-                                                        <TableRow>  
+                                                    <TableHeader className=''>
+                                                        <TableRow className=''>  
                                                             <TableHead className="text-center">Name</TableHead>
                                                             <TableHead className="text-center">Due Date</TableHead>
                                                             <TableHead className="text-center">Weight</TableHead>
@@ -523,7 +645,8 @@ const CoursePage = () => {
                                                     </TableHeader>
                                                     <TableBody className=''>
                                                         {scheme.assessments.map((assessment) => {
-                                                            return (
+                                                            if (!isEditing) {
+                                                                return (
                                                                     <TableRow key={assessment.assessmentName} className="">
                                                                         <TableCell className="text-center">{assessment.assessmentName}</TableCell>
                                                                         <TableCell className="text-center">{assessment.dueDate ? assessment.dueDate : 'TBD'}</TableCell>
@@ -540,9 +663,35 @@ const CoursePage = () => {
                                                                             %
                                                                         </TableCell>
                                                                     </TableRow>
-                                                            )
+                                                                )
+                                                            } else {
+                                                                return (
+                                                                    <TableRow key={assessment.assessmentName} className="">
+                                                                        <TableCell className="text-center">
+                                                                            <Input type="text" value={assessment.assessmentName} onChange={(e) => updateAssessmentName(e, assessment.assessmentName)}/>
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center">
+                                                                            <Input type="text" value={assessment.dueDate ? assessment.dueDate : 'TBD'} onChange={(e) => updateAssessmentDueDate(e, assessment.assessmentName)}/>
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center">
+                                                                            <Input type="text" value={assessment.weight} onChange={(e) => updateAssessmentWeight(e, assessment.assessmentName)}/>
+                                                                        </TableCell>
+                                                                        <TableCell className="text-center"> 
+                                                                            <Input
+                                                                                type="number"
+                                                                                value={(assessment.grade === 0 || assessment.grade) ? assessment.grade : ""}
+                                                                                onWheel={(e) => e.currentTarget.blur()}
+                                                                                onChange={(e) => updateGrade(e, assessment.assessmentName)}
+                                                                                placeholder="00"
+                                                                                className="w-20 p-2 my-3 inline"
+                                                                                />{" "}
+                                                                                %
+                                                                        </TableCell>
+                                                                    </TableRow>
+                                                                )
+                                                            }
                                                         })}
-                                                    </TableBody>
+                                                    </TableBody> 
                                                 </Table>
                                             </div>
                                         </CarouselItem>

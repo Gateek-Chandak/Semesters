@@ -12,7 +12,7 @@ import { Input } from "./ui/input";
 import React, { ChangeEvent, useState } from "react";
 
 // Interfaces
-import { Assessment, GradingScheme } from "@/Pages/HomePages/Grades";
+import { Assessment, GradingScheme } from "@/Pages/Testing/Grades";
 
 type GradeSchemeCardProps = {
     schemeName: string;
