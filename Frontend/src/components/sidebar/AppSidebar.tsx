@@ -9,6 +9,9 @@ import {
   SidebarHeader,
   SidebarRail,
 } from "@/components/ui/sidebar"
+
+import { Link } from "react-router-dom"
+
 // This is sample data.
 const user = {
     name: "Gateek Chandak",
@@ -22,6 +25,7 @@ export function AppSidebar({ data, ...props }: {data: any } & React.ComponentPro
         <Trigger/>
       </SidebarHeader>
       <SidebarContent>
+        <Link to="/home" className="pl-4">Home</Link>
         <NavMain data={data} />
       </SidebarContent>
       <SidebarFooter>

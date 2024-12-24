@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { CircularProgress } from "@/components/CircularProgessBar";
 import { v4 as uuid } from 'uuid'
 import { addHours } from "date-fns";
+import clsx from 'clsx';
 
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -38,11 +39,11 @@ const TermPage = ( data ) => {
     console.log(termData)
 
     return ( 
-        <div className="h-fit p-10 flex flex-col gap-10 bg-[#f7f7f7]">
+        <div className="h-fit px-10 pt-14 flex flex-col gap-10 bg-[#f7f7f7]">
             <div className="w-[100%] h-fit flex flex-col gap-10 lg:flex-row">
                 <div className="w-[60%] flex flex-col gap-10">
                     <div className="flex flex-row mr-auto">
-                        <h1 className="text-3xl font-bold">{term} :&nbsp;</h1>
+                        <h1 className="text-3xl font-semibold">{term} :&nbsp;</h1>
                         <h1 className="text-3xl"> {formattedDate}</h1>
                     </div>
                     <div className="w-[100%] h-full flex flex-col lg:flex-row gap-10">
@@ -67,7 +68,7 @@ const TermPage = ( data ) => {
                     </div>
                 </div>
                 <div className="w-[40%] flex flex-col gap-10">
-                    <h1 className="w-[100%] text-4xl font-semibold">
+                    <h1 className="w-[100%] text-3xl font-semibold">
                         Next 7 Days...
                     </h1>
                     <div className="h-[100%] w-[100%]"> 
@@ -92,20 +93,18 @@ const TermPage = ( data ) => {
                             return (
                                 <div className={`border-2 border-transparent hover:border-2 hover:border-${course.colour}-500 hover:text-${course.colour}-500 rounded-2xl transform transition-all duration-300 hover:scale-105`}>
                                     <Card
-                                        key={uuid()}
-                                        className={`h-40 w-40 flex flex-col justify-center items-center
-                                            hover:text-${course.colour}-500 
-                                            hover:bg-gradient-to-b
-                                            hover:from-${course.colour}-50
-                                            hover:via-card
-                                            hover:to-card
-                                            hover:bg-opacity-5
-                                            transform transition-all duration-200`}
-                                        >
-                                        <h1 className="text-3xl">{course.courseTitle.split(' ')[0]}</h1>
-                                        <h1 className="text-5xl font-semibold">{course.courseTitle.split(' ')[1]}</h1>
+                                    key={uuid()}
+                                    className={clsx(
+                                        'h-40 w-40 flex flex-col justify-center items-center',
+                                        `hover:text-${course.colour}-500`, // dynamically added class
+                                        `hover:from-${course.colour}-50`, // dynamically added class
+                                        'hover:bg-gradient-to-b hover:via-card hover:to-card hover:bg-opacity-5',
+                                        'transform transition-all duration-200'
+                                    )}
+                                    >
+                                    <h1 className="text-3xl">{course.courseTitle.split(' ')[0]}</h1>
+                                    <h1 className="text-5xl font-semibold">{course.courseTitle.split(' ')[1]}</h1>
                                     </Card>
-
                                 </div>
 
                             )
