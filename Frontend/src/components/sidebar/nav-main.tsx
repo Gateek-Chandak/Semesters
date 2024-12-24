@@ -13,53 +13,44 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
+  useSidebar
 } from "@/components/ui/sidebar"
 
 import { Link } from "react-router-dom";
 
 
-export function NavMain({
-  items
-}: {
-  items: {
-    title: string;
-    url: string;
-    icon?: LucideIcon;
-    isActive?: boolean;
-    items?: {
-      title: string;
-      url: string;
-    }[];
-  }[];
-}) {
+export function NavMain({ data }: {data:any}) {
+
+  const { open } = useSidebar()
+
   return (
     <SidebarGroup>
-      <SidebarGroupLabel>Courses</SidebarGroupLabel>
-      <SidebarMenu>
-        {items.map((item) => (
+      <SidebarGroupLabel className="text-md mb-3">Courses</SidebarGroupLabel>
+      {open && 
+      <SidebarMenu className="">
+        {data.data.map((term) => (
           <Collapsible
-            key={item.title}
+            key={term.term}
             asChild
-            defaultOpen={item.isActive}
+            defaultOpen={false}
             className="group/collapsible"
           >
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
-                <SidebarMenuButton tooltip={item.title}>
-                  {item.icon && <item.icon />}
-                  <Link to={`/home/${item.title.replace(/\s+/g, '-').toLowerCase()}`}>
-                    {item.title}
+                <SidebarMenuButton tooltip={term.term}>
+                  <Link className="truncate text-[1.1rem]" to={`/home/${term.term.replace(/\s+/g, '-').toLowerCase()}`}>
+                    {term.term}
                   </Link>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {item.items?.map((subItem) => (
-                    <SidebarMenuSubItem key={subItem.title}>
+                  {term.courses?.map((course: any) => (
+                    <SidebarMenuSubItem key={course.courseTitle}>
                       <SidebarMenuSubButton asChild>
-                        <Link to={`/home/${item.title.replace(/\s+/g, '-').toLowerCase()}/${subItem.title.replace(/\s+/g, '-').toLowerCase()}`}>
-                          <span>{subItem.title}</span>
+                        <Link className="text-lg" to={`/home/${term.term.replace(/\s+/g, '-').toLowerCase()}/${course.courseTitle.replace(/\s+/g, '-').toLowerCase()}`}>
+                          <span>{course.courseTitle}</span>
                         </Link>
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
@@ -69,7 +60,7 @@ export function NavMain({
             </SidebarMenuItem>
           </Collapsible>
         ))}
-      </SidebarMenu>
+      </SidebarMenu>}
     </SidebarGroup>
   );
 }

@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { addHours } from 'date-fns';
 import { v4 as uuid } from 'uuid'
 import { ChangeEvent } from 'react';
+import { format } from 'date-fns'
 
 import {
     Calendar,
@@ -62,15 +63,15 @@ type IncomingCourseInfo = {
 
 type CalendarEvent = {
   id: string;
-  start: Date;
-  end: Date;
+  start: Date | null | string;
+  end: Date | null | string;
   title: string;
   color?: 'green' | 'default' | 'blue' | 'pink' | 'purple' | undefined;
 };
 
 type Assessment = {
     assessmentName: string,
-    dueDate: string | null,
+    dueDate: string | null | Date,
     weight: number,
     grade: null | number
 }
@@ -82,7 +83,7 @@ type GradingScheme = {
     assessments: Assessment[]
 }
 
-const CoursePage = () => {
+const CoursePage = ( data: any ) => {
 
     const CourseInfo: IncomingCourseInfo = {
         "courseTitle": 'CFM 101',
@@ -167,11 +168,21 @@ const CoursePage = () => {
     }
 
     let { term , course} = useParams()
+    if (course) {
+        course = course.replace(/-/g, ' ').toUpperCase();  // Join the words back together
+    }
+    if (term) {
+        term = term
+            .replace('-', ' ') // Replace '-' with a space
+            .toLowerCase()     // Convert the string to lowercase
+            .split(' ')        // Split the string into words
+            .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize the first letter of each word
+            .join(' ');        // Join the words back together
+    }
 
-    term = term.replace(/-/g, ' ').toUpperCase();
-    course = course.replace(/-/g, ' ').toUpperCase();
-
-    const courseColour: string = 'green'
+    
+    const [courseSubtitle, setCourseSubtitle] = useState<string | null>(null)
+    const [courseColour, setCourseColour] = useState<string>('black')
 
     const grades = [100, 90, 80, 70, 60, 50]
 
@@ -186,7 +197,7 @@ const CoursePage = () => {
     const [minGradePossible, setMinGradePossible] = useState<number>(0)
     const [maxGradePossible, setMaxGradePossible] = useState<number>(100)
 
-    const formatGradingScheme = (courseInfo: IncomingCourseInfo) => {
+    const formatNewGradingScheme = (courseInfo: IncomingCourseInfo) => {
         return courseInfo.gradingSchemes.map((scheme) => ({
             schemeName: scheme.schemeName,
             course: course,
@@ -200,7 +211,7 @@ const CoursePage = () => {
         }));
     };
     
-    const formatCalendarEvents = (courseInfo: IncomingCourseInfo) => {
+    const formatNewCalendarEvents = (courseInfo: IncomingCourseInfo) => {
         return courseInfo.gradingSchemes[0].assessments
             .filter((assessment) => assessment.dueDate) // Filter out assessments with no dueDate
             .map((assessment) => ({
@@ -431,54 +442,6 @@ const CoursePage = () => {
             setGradeNeeded(0)
         }
     };    
-    
-    const calculateMinGrade = () => {
-        let minGrade = Infinity; // Start with the highest possible value
-    
-        gradingSchemes.forEach((scheme) => {
-            // Calculate the total grade for the scheme by assigning 0 to all grades
-            const totalGrade = scheme.assessments.reduce((total, assessment) => {
-                const grade = assessment.grade !== null && assessment.grade !== undefined ? assessment.grade : 0;
-                return total + (grade * assessment.weight) / 100;
-            }, 0);
-    
-            // Determine the scheme's final grade by scaling to the total weight
-            const totalWeight = scheme.assessments.reduce((total, assessment) => total + assessment.weight, 0);
-            const schemeGrade = totalWeight > 0 ? (totalGrade / totalWeight) * 100 : 0;
-    
-            // Update minGrade if this scheme's grade is lower
-            if (schemeGrade < minGrade) {
-                minGrade = schemeGrade;
-            }
-        });
-    
-        // Update the state with the lowest grade
-        setMinGradePossible(parseFloat(minGrade.toFixed(2))); // Round to 2 decimal places
-    };
-     
-    const calculateMaxGrade = () => {
-        let maxGrade = 0; // Start with the lowest possible value (0)
-    
-        gradingSchemes.forEach((scheme) => {
-            // Calculate the total grade for the scheme by assigning 100 to all grades
-            const totalGrade = scheme.assessments.reduce((total, assessment) => {
-                const grade = assessment.grade !== null && assessment.grade !== undefined ? assessment.grade : 100; // Assign 100 to undefined or null grades
-                return total + (grade * assessment.weight) / 100;
-            }, 0);
-    
-            // Determine the scheme's final grade by scaling to the total weight
-            const totalWeight = scheme.assessments.reduce((total, assessment) => total + assessment.weight, 0);
-            const schemeGrade = totalWeight > 0 ? (totalGrade / totalWeight) * 100 : 0;
-    
-            // Update maxGrade if this scheme's grade is higher
-            if (schemeGrade > maxGrade) {
-                maxGrade = schemeGrade;
-            }
-        });
-    
-        // Update the state with the highest grade
-        setMaxGradePossible(parseFloat(maxGrade.toFixed(2))); // Round to 2 decimal places
-    };
 
     const gradeButtonAction = (grade: number, gradingSchemes: GradingScheme[]) => {
         setTargetGrade(grade)
@@ -535,35 +498,113 @@ const CoursePage = () => {
     
     // In your useEffect to set the initial grading schemes
     useEffect(() => {
-        const formattedGradingSchemes = formatGradingScheme(CourseInfo);
-        const formattedCalendarEvents = formatCalendarEvents(CourseInfo);
+        // const formattedGradingSchemes = formatGradingScheme(CourseInfo);
+        // const formattedCalendarEvents = formatCalendarEvents(CourseInfo);
     
-        setGradingSchemes(formattedGradingSchemes); // Initial set of grading schemes
-        setCalendarEvents(formattedCalendarEvents);
-    }, []);
-    
-    // For highest course grade
+        // setCalendarEvents(formattedCalendarEvents);
+
+        const termData = data.data.find((t) => t.term === term);
+        const courseData = termData.courses.find((c: IncomingCourseInfo) => c.courseTitle === course)
+        if (courseData) {
+            const foundGradingScheme = courseData.gradingSchemes;
+            if (foundGradingScheme) {
+                setGradingSchemes(foundGradingScheme);
+            } else {
+                console.warn(`Course "${course}" not found in term "${term}".`);
+            }
+
+            setCourseColour(courseData.colour)
+            setCourseSubtitle(courseData.courseSubtitle)
+
+            console.log(courseData)
+            const calendarEvents = courseData.gradingSchemes[0].assessments
+                .filter((assessment: Assessment) => assessment.dueDate)
+                .map((assessment: Assessment) => ({
+                    id: uuid(),
+                    start: new Date(assessment.dueDate),
+                    end: addHours(new Date(assessment.dueDate), 0.5), // Add 2 hours to create the end time
+                    title: assessment.assessmentName,
+                    color: courseData.colour as CalendarEvent["color"], // Assign a default color or make dynamic
+                    course: courseData.courseTitle
+                }))
+
+            setCalendarEvents(calendarEvents)
+        } else {
+            console.warn(`Term "${term}" not found.`);
+        }
+
+    }, [course, term, data]);
+
     useEffect(() => {
-        const highestGrade = gradingSchemes.reduce((max: number, scheme) => {
+
+       const highestGrade = gradingSchemes.reduce((max: number, scheme) => {
             return Math.max(max, scheme.grade);
         }, 0);
-        
+ 
         setHighestCourseGrade(highestGrade);
+
+        const calculateMinGrade = () => {
+            let minGrade = Infinity; // Start with the highest possible value
+        
+            gradingSchemes.forEach((scheme) => {
+                // Calculate the total grade for the scheme by assigning 0 to all grades
+                const totalGrade = scheme.assessments.reduce((total, assessment) => {
+                    const grade = assessment.grade !== null && assessment.grade !== undefined ? assessment.grade : 0;
+                    return total + (grade * assessment.weight) / 100;
+                }, 0);
+        
+                // Determine the scheme's final grade by scaling to the total weight
+                const totalWeight = scheme.assessments.reduce((total, assessment) => total + assessment.weight, 0);
+                const schemeGrade = totalWeight > 0 ? (totalGrade / totalWeight) * 100 : 0;
+        
+                // Update minGrade if this scheme's grade is lower
+                if (schemeGrade < minGrade) {
+                    minGrade = schemeGrade;
+                }
+            });
+        
+            // Update the state with the lowest grade
+            setMinGradePossible(parseFloat(minGrade.toFixed(2))); // Round to 2 decimal places
+        };
+         
+        const calculateMaxGrade = () => {
+            let maxGrade = 0; // Start with the lowest possible value (0)
+        
+            gradingSchemes.forEach((scheme) => {
+                // Calculate the total grade for the scheme by assigning 100 to all grades
+                const totalGrade = scheme.assessments.reduce((total, assessment) => {
+                    const grade = assessment.grade !== null && assessment.grade !== undefined ? assessment.grade : 100; // Assign 100 to undefined or null grades
+                    return total + (grade * assessment.weight) / 100;
+                }, 0);
+        
+                // Determine the scheme's final grade by scaling to the total weight
+                const totalWeight = scheme.assessments.reduce((total, assessment) => total + assessment.weight, 0);
+                const schemeGrade = totalWeight > 0 ? (totalGrade / totalWeight) * 100 : 0;
+        
+                // Update maxGrade if this scheme's grade is higher
+                if (schemeGrade > maxGrade) {
+                    maxGrade = schemeGrade;
+                }
+            });
+        
+            // Update the state with the highest grade
+            setMaxGradePossible(parseFloat(maxGrade.toFixed(2))); // Round to 2 decimal places
+        };
+
         calculateMinGrade()
         calculateMaxGrade()
-
-    }, [gradingSchemes, highestCourseGrade]);
+    }, [gradingSchemes, highestCourseGrade])
 
 
     return ( 
         <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
             <div className='max-w-[1840px]'>
-                <div className="flex flex-row items-center justify-start gap-3 text-3xl">
+                <div className="flex flex-row items-center justify-start gap-4 text-3xl">
                     <h1 className={`font-bold text-${courseColour}-600`}>{course}</h1>
-                    <h1 className="">template for now</h1>
+                    <h1 className="font-extralight">{courseSubtitle}</h1>
                 </div>
                 <div className="mt-12 lg:mb-16 w-full h-fit grid grid-cols-1 grid-rows-2 mb-20 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 gap-10 justify-between">
-                    <Card className="w-[100%] px-6col-span-1 md:col-span-2 lg:col-span-1">
+                    <Card className="w-[100%] px-6 col-span-1 md:col-span-2 lg:col-span-1">
                         <CircularProgress 
                             percentage={highestCourseGrade} 
                             label="Overall Average"
@@ -649,7 +690,11 @@ const CoursePage = () => {
                                                                 return (
                                                                     <TableRow key={assessment.assessmentName} className="">
                                                                         <TableCell className="text-center">{assessment.assessmentName}</TableCell>
-                                                                        <TableCell className="text-center">{assessment.dueDate ? assessment.dueDate : 'TBD'}</TableCell>
+                                                                        <TableCell className="text-center">
+                                                                        {assessment.dueDate 
+                                                                            ? format(new Date(assessment.dueDate), 'yyyy-MM-dd @ HH:mm') 
+                                                                            : 'TBD'}
+                                                                        </TableCell>
                                                                         <TableCell className="text-center">{assessment.weight}</TableCell>
                                                                         <TableCell className="text-center"> 
                                                                         <Input

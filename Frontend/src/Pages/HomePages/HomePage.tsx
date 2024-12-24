@@ -1,5 +1,4 @@
 
-import Dashboard from "@/components/Dashboard";
 import { AppSidebar } from "@/components/sidebar/AppSidebar"
 import {
   Breadcrumb,
@@ -18,56 +17,55 @@ import {
 
 import { Outlet, useParams } from "react-router-dom";
 
-const HomePage = () => {
+const HomePage = ( data: any) => {
 
-    let { term, course } = useParams()
+  let { term, course } = useParams()
 
-    if (term) {
-      term = term.replace(/-/g, ' ').toLowerCase();
-    } 
-    if (course) {
-      course = course.replace(/-/g, ' ').toLowerCase();
-    }
+  if (term) {
+    term = term.replace(/-/g, ' ').toLowerCase();
+  } 
+  if (course) {
+    course = course.replace(/-/g, ' ').toLowerCase();
+  }
 
-    return (
-      <SidebarProvider>
-        <AppSidebar />
-        <SidebarInset>
-          <header className="bg-[#f7f7f7] flex h-fit items-center gap-2 px-4 pt-8">
-            <div className="flex items-center gap-2 px-4">
-              <SidebarTrigger className="-ml-1" />
-              <Separator orientation="vertical" className="mr-2 h-4" />
-              <Breadcrumb>
-                <BreadcrumbList>
-                  <BreadcrumbItem className="hidden md:block text-lg">
-                    <BreadcrumbLink href="/home">home</BreadcrumbLink>
-                  </BreadcrumbItem>
-                  {term && (
-                    <>
-                      <BreadcrumbSeparator className="hidden md:block" />
-                      <BreadcrumbItem className="text-lg">
-                        <BreadcrumbPage className="text-muted-foreground">
-                          {term}
-                        </BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </>
-                  )}
-                  {term && course && (
-                    <>
-                      <BreadcrumbSeparator className="hidden md:block" />
-                      <BreadcrumbItem className="text-lg">
-                        <BreadcrumbPage>{course}</BreadcrumbPage>
-                      </BreadcrumbItem>
-                    </>
-                  )}
-                </BreadcrumbList>
-              </Breadcrumb>
-            </div>
-          </header>
-          <Outlet />
-        </SidebarInset>
-      </SidebarProvider>
-    );
+  return (
+    <SidebarProvider>
+      <AppSidebar data={data} />
+      <SidebarInset>
+        <header className="bg-[#f7f7f7] flex h-fit items-center gap-2 px-4 pt-8">
+          <div className="flex items-center gap-2 px-4">
+            <Separator orientation="vertical" className="mr-2 h-4" />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block text-lg">
+                  <BreadcrumbLink href="/home">home</BreadcrumbLink>
+                </BreadcrumbItem>
+                {term && (
+                  <>
+                    <BreadcrumbSeparator className="hidden md:block" />
+                    <BreadcrumbItem className="text-lg">
+                      <BreadcrumbLink href={`/home/${term}`} className="text-muted-foreground">
+                        {term}
+                      </BreadcrumbLink>
+                    </BreadcrumbItem>
+                  </>
+                )}
+                {term && course && (
+                  <>
+                    <BreadcrumbSeparator className="hidden md:block" />
+                    <BreadcrumbItem className="text-lg">
+                      <BreadcrumbPage>{course}</BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                )}
+              </BreadcrumbList>
+            </Breadcrumb>
+          </div>
+        </header>
+        <Outlet />
+      </SidebarInset>
+    </SidebarProvider>
+  );
 }
  
 export default HomePage;

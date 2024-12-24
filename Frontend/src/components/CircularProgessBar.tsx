@@ -9,7 +9,10 @@ interface CircularProgressProps {
   export function CircularProgress({ percentage, label, description }: CircularProgressProps) {
     const circumference = 2 * Math.PI * 75
     const strokeDasharray = circumference
-    const strokeDashoffset = circumference - (percentage / 100) * circumference
+    let strokeDashoffset = circumference - (percentage / 100) * circumference
+    if (percentage >= 100) {
+      strokeDashoffset = circumference - (100 / 100) * circumference
+    } 
 
     const [strokeColour, setStrokeColour] = useState<string>('currentColor')
 
