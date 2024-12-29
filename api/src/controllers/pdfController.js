@@ -5,7 +5,7 @@ require("dotenv").config();
 
 const prompt = `
 Help me break down how I will be graded in this course. The semester begins on September 6th and ends on December 2nd. 
-Warning: The file presented may not have any grading scheme data. If you do not detect any grading scheme data, please return the text no assessment schedule found
+Warning: The file presented may not have any grading scheme data. If you do not detect any grading scheme data, please return the text: "no assessment schedule found"
 
 Only list out the information on the assessments I will be assessed on. I want a separate line item for each assessment. That means
 breaking down 3 quizzes into quiz 1, 2, 3. If there are any weekly assessments, make sure to break it down, week by week.
@@ -16,6 +16,7 @@ If there are 2 grade schemes, separate them and create two plans. Remember if so
 percentage that the assessments are worth.
 If there is no date and time for an assessment, insert: null
 If one of the schemes have a weight of 0, still add that item just make the weight 0.
+Make sure all dueDates are in ISO 8601 format. If a date is provided but no time is provided, default to 11:59pm on that day
 FORMAT IT EXACTLY AS FOLLOWS:
 
 {
@@ -42,10 +43,8 @@ FORMAT IT EXACTLY AS FOLLOWS:
     }
   ]
 }
-
-DO NOT PRINT ANYTHING OTHER THAN THE JSON OBJECT
-
-`
+If you do not detect any grading scheme data, please return the text: no assessment schedule found
+DO NOT PRINT ANYTHING OTHER THAN THE JSON OBJECT`
 
 // OPEN AI CONFIG
 const configuration = new Configuration({
@@ -108,7 +107,7 @@ const retrieve_schedule = async (req, res) => {
       const result = await callOpenAI(prompt, output)
 
       if (result === "no assessment schedule found") {
-        return res.status(400).json({ error: 'No grading scheme found' });
+        return res.status(400).json({ error: 'no assessment schedule found' });
       }
 
       if (result.error) {

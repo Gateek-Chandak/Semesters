@@ -24,11 +24,11 @@ export function NavMain({ data }: {data:any}) {
   const { open } = useSidebar()
 
   return (
-    <SidebarGroup>
+    <SidebarGroup className="pl-4">
       <SidebarGroupLabel className="text-md mb-3">Courses</SidebarGroupLabel>
       {open && 
       <SidebarMenu className="">
-        {data.data.map((term) => (
+        {data.map((term) => (
           <Collapsible
             key={term.term}
             asChild
@@ -38,7 +38,7 @@ export function NavMain({ data }: {data:any}) {
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={term.term}>
-                  <Link className="truncate text-[1.1rem]" to={`/home/${term.term.replace(/\s+/g, '-').toLowerCase()}`}>
+                  <Link className="truncate text-[1rem]" to={`/home/${term.term.replace(/\s+/g, '-').toLowerCase()}`}>
                     {term.term}
                   </Link>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />

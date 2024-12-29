@@ -12,12 +12,11 @@ import { Separator } from "@/components/ui/separator"
 import {
   SidebarInset,
   SidebarProvider,
-  SidebarTrigger,
 } from "@/components/ui/sidebar"
 
 import { Outlet, useParams } from "react-router-dom";
 
-const HomePage = ( data: any) => {
+const HomePage = ( ) => {
 
   let { term, course } = useParams()
 
@@ -30,7 +29,7 @@ const HomePage = ( data: any) => {
 
   return (
     <SidebarProvider>
-      <AppSidebar data={data} />
+      <AppSidebar />
       <SidebarInset>
         <header className="bg-[#f7f7f7] flex h-fit items-center gap-2 px-4 pt-8">
           <div className="flex items-center gap-2 px-4">
@@ -62,7 +61,7 @@ const HomePage = ( data: any) => {
             </Breadcrumb>
           </div>
         </header>
-        <Outlet />
+        <Outlet/>
       </SidebarInset>
     </SidebarProvider>
   );

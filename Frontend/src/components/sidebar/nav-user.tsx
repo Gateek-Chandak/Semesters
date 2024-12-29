@@ -37,7 +37,7 @@ import {
   }) {
     const { isMobile } = useSidebar()
     return (
-      <SidebarMenu>
+      <SidebarMenu className="pl-1">
         <SidebarMenuItem>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -77,23 +77,8 @@ import {
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
                 <DropdownMenuItem>
-                  <Sparkles />
-                  Upgrade to Pro
-                </DropdownMenuItem>
-              </DropdownMenuGroup>
-              <DropdownMenuSeparator />
-              <DropdownMenuGroup>
-                <DropdownMenuItem>
                   <BadgeCheck />
                   Account
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <CreditCard />
-                  Billing
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Bell />
-                  Notifications
                 </DropdownMenuItem>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />

@@ -1,4 +1,4 @@
-import { Card } from "./ui/card";
+import { Card } from "../../components/ui/card";
 import { format } from 'date-fns';
 
 const Dashboard = () => {
@@ -24,7 +24,7 @@ const Dashboard = () => {
                 </Card>
             </div>
             <Card className="h-96"> 
-                
+                TO DO LIST COMING SOON...
             </Card>
             <div className="h-96 grid grid-cols-2 gap-10">
                 <Card className=""> 
