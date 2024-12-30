@@ -54,6 +54,7 @@ const TermPage = () => {
     const [courseSubtitle, setCourseSubtitle] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [isManagingCourses, setIsManagingCourses] = useState<boolean>(false)
+    const [isShowingAverage, setIsShowingAverage] = useState<boolean>(true)
 
     // Term processing logic
     let term = originalTerm;
@@ -187,39 +188,41 @@ const TermPage = () => {
         <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
             <div className="max-w-[1840px] flex flex-col gap-14">
                 <div className="w-[100%] h-fit flex flex-col gap-10 lg:flex-row">
-                    <div className="w-[60%] flex flex-col gap-10">
+                    <div className="w-[100%] lg:w-[60%] flex flex-col gap-10">
                         <div className="flex flex-row items-center justify-start gap-4 text-3xl">
                             <h1 className="text-3xl font-bold">{term}</h1>
                             <h1 className="text-3xl font-extralight"> {formattedDate}</h1>
                         </div>
-                        <div className="w-[100%] mt-2 h-full flex flex-col lg:flex-row gap-10">
-                            <Card className="w-[70%] px-6 py-[18px]">
+                        <div className="w-[100%] mt-2 h-full flex flex-col items-center md:flex-row gap-10">
+                            <Card className="w-[100%] md:w-[35%] px-6 py-[18px]">
                                 <CircularProgress 
                                     percentage={termGrade} 
-                                    label="Overall Average"
-                                    description="You still have 5 deliverables left, which account for 80% of your total grade."
+                                    label="Term Average"
+                                    description=""
+                                    isShowingAverage={isShowingAverage}
+                                    setIsShowingAverage={setIsShowingAverage}
                                 />
                             </Card>
-                            <div className="w-[65%] flex flex-col gap-6">
-                                <Card className="w-[100%] h-[50%] px-10 flex flex-col gap-2 justify-center items-start ">
-                                    <h1 className="text-2xl font-semibold">Might be cooked</h1>
-                                    <p className="font-light text-sm">You have 7 deliverables due in the next 3 days.</p>
+                            <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-6">
+                                <Card className="w-[100%] h-[50%] py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
+                                    <h1 className="text-6xl font-semibold">9</h1>
+                                    <p className="font-light text-md"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                                 </Card>
-                                <Card className="w-[100%] h-[50%] px-10 flex flex-col gap-2 justify-center items-start ">
-                                    <h1 className="text-2xl font-semibold">111 days to go</h1>
-                                    <p className="font-light text-sm">You still have a long way to go. Keep your head down and stick with it. Good luck!.</p>
+                                <Card className="w-[100%] h-[50%] py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
+                                    <h1 className="text-6xl font-semibold">111</h1>
+                                    <p className="font-light text-md"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                                 </Card>
                             </div>
                             
                         </div>
                     </div>
-                    <div className="w-[40%] flex flex-col gap-10">
+                    <div className="w-[100%] lg:w-[40%] flex flex-col gap-10">
                         <h1 className="w-[100%] text-3xl font-bold">
                             Next 7 Days...
                         </h1>
                         <div className="h-[100%] w-[100%]"> 
-                            <Card className="w-[100%] h-fit p-4 flex flex-col gap-2">
-                                <div className="h-full flex flex-col gap-2 justify-between">
+                            <Card className="w-[100%] h-[25rem] h-max-[27rem] overflow-y-auto p-4 flex flex-col gap-2">
+                                <div className="h-full flex flex-col gap-4 justify-between">
                                     <Card className="p-5 h-full bg-gradient-to-b from-purple-100 via-purple-50 to-white">
                                         <h1 className="font-medium">MATH 135</h1>
                                         <div className="mt-2 flex flex-col justify-center">
@@ -244,11 +247,11 @@ const TermPage = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-[100%] flex flex-row gap-10 lg:flex-row h-fit">
-                    <div className="h-[100%] w-[55%] flex flex-col gap-10">
-                        <div className="flex flex-row w-ful pr-12">
-                            <h1 className="mr-auto text-3xl font-bold">Current Courses</h1>
-                            <div className="ml-auto flex flex-row gap-4">
+                <div className="w-[100%] flex flex-col gap-10 lg:flex-row h-fit">
+                    <div className="h-[100%] w-[100%] lg:w-[55%] flex flex-col gap-10">
+                        <div className="flex flex-col gap-7 sm:gap-0 sm:flex-row w-ful pr-12">
+                            <h1 className="sm:mr-auto text-3xl font-bold">Current Courses</h1>
+                            <div className="sm:ml-auto flex flex-row gap-4">
                                 {!isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100' onClick={() => setIsManagingCourses(!isManagingCourses)}>Manage Courses <PencilIcon/></Button>}
                                 {isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100' onClick={() => setIsManagingCourses(!isManagingCourses)}>Save Changes <Check/></Button>}
                                 {!isManagingCourses && !gradesShown && <Button className='' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}
@@ -267,7 +270,7 @@ const TermPage = () => {
                         </div>
                     </div>
                     {/* Calendar Component */}
-                    <div className="w-[45%] flex flex-col gap-10">
+                    <div className="w-[100%] lg:w-[45%] flex flex-col gap-10">
                         <h1 className="mr-auto font-bold text-3xl">Course Calendar</h1>
                         <Calendar
                             events={termData?.courses.flatMap((course) =>
@@ -279,7 +282,7 @@ const TermPage = () => {
                                     color: course.colour, 
                                 }))
                             )}>
-                            <div className="h-[41rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
+                            <div className="max-h-[41rem] min-h-[32rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
                                 <div className="flex px-6 items-center gap-2 mb-6">
                                     <CalendarViewTrigger
                                         view="week"

@@ -15,8 +15,13 @@ import {
 } from "@/components/ui/sidebar"
 
 import { Outlet, useParams } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
+
+import { Trigger } from "@/components/sidebar/trigger";
 
 const HomePage = ( ) => {
+  
+  const isMobile = useIsMobile()
 
   let { term, course } = useParams()
 
@@ -31,6 +36,7 @@ const HomePage = ( ) => {
     <SidebarProvider>
       <AppSidebar />
       <SidebarInset>
+        {isMobile && <Trigger />}
         <header className="bg-[#f7f7f7] flex h-fit items-center gap-2 px-4 pt-8">
           <div className="flex items-center gap-2 px-4">
             <Separator orientation="vertical" className="mr-2 h-4" />

@@ -36,7 +36,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <SidebarContent>
         <div className={open ? "flex flex-row items-center gap-2 mb-5 ml-3 mr-6 py-2 px-2 rounded-xl hover:bg-gray-100" : "flex flex-row items-center gap-2 mb-5 ml-3 mr-6 py-2 px-2 rounded-xl transform hover:scale-105 transition duration-100 ease-in-out hover:border-gray-500"}>
-          <Link to="/home" className={open ? "" : " transform hover:scale-110 transition duration-300 ease-in-out"}>
+          <Link to="/home" className={(open) ? "" : "transform hover:scale-110 transition duration-300 ease-in-out"}>
             <HomeIcon className="h-[20px] w-autot"/>
           </Link>
           {open && <Link to="/home" className="truncate top-[1px] relative">Home</Link>}

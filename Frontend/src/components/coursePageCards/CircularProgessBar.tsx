@@ -29,7 +29,7 @@ interface CircularProgressProps {
     }, [percentage])
   
     return (
-      <div className="flex flex-col items-center text-center p-6">
+      <div className="flex flex-col items-center text-center p-6 gap-5">
         <h3 className="text-2xl font-medium">{label}</h3>
         <div className="relative inline-flex items-center justify-center">
           <svg className="w-60 h-48 transform -rotate-90 ">

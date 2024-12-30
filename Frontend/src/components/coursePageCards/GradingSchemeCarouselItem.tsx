@@ -136,7 +136,7 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
                                                 ? format(assessment.dueDate, `MMMM ${assessment.dueDate.getDate()}, yyyy '@' hh:mma`)
                                                 : 'TBD'}
                                         </TableCell>
-                                        <TableCell className="text-center">{assessment.weight}</TableCell>
+                                        <TableCell className="text-center w-14">{assessment.weight}</TableCell>
                                         <TableCell className="text-center"> 
                                             <Input
                                                 type="number"
@@ -144,7 +144,7 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
                                                 onWheel={(e) => e.currentTarget.blur()}
                                                 onChange={(e) => updateGrade(e, assessment.assessmentName)}
                                                 placeholder="00"
-                                                className="w-20 p-2 my-3 inline"
+                                                className="w-16 p-2 my-3 inline"
                                                 />{" "}
                                                 %
                                         </TableCell>

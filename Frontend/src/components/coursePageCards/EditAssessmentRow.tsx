@@ -34,6 +34,10 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
 
     const updateAssessmentName = (assessmentName: string) => {
         // Update the gradingSchemes state to reflect the new assessment name
+        if (localAssessmentName.trim() == "") {
+            return;
+        }
+
         const updatedSchemes = courseData?.gradingSchemes.map((scheme) => {
             const updatedAssessments = scheme.assessments.map((a) => {
                 if (a.assessmentName === assessmentName) {
@@ -240,7 +244,7 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
                 <DateTimePicker />
             </TableCell>
             <TableCell className="text-center">
-                <Input type="text" className="" value={localAssessmentWeight} onChange={handleWeightChange} onBlur={() => updateAssessmentWeight(assessment.assessmentName)}/>
+                <Input type="text" className="w-14" value={localAssessmentWeight} onChange={handleWeightChange} onBlur={() => updateAssessmentWeight(assessment.assessmentName)}/>
             </TableCell>
             <TableCell className="text-center"> 
                 <Input
@@ -249,7 +253,7 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
                     onWheel={(e) => e.currentTarget.blur()}
                     onChange={(e) => updateGrade(e, assessment.assessmentName)}
                     placeholder="00"
-                    className="w-20 p-2 my-3 inline"
+                    className="w-16 p-2 my-3 inline"
                     />{" "}
                     %
             </TableCell>

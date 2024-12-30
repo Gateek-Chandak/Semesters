@@ -31,12 +31,15 @@ import { Carousel, CarouselItem, CarouselContent, CarouselNext, CarouselPrevious
 import { Card } from "@/components/ui/card"
 import { CircularProgress } from '@/components/coursePageCards/CircularProgessBar';
 import { useParams } from 'react-router-dom';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 import { CalendarEvent, Assessment, Course } from '@/types/mainTypes';
 
 import GradingSchemeCarouselItem from '@/components/coursePageCards/GradingSchemeCarouselItem';
 
 const CoursePage = () => {
+
+    const isMobile = useIsMobile()
 
     const data = useSelector((state: RootState) => state.data.data);
 
@@ -255,68 +258,71 @@ const CoursePage = () => {
     }
 
     return ( 
-        <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
-            <div className='max-w-[1840px]'>
-                <div className="flex flex-row items-center justify-start gap-4 text-3xl">
-                    <h1 className={`font-bold text-${courseData?.colour}-600`}>{courseData?.courseTitle}</h1>
-                    <h1 className="font-extralight">{courseData?.courseSubtitle}</h1>
-                </div>
-                <div className="mt-12 lg:mb-16 w-full h-fit grid grid-cols-1 grid-rows-2 mb-20 md:grid-cols-2 lg:grid-cols-3 lg:grid-rows-1 gap-10 justify-between">
-                    <Card className="w-[100%] px-6 col-span-1 md:col-span-2 lg:col-span-1">
-                        <CircularProgress 
-                            percentage={highestCourseGrade} 
-                            label="Overall Average"
-                            description="You still have 5 deliverables left, which account for 80% of your total grade."
-                        />
-                    </Card>
-                    <Card className="w-[100%] p-6">
-                        <div className="space-y-4">
-                            <div className="space-y-2">
-                                <label className="text-sm font-medium">Enter Specific Grade (%)</label>
-                                <Input type="text" 
-                                       value={targetGrade || ""} 
-                                       onChange={(e) => updateTargetGrade(e)}
-                                       placeholder="%" 
-                                       className="w-full" />
-                            </div>
-                            
-                            <div className="grid grid-cols-3 gap-2">
-                                {grades.map((grade) => (
-                                <Button
-                                    key={grade}
-                                    className={`p-2 text-center rounded-md border bg-white text-black hover:bg-black hover:text-white active:bg-gray-700`}
-                                    onClick={() => gradeButtonAction(grade)}
-                                >
-                                    {grade}%
-                                </Button>
-                                ))}
-                            </div>
 
-                            <h3 className="font-semibold">Desired Average</h3>
-                            <p className="text-sm">To get {targetGrade}% in this class, you need to average of <span className='font-bold text-md'>{gradeNeeded}%</span> on everything that's left.</p>
-                            <p className='text-xs text-muted-foreground'>*note that this value is an approximation using worst case scenario</p>
-                        </div>
-                    </Card>
-                    <Card className="w-[100%] pt-6 px-6 flex flex-col justify-center gap-10">
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-row">
-                                <h1 className="mr-auto text-xl font-medium">Minimum</h1>
-                                <h1 className="ml-auto text-xl font-medium">{minGradePossible}%</h1>
+        <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
+            <div className='max-w-[1840px] w-full'>
+                <div>   
+                    <div className="w-[100%] flex flex-row items-center justify-start gap-4 text-3xl">
+                        <h1 className={`font-bold text-${courseData?.colour}-600`}>{courseData?.courseTitle}</h1>
+                        <h1 className="font-extralight">{courseData?.courseSubtitle}</h1>
+                    </div>
+                    <div className="mt-12 lg:mb-16 w-full h-fit flex flex-col lg:flex-row mb-20 gap-4 justify-between">
+                        <Card className="w-[100%] px-6">
+                            <CircularProgress 
+                                percentage={highestCourseGrade} 
+                                label="Overall Average"
+                                description="You still have 5 deliverables left, which account for 80% of your total grade."
+                            />
+                        </Card>
+                        <Card className="w-[100%] p-6">
+                            <div className="space-y-4">
+                                <div className="space-y-2">
+                                    <label className="text-sm font-medium">Enter Specific Grade (%)</label>
+                                    <Input type="text" 
+                                        value={targetGrade || ""} 
+                                        onChange={(e) => updateTargetGrade(e)}
+                                        placeholder="%" 
+                                        className="w-full" />
+                                </div>
+                                
+                                <div className="grid grid-cols-3 gap-2">
+                                    {grades.map((grade) => (
+                                    <Button
+                                        key={grade}
+                                        className={`p-2 text-center rounded-md border bg-white text-black hover:bg-black hover:text-white active:bg-gray-700`}
+                                        onClick={() => gradeButtonAction(grade)}
+                                    >
+                                        {grade}%
+                                    </Button>
+                                    ))}
+                                </div>
+
+                                <h3 className="font-semibold">Desired Average</h3>
+                                <p className="text-sm">To get {targetGrade}% in this class, you need to average of <span className='font-bold text-md'>{gradeNeeded}%</span> on everything that's left.</p>
+                                <p className='text-xs text-muted-foreground'>*note that this value is an approximation using worst case scenario</p>
                             </div>
-                            <p className="text-md font-light">Assuming that you uninstall LEARN and doom scroll for the rest of the term.</p>
-                        </div>
-                        <div className="flex flex-col gap-2">
-                            <div className="flex flex-row">
-                                <h1 className="mr-auto text-xl font-medium">Maximum</h1>
-                                <h1 className="ml-auto text-xl font-medium">{maxGradePossible}%</h1>
+                        </Card>
+                        <Card className="w-[100%] pt-6 px-6 flex flex-col justify-center items-center gap-10 col-span-1">
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-row">
+                                    <h1 className="mr-auto text-xl font-medium">Minimum</h1>
+                                    <h1 className="ml-auto text-xl font-medium">{minGradePossible}%</h1>
+                                </div>
+                                <p className="text-md font-light">Assuming that you uninstall LEARN and doom scroll for the rest of the term.</p>
                             </div>
-                            <p className="text-md font-light">Given that you score 100% on everything remaining.</p>
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-1">*if multiple grading schemes are availble, metrics will be estimated using worst/best case possibilities respectively.</p>
-                    </Card>
+                            <div className="flex flex-col gap-2">
+                                <div className="flex flex-row">
+                                    <h1 className="mr-auto text-xl font-medium">Maximum</h1>
+                                    <h1 className="ml-auto text-xl font-medium">{maxGradePossible}%</h1>
+                                </div>
+                                <p className="text-md font-light">Given that you score 100% on everything remaining.</p>
+                            </div>
+                            <p className="text-xs text-muted-foreground mt-1">*if multiple grading schemes are availble, metrics will be estimated using worst/best case possibilities respectively.</p>
+                        </Card>
+                    </div>
                 </div>
-                <div className="h-fit w-full mt-8 mb-10 flex flex-col justify-center lg:flex-row gap-14 lg:gap-16">
-                    <div className="w-[100%] lg:w-[55%] lg:max-w-[55%] flex flex-col items-center justify-start gap-8 rounded-2xl">
+                <div className={`h-fit w-full mt-8 mb-10 flex ${isMobile ? 'flex-col' : 'flex-row'} justify-center gap-14 lg:gap-16`}>
+                    <div className={`${isMobile ? 'w-[100%]' : 'w-[55%]'} flex flex-col items-center justify-start gap-8 rounded-2xl`}>
                         <h1 className="mr-auto font-bold text-3xl">Deliverables</h1>
                         <Carousel className="w-full shadow-md border border-slate-200 rounded-2xl">
                             <CarouselContent className=''>
@@ -344,7 +350,7 @@ const CoursePage = () => {
                         </Carousel>
                     </div>
                     {/* Calendar Component */}
-                    <div className="w-[100%] lg:w-[45%] flex flex-col items-center justify-start overflow-auto gap-8">
+                    <div className={`${isMobile ? 'w-[100%]' : 'w-[45%]'} flex flex-col items-center justify-start overflow-auto gap-8`}>
                         <h1 className="mr-auto font-bold text-3xl">Course Calendar</h1>
                         <Calendar
                             events={calendarEvents}
@@ -390,7 +396,6 @@ const CoursePage = () => {
                     </div>
                 </div>
             </div>
-            
         </div>
      );
 }
