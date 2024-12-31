@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { format } from "date-fns";
 
 import { TableRow, TableCell } from "../ui/table";
@@ -18,13 +18,14 @@ interface EditAssessmentRowProps {
     term: string;
     courseIndex: number;
     courseData: Course;
+    updateGrade: (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => void
 }
 
-const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targetGrade, gradeButtonAction, term, courseIndex, courseData } ) => {
+const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targetGrade, gradeButtonAction, term, courseIndex, courseData, updateGrade } ) => {
     const dispatch = useDispatch();
 
     const [localAssessmentName, setLocalAssessmentName] = useState<string>(assessment.assessmentName)
-    const [localAssessmentDueDate, setLocalAssessmentDueDate] = useState<Date | null>(assessment.dueDate)
+    const [localAssessmentDueDate, setLocalAssessmentDueDate] = useState<null | string>(assessment.dueDate)
     const [localAssessmentWeight, setLocalAssessmentWeight] = useState<number>(assessment.weight)
 
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -64,39 +65,6 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
                 gradingSchemes: updatedSchemes
             }
         }))
-    };
-    
-    const updateAssessmentDueDate = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
-        const inputValue = e.target.value.trim();
-
-        const newDueDate = inputValue ? new Date(inputValue) : null
-
-        setLocalAssessmentDueDate(newDueDate)
-
-        const updatedSchemes = courseData?.gradingSchemes.map((scheme) => {
-            const updatedAssessments = scheme.assessments.map((assessment) => {
-                if (assessment.assessmentName === assessmentName) {
-                    return { ...assessment, dueDate: newDueDate }; // Update due date
-                }
-                return assessment;
-            });
-            return {
-                ...scheme,
-                assessments: updatedAssessments,
-            };
-        });
-    
-        dispatch(updateCourse({
-            term: term,
-            courseIndex: courseIndex,
-            course: {
-                courseTitle: courseData.courseTitle,
-                courseSubtitle: courseData.courseSubtitle,
-                colour: courseData.colour,
-                highestGrade: courseData.highestGrade,
-                gradingSchemes: updatedSchemes
-            }
-        }));
     };
 
     const handleWeightChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -173,65 +141,36 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
         }
     };
 
-    const updateGrade = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
-            const inputValue = e.target.value.trim();
-            const parsedValue = inputValue === "" ? null : parseFloat(parseFloat(inputValue).toFixed(2));
-        
-            // Exit early for invalid numbers or out-of-range values
-            if (parsedValue !== null && (isNaN(parsedValue) || parsedValue > 200 || parsedValue < 0)) {
-                return;
-            }
-        
-            // Update gradingSchemes state
+
+
+    useEffect(() => {
+        const updateAssessmentDueDate = (assessmentName: string) => {
             const updatedSchemes = courseData?.gradingSchemes.map((scheme) => {
-                let totalGrade = 0;
-                let totalWeight = 0;
-        
                 const updatedAssessments = scheme.assessments.map((assessment) => {
-                    // Update the grade for the matching assessment
                     if (assessment.assessmentName === assessmentName) {
-                        assessment = { ...assessment, grade: parsedValue }; // Assign rounded value or null
+                        return { ...assessment, dueDate: localAssessmentDueDate }; // Update due date
                     }
-        
-                    // Include only completed assessments in the grade calculation
-                    if (assessment.grade !== null && assessment.grade !== undefined) {
-                        totalGrade += (assessment.grade * assessment.weight) / 100;
-                        totalWeight += assessment.weight;
-                    }
-        
                     return assessment;
                 });
-        
-                // Ensure totalWeight doesn't exceed 100
-                if (totalWeight > 100) {
-                    totalWeight = 100;
-                }
-        
-                // Calculate final grade, scaled to completed assessments
-                const finalGrade = totalWeight > 0 ? (totalGrade / totalWeight) * 100 : 0;
-        
                 return {
                     ...scheme,
                     assessments: updatedAssessments,
-                    grade: parseFloat(finalGrade.toFixed(2)), // Round to 2 decimal places
                 };
             });
+    
+            // Dispatch the updated course data with new grading schemes
             dispatch(updateCourse({
                 term: term,
                 courseIndex: courseIndex,
                 course: {
-                    courseTitle: courseData.courseTitle,
-                    courseSubtitle: courseData.courseSubtitle,
-                    colour: courseData.colour,
-                    highestGrade: courseData.highestGrade,
-                    gradingSchemes: updatedSchemes
-                }
-            }))
-        
-            if (targetGrade) {
-                gradeButtonAction(targetGrade);
-            }
-    };
+                    ...courseData,
+                    gradingSchemes: updatedSchemes,
+                },
+            }));
+        };
+
+        updateAssessmentDueDate(assessment.assessmentName)
+    }, [localAssessmentDueDate, assessment.assessmentName])
 
     return ( 
         <TableRow key={assessment.assessmentName} className="">
@@ -241,7 +180,7 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
             </TableCell>
             <TableCell className="text-center">
                 {/* <Input type="datetime-local" className="w-52" value={localAssessmentDueDate ? format(localAssessmentDueDate, `MMMM ${localAssessmentDueDate.getDate()}, yyyy '@' hh:mma`) : 'TBD'} onChange={(e) => updateAssessmentDueDate(e, assessment.assessmentName)}/> */}
-                <DateTimePicker />
+                <DateTimePicker dueDate={localAssessmentDueDate} setLocalDueDate={setLocalAssessmentDueDate}/>
             </TableCell>
             <TableCell className="text-center">
                 <Input type="text" className="w-14" value={localAssessmentWeight} onChange={handleWeightChange} onBlur={() => updateAssessmentWeight(assessment.assessmentName)}/>

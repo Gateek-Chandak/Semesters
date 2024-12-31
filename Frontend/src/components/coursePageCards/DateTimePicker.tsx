@@ -11,15 +11,21 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
- 
-export function DateTimePicker( ) {
-  const [date, setDate] = React.useState<Date>(new Date());
+
+interface DateTimePickerProps {
+  dueDate: string | null;
+  setLocalDueDate: React.Dispatch<React.SetStateAction<string | null>>;
+}
+
+export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps) {
+  const [date, setDate] = React.useState<Date>(dueDate ? new Date(dueDate) : new Date());
   const [isOpen, setIsOpen] = React.useState(false);
  
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
       setDate(selectedDate);
+      setLocalDueDate(selectedDate.toISOString())
     }
   };
  
@@ -67,7 +73,7 @@ export function DateTimePicker( ) {
         <div className="sm:flex">
           <Calendar
             mode="single"
-            selected={date}
+            selected={date ? date : new Date()}
             onSelect={handleDateSelect}
             initialFocus
           />

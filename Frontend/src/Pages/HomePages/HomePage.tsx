@@ -23,14 +23,10 @@ const HomePage = ( ) => {
   
   const isMobile = useIsMobile()
 
-  let { term, course } = useParams()
+  const { term: originalTerm, course: originalCourse } = useParams()
+  const term = originalTerm?.replace(/-/g, ' ');
 
-  if (term) {
-    term = term.replace(/-/g, ' ').toLowerCase();
-  } 
-  if (course) {
-    course = course.replace(/-/g, ' ').toLowerCase();
-  }
+  const course = originalCourse?.replace(/-/g, ' ');
 
   return (
     <SidebarProvider>

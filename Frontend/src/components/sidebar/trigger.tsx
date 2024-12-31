@@ -10,16 +10,19 @@ import { useIsMobile } from "@/hooks/use-mobile"
 
 export function Trigger() {
   const isMobile = useIsMobile()
-  const { openMobile } = useSidebar()
+  const { openMobile, open } = useSidebar()
 
   return (
-    <SidebarMenu className={`${(isMobile && openMobile) ? 'bg-[#f7f7f7] mb-6' : 'bg-[#f7f7f7]'}`}>
+    <SidebarMenu className={`
+              ${(isMobile && !openMobile) ? 'bg-[#f7f7f7] px-6 pt-4' : ''}
+              ${(isMobile && openMobile) ? 'bg-[#f7f7f7]' : ''}`}>
       <SidebarMenuItem>
         <div className="w-full flex flex-row items-center pb-2">
           <SidebarTrigger className={`
-              ${(isMobile && openMobile) ? 'w-12 h-12' : ''} 
-              ${(isMobile && !openMobile) ? 'w-20 h-10 relative top-6' : ''} 
-              mr-auto transform hover:scale-110 transition duration-300 ease-in-out`} />
+              ${(isMobile && openMobile) ? 'pb-4' : ''} 
+              ${(isMobile && !openMobile) ? 'relative' : ''} 
+              ${(!isMobile) ? 'pb-4' : ''}
+              px-7 pt-4 mr-auto`} />
         </div>
         {isMobile && openMobile && <SidebarSeparator />}
         {!isMobile && <SidebarSeparator />}

@@ -1,3 +1,5 @@
+
+
 export type IncomingAssessments = {
     assessmentName: string,
     weight: number,
@@ -23,7 +25,7 @@ export type CalendarEvent = {
 
 export type Assessment = {
     assessmentName: string,
-    dueDate: Date | null,
+    dueDate: null | string,
     weight: number,
     grade: null | number
 }

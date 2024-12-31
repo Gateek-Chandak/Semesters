@@ -89,7 +89,7 @@ const TermPage = () => {
             grade: 0,
             assessments: scheme.assessments.map((assessment) => ({
                 assessmentName: assessment.assessmentName,
-                dueDate: assessment.dueDate ? new Date(assessment.dueDate) : null,
+                dueDate: assessment.dueDate ? new Date(assessment.dueDate).toISOString() : null,
                 weight: assessment.weight,
                 grade: null,
             })),
@@ -186,7 +186,7 @@ const TermPage = () => {
 
     return ( 
         <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
-            <div className="max-w-[1840px] flex flex-col gap-14">
+            <div className="max-w-[1840px] w-full flex flex-col gap-14">
                 <div className="w-[100%] h-fit flex flex-col gap-10 lg:flex-row">
                     <div className="w-[100%] lg:w-[60%] flex flex-col gap-10">
                         <div className="flex flex-row items-center justify-start gap-4 text-3xl">
@@ -206,11 +206,11 @@ const TermPage = () => {
                             <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-6">
                                 <Card className="w-[100%] h-[50%] py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
                                     <h1 className="text-6xl font-semibold">9</h1>
-                                    <p className="font-light text-md"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
+                                    <p className="font-light text-lg"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                                 </Card>
                                 <Card className="w-[100%] h-[50%] py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
                                     <h1 className="text-6xl font-semibold">111</h1>
-                                    <p className="font-light text-md"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
+                                    <p className="font-light text-lg"><span className="font-bold">days to go.</span> Stay focused and keep pushing - you're almost there!</p>
                                 </Card>
                             </div>
                             

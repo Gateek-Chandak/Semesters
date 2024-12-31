@@ -13,7 +13,7 @@ const DisplayCourseCard: React.FC<CourseCardProps> = ({ course, gradesShown }) =
     const { term } = useParams()
 
     return ( 
-        <Link key={course.courseTitle} to={`/home/${term?.replace(/\s+/g, '-').toLowerCase()}/${course.courseTitle.replace(/\s+/g, '-').toLowerCase()}`}>
+        <Link key={course.courseTitle} to={`/home/${term?.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`}>
             <div
                 style={{
                     '--text-color': course.colour,
@@ -24,7 +24,7 @@ const DisplayCourseCard: React.FC<CourseCardProps> = ({ course, gradesShown }) =
                     {!gradesShown && <h1 className="text-3xl">{course.courseTitle.split(' ')[0]}</h1>}
                     {gradesShown && <h1 className="text-2xl">{course.courseTitle}</h1>}
                     {!gradesShown && <h1 className="text-5xl font-medium">{course.courseTitle.split(' ')[1]}</h1>}
-                    {gradesShown && <h1 className="text-5xl font-medium">{course.highestGrade}%</h1>}
+                    {gradesShown && <h1 className="text-4xl font-medium">{course.highestGrade}%</h1>}
                 </div>
             </div>
         </Link>

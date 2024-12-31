@@ -32,13 +32,17 @@ import { Card } from "@/components/ui/card"
 import { CircularProgress } from '@/components/coursePageCards/CircularProgessBar';
 import { useParams } from 'react-router-dom';
 import { useIsMobile } from '@/hooks/use-mobile';
+import { useDispatch } from 'react-redux';
+import { updateCourse } from "@/redux/slices/dataSlice";
 
 import { CalendarEvent, Assessment, Course } from '@/types/mainTypes';
 
 import GradingSchemeCarouselItem from '@/components/coursePageCards/GradingSchemeCarouselItem';
+import AddDeliverablePopup from '@/components/coursePageCards/AddDeliverablePopup';
 
 const CoursePage = () => {
 
+    const dispatch = useDispatch()
     const isMobile = useIsMobile()
 
     const data = useSelector((state: RootState) => state.data.data);
@@ -46,10 +50,6 @@ const CoursePage = () => {
     let { term , course } = useParams()
     course = course?.replace('-', ' '); 
     term = term?.replace('-', ' ')
-                .toLowerCase()
-                .split(' ')
-                .map(word => word.charAt(0).toUpperCase() + word.slice(1)) 
-                .join(' '); 
 
     const termData = data.find((t) => t.term.toLowerCase() === term?.toLowerCase());
     const termIndex = data.findIndex((t) => t.term.toLowerCase() === term?.toLowerCase())
@@ -69,6 +69,7 @@ const CoursePage = () => {
                         }))
     }
 
+    const [isAddingDeliverable, setIsAddingDeliverable] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false)
     const [highestCourseGrade, setHighestCourseGrade] = useState<number>(0)
     const [targetGrade, setTargetGrade] = useState<number | null>(null)
@@ -78,14 +79,7 @@ const CoursePage = () => {
     const grades = [100, 90, 80, 70, 60, 50]
 
     useEffect(() => {
-        const determineHighestGrade = () => {
-            if (courseData) {
-                const highestGrade = courseData.gradingSchemes.reduce((max: number, scheme) => {
-                    return Math.max(max, scheme.grade);
-                }, 0);
-                setHighestCourseGrade(highestGrade);
-            }
-        }
+      
         const calculateMinGrade = () => {
             let minGrade = Infinity; // Start with the highest possible value
         
@@ -136,10 +130,20 @@ const CoursePage = () => {
             // Update the state with the highest grade
             setMaxGradePossible(parseFloat(maxGrade.toFixed(2))); // Round to 2 decimal places
         };  
-        determineHighestGrade()
         calculateMinGrade()
         calculateMaxGrade()
-    }, [courseData, highestCourseGrade])
+    }, [courseData])
+
+    const determineHighestGrade = () => {
+        if (courseData) {
+            const highestGrade = courseData.gradingSchemes.reduce((max: number, scheme) => {
+                return Math.max(max, scheme.grade);
+            }, 0);
+
+            setHighestCourseGrade(highestGrade);
+            return highestGrade           
+        }
+    }
 
     const updateTargetGrade = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trim();
@@ -257,6 +261,75 @@ const CoursePage = () => {
         }
     }
 
+    const updateGrade = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
+            const inputValue = e.target.value.trim();
+            const parsedValue = inputValue === "" ? null : parseFloat(parseFloat(inputValue).toFixed(2));
+        
+            // Exit early for invalid numbers or out-of-range values
+            if (parsedValue !== null && (isNaN(parsedValue) || parsedValue > 200 || parsedValue < 0)) {
+                return;
+            }
+        
+            // Update gradingSchemes state
+            const updatedSchemes = courseData?.gradingSchemes.map((scheme) => {
+                let totalGrade = 0;
+                let totalWeight = 0;
+        
+                const updatedAssessments = scheme.assessments.map((assessment) => {
+                    // Update the grade for the matching assessment
+                    if (assessment.assessmentName === assessmentName) {
+                        assessment = { ...assessment, grade: parsedValue }; // Assign rounded value or null
+                    }
+        
+                    // Include only completed assessments in the grade calculation
+                    if (assessment.grade !== null && assessment.grade !== undefined) {
+                        totalGrade += (assessment.grade * assessment.weight) / 100;
+                        totalWeight += assessment.weight;
+                    }
+        
+                    return assessment;
+                });
+        
+                // Ensure totalWeight doesn't exceed 100
+                if (totalWeight > 100) {
+                    totalWeight = 100;
+                }
+        
+                // Calculate final grade, scaled to completed assessments
+                const finalGrade = totalWeight > 0 ? (totalGrade / totalWeight) * 100 : 0;
+        
+                return {
+                    ...scheme,
+                    assessments: updatedAssessments,
+                    grade: parseFloat(finalGrade.toFixed(2)), // Round to 2 decimal places
+                };
+            });
+
+            if (term && (courseIndex === 0 || courseIndex) && courseData) {
+                const newHighestGrade = determineHighestGrade()
+                dispatch(updateCourse({
+                    term: term,
+                    courseIndex: courseIndex,
+                    course: {
+                        courseTitle: courseData.courseTitle,
+                        courseSubtitle: courseData.courseSubtitle,
+                        colour: courseData.colour,
+                        highestGrade: newHighestGrade,
+                        gradingSchemes: updatedSchemes
+                    }
+                }))
+            }
+            
+        
+            if (targetGrade) {
+                gradeButtonAction(targetGrade);
+            }
+    };
+
+    const handleAddDeliverableButton = () => {
+        setIsAddingDeliverable(prev => !prev)
+    }
+
     return ( 
 
         <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
@@ -335,12 +408,14 @@ const CoursePage = () => {
                                                                 gradeButtonAction={gradeButtonAction}
                                                                 term={term ? term : ""}
                                                                 courseIndex={(courseIndex === 0 || courseIndex) ? courseIndex : -1}
-                                                                courseData={courseData}/>
+                                                                courseData={courseData}
+                                                                updateGrade={updateGrade}
+                                                                setIsAddingDeliverable={setIsAddingDeliverable}/>
                                 ))}
                                 {courseData && (courseData.gradingSchemes.length <= 0) && 
                                     <CarouselItem className='min-h-[41rem] bg-card rounded-xl border border-slate-200'>
                                         <div className='ml-auto flex flex-row justify-end pr-6 relative py-6 gap-3'>                               
-                                            {!isEditing && <Button className=''>+ Add New Deliverable</Button>}
+                                            {!isEditing && <Button className='' onClick={handleAddDeliverableButton}>+ Add New Deliverable</Button>}
                                         </div>
                                         <h1 className='text-2xl font-light text-center mt-52'>No Deliverables Found.</h1>
                                     </CarouselItem>}
@@ -396,6 +471,7 @@ const CoursePage = () => {
                     </div>
                 </div>
             </div>
+            <AddDeliverablePopup isAddingDeliverable={isAddingDeliverable} setIsAddingDeliverable={setIsAddingDeliverable} />
         </div>
      );
 }
