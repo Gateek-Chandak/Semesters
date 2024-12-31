@@ -21,17 +21,17 @@ interface CircularProgressProps {
 
     const [strokeColour, setStrokeColour] = useState<string>('currentColor')
 
-    useEffect(() => {
-      if (percentage == 0) {
-        setStrokeColour('currentColor')
-      } else if (percentage < 50) {
-        setStrokeColour('red')
-      } else if (percentage >= 50 && percentage < 65) {
-        setStrokeColour('orange')
-      } else if (percentage >= 65) {
-        setStrokeColour('green')
-      }
-    }, [percentage])
+    // useEffect(() => {
+    //   if (percentage == 0) {
+    //     setStrokeColour('currentColor')
+    //   } else if (percentage < 50) {
+    //     setStrokeColour('red')
+    //   } else if (percentage >= 50 && percentage < 65) {
+    //     setStrokeColour('orange')
+    //   } else if (percentage >= 65) {
+    //     setStrokeColour('green')
+    //   }
+    // }, [percentage])
   
     return (
       <div className="flex flex-col items-center text-center py-6 gap-8">
@@ -95,19 +95,19 @@ interface CircularProgressProps {
           <h3 className="text-lg font-medium">{label}</h3>
           <Button onClick={() => {const showing: boolean = !isShowingAverage
                                   setIsShowingAverage(!isShowingAverage)
-                                  if (showing) {
-                                    if (percentage == 0) {
-                                      setStrokeColour('currentColor')
-                                    } else if (percentage < 50) {
-                                      setStrokeColour('red')
-                                    } else if (percentage >= 50 && percentage < 65) {
-                                      setStrokeColour('orange')
-                                    } else if (percentage >= 65) {
-                                      setStrokeColour('green')
-                                    }
-                                  } else if (!showing) {
-                                    setStrokeColour('black')
-                                  }
+                                  // if (showing) {
+                                  //   if (percentage == 0) {
+                                  //     setStrokeColour('currentColor')
+                                  //   } else if (percentage < 50) {
+                                  //     setStrokeColour('red')
+                                  //   } else if (percentage >= 50 && percentage < 65) {
+                                  //     setStrokeColour('orange')
+                                  //   } else if (percentage >= 70) {
+                                  //     setStrokeColour('green')
+                                  //   }
+                                  // } else if (!showing) {
+                                  //   setStrokeColour('black')
+                                  // }
                                 }}
                     variant={"ghost"}>
             {isShowingAverage &&<EyeOffIcon className='!w-6 !h-6'/>}

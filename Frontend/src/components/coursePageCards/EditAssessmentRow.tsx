@@ -3,8 +3,10 @@ import { format } from "date-fns";
 
 import { TableRow, TableCell } from "../ui/table";
 import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { XIcon } from "lucide-react";
 
-import { Assessment, Course } from "@/types/mainTypes";
+import { Assessment, Course, GradingScheme } from "@/types/mainTypes";
 
 import { useDispatch } from 'react-redux';
 import { updateCourse } from "@/redux/slices/dataSlice";
@@ -18,10 +20,11 @@ interface EditAssessmentRowProps {
     term: string;
     courseIndex: number;
     courseData: Course;
-    updateGrade: (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => void
+    updateGrade: (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => void;
+    scheme: GradingScheme;
 }
 
-const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targetGrade, gradeButtonAction, term, courseIndex, courseData, updateGrade } ) => {
+const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targetGrade, gradeButtonAction, term, courseIndex, courseData, updateGrade, scheme } ) => {
     const dispatch = useDispatch();
 
     const [localAssessmentName, setLocalAssessmentName] = useState<string>(assessment.assessmentName)
@@ -141,7 +144,34 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
         }
     };
 
+    const deleteAssessment = (assessmentName: string) => {
+        const updatedSchemes = courseData?.gradingSchemes.map((s) => {
 
+            if (s.schemeName === scheme.schemeName) {
+                const updatedAssessments = s.assessments.filter((a) => a.assessmentName !== assessmentName);
+                
+                return {
+                    ...s,
+                    assessments: updatedAssessments,
+                };
+            }
+            return s;
+        });
+    
+        if (updatedSchemes) {
+            dispatch(updateCourse({
+                term: term,
+                courseIndex: courseIndex,
+                course: {
+                    courseTitle: courseData.courseTitle,
+                    courseSubtitle: courseData.courseSubtitle,
+                    colour: courseData.colour,
+                    highestGrade: courseData.highestGrade,
+                    gradingSchemes: updatedSchemes
+                }
+            }));
+        }
+    };
 
     useEffect(() => {
         const updateAssessmentDueDate = (assessmentName: string) => {
@@ -174,7 +204,11 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
 
     return ( 
         <TableRow key={assessment.assessmentName} className="">
-            <TableCell className="text-center text-red-500">x</TableCell>
+            <TableCell className="text-center">
+                <Button className="w-5 h-8 hover:text-red-500" variant={'ghost'} onClick={() => deleteAssessment(assessment.assessmentName)}>
+                    <XIcon className="!w-3 !h-3"/>
+                </Button>
+            </TableCell>
             <TableCell className="text-center">
                 <Input type="text" className="" value={localAssessmentName} onChange={handleNameChange} onBlur={() => updateAssessmentName(assessment.assessmentName)}/>
             </TableCell>

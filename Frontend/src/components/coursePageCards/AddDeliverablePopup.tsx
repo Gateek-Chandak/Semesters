@@ -1,27 +1,129 @@
 import { Button } from "../ui/button";
 import { Input } from "../ui/input";
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu"
 import { XIcon } from "lucide-react";
+
+import { useDispatch } from "react-redux";
+import { updateCourse } from "@/redux/slices/dataSlice";
 
 import { useState } from "react";
 
+import { Course } from "@/types/mainTypes";
+
+import { DateTimePicker } from "./DateTimePicker";
+import { ChangeEvent } from "react";
+
 interface AddDeliverablePopupProps {
     isAddingDeliverable: boolean;
-    setIsAddingDeliverable: React.Dispatch<React.SetStateAction<boolean>>
+    setIsAddingDeliverable: React.Dispatch<React.SetStateAction<boolean>>;
+    term: string;
+    courseIndex: number;
+    courseData: Course;
 }
 
-const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliverable, setIsAddingDeliverable} ) => {
+const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliverable, setIsAddingDeliverable, term, courseIndex, courseData} ) => {
+
+    const dispatch  = useDispatch()
 
     const [error, setError] = useState<string>('')
+    const [selectedScheme, setSelectedScheme] = useState<string | null>(null)
 
     const [name, setName] = useState<string>('')
-    const [weight, setWeight] = useState<number | null>(null)
+    const [weight, setWeight] = useState<number>(0)
     const [grade, setGrade] = useState<number | null>(null)
     const [date, setDate] = useState<string | null>(null)
 
-    const handleCourseAdd = () => {
-        setIsAddingDeliverable(false)
-        console.log('hello')
+    const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value.trimStart().slice(0, 25);
+        setName(inputValue)
     }
+
+    const handleWeightChange = (e: ChangeEvent<HTMLInputElement>) => {
+            const inputValue = e.target.value.trim();
+
+            // Default to 0 if input is empty
+            if (inputValue === "") {
+                setWeight(0);
+                return;
+            }
+        
+            const parsedValue = parseFloat(inputValue);
+        
+            // Ignore invalid or out-of-range values
+            if (isNaN(parsedValue) || parsedValue > 100) {
+                return;
+            }
+        
+            setWeight(parsedValue);
+    };
+
+    const handleGradeChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value.trim();
+    
+        // Default to 0 if input is empty
+        if (inputValue === "") {
+            setGrade(0);
+            return;
+        }
+    
+        const parsedValue = parseFloat(inputValue);
+    
+        // Ignore invalid or out-of-range values
+        if (isNaN(parsedValue) || parsedValue > 999) {
+            return;
+        }
+    
+        setGrade(parsedValue);
+};
+
+    const handleCourseAdd = () => {
+        const newAssessment = {
+            assessmentName: name,
+            weight: weight,
+            grade: grade,
+            dueDate: date,
+        };
+
+        const repeatedName = courseData?.gradingSchemes.find((scheme) =>
+            scheme.assessments.some((assessment) => (assessment.assessmentName === name && scheme.schemeName === selectedScheme))
+        );
+        
+        if (repeatedName) {
+            setError('A deliverable with this name already exists.')
+            return;
+        }
+    
+        const updatedSchemes = courseData?.gradingSchemes.map((scheme) => {
+            if (scheme.schemeName === selectedScheme) {
+                return {
+                    ...scheme, // Clone the scheme
+                    assessments: [...scheme.assessments, newAssessment], // Create a new array
+                };
+            }
+            return scheme; // Return unchanged schemes
+        });
+    
+        dispatch(
+            updateCourse({
+                term: term,
+                courseIndex: courseIndex,
+                course: {
+                    ...courseData,
+                    gradingSchemes: updatedSchemes,
+                },
+            })
+        );
+        setIsAddingDeliverable(false);
+    };
+    
 
     return ( 
         <div className="flex flex-row flex-wrap gap-10">
@@ -29,30 +131,47 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
                     <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-md">
                         <div className="flex flex-row items-center">
-                            <h1 className="mr-auto text-left font-semibold mb-2 text-xl">Add Deliverable</h1>
-                            <button onClick={() => setIsAddingDeliverable(false)}><XIcon className="ml-auto w-5 h-auto -top-4 left-2 relative hover:text-red-600 transform transition-all duration-200 hover:scale-106"/></button>
+                            <h1 className="mr-auto text-left font-semibold mb-10 text-xl">Add Deliverable</h1>
+                            <button onClick={() => setIsAddingDeliverable(false)}><XIcon className="ml-auto w-5 h-auto -top-8 left-2 relative hover:text-red-600 transform transition-all duration-200 hover:scale-106"/></button>
                         </div>
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-medium">Name *</h1>
-                                <Input placeholder="Quiz 1" value={name} onChange={(e) => setName(e.target.value)}></Input>
+                                <Input placeholder="ex. Quiz 1" value={name} onChange={handleNameChange}></Input>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <h1 className="font-medium">Weight*</h1>
-                                <Input placeholder="10" value={weight || ''} onChange={(e) => setWeight(parseFloat(e.target.value))}></Input>
+                                <h1 className="font-medium">Weight *</h1>
+                                <Input placeholder="ex. 10" value={weight} onChange={handleWeightChange}></Input>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-medium">Grade</h1>
-                                <Input placeholder="85" value={grade || ''} onChange={(e) => setGrade(parseFloat(e.target.value))}></Input>
+                                <Input placeholder="ex. 85" value={grade || ''} onChange={handleGradeChange}></Input>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-medium">Due Date</h1>
-                                <Input placeholder="temp" value={date || ''} onChange={(e) => setWeight(parseFloat(e.target.value))}></Input>
+                                <DateTimePicker dueDate={date} setLocalDueDate={setDate}/>
+                            </div>
+                            <div className="flex flex-col gap-1">
+                                <h1 className="font-medium">Grading Scheme *</h1>
+                                <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="outline">{selectedScheme ? selectedScheme : 'Choose Grading Scheme'}</Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent className="w-56">
+                                        <DropdownMenuRadioGroup value={selectedScheme} onValueChange={setSelectedScheme}>
+                                            {courseData && courseData.gradingSchemes.map((scheme) => {
+                                                return (
+                                                    <DropdownMenuRadioItem key={scheme.schemeName} value={scheme.schemeName}>{scheme.schemeName}</DropdownMenuRadioItem>
+                                                )
+                                            })}
+                                        </DropdownMenuRadioGroup>
+                                    </DropdownMenuContent>
+                                </DropdownMenu>
                             </div>
                         </div>
                         <p className="text-left my-3 text-red-600">{error}</p>
                         <div className="flex flex-row justify-end items-center gap-2 mt-10">
-                            <Button onClick={handleCourseAdd}>Add Course</Button>
+                            <Button onClick={handleCourseAdd}>+ Add Course</Button>
                         </div>
                     </div>
                 </div>

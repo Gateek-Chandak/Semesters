@@ -52,7 +52,7 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
                         {isEditing ? "Save Changes" : "Edit"} {isEditing ? <CheckIcon/> : <PencilIcon/>}
                 </Button>
                 {/* {isEditing && <Button className=''>Dicard Changes</Button>} */}
-                {!isEditing && <Button className='' onClick={() => setIsAddingDeliverable(true)}>+ Add New Deliverable</Button>}
+                {!isEditing && <Button className={`bg-${courseData.colour}-500`} onClick={() => setIsAddingDeliverable(true)}>+ Add New Deliverable</Button>}
             </div>
             <div className="h-[33.5rem] overflow-y-auto" >
                 <Table className="mb-4">
@@ -99,7 +99,8 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
                                                         term={term}
                                                         courseIndex={courseIndex}
                                                         courseData={courseData}
-                                                        updateGrade={updateGrade}/>
+                                                        updateGrade={updateGrade}
+                                                        scheme={scheme}/>
                                 )
                             }
                         })}

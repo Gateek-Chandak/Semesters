@@ -7,7 +7,7 @@ import { Course } from "@/types/mainTypes";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { deleteCourse, updateCourseName } from "@/redux/slices/dataSlice";
+import { deleteCourse, updateCourseName, updateCourseSubtitle } from "@/redux/slices/dataSlice";
 
 import { useParams } from "react-router-dom";
 import { useState } from "react";
@@ -34,10 +34,15 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
     const termData = data.find((t) => t.term === term);
 
-    const [inputValue, setInputValue] = useState<string>(course.courseTitle);
+    const [title, setTitle] = useState<string>(course.courseTitle);
+    const [subtitle, setSubtitle] = useState<string>(course.courseSubtitle);
 
-    const handleInputChange = (e) => {
-        setInputValue(e.target.value)
+    const handleTitleChange = (e) => {
+        setTitle(e.target.value)
+    }
+
+    const handleSubtitleChange = (e) => {
+        setSubtitle(e.target.value)
     }
 
     const handleDeleteCourse = (courseName: string) => {
@@ -54,16 +59,50 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
         }
     };
 
-    const handleBlur = () => {
-        console.log('Saving new course title...');
-        const updatedCourse = { ...course, courseTitle: inputValue };
-        const courseIndex = termData?.courses.findIndex(c => c.courseTitle.toLowerCase() === course.courseTitle.toLowerCase());
+    const handleTitleChangeBlur = () => {
+        console.log('Saving updated course details...');
+        const updatedCourse = {
+            ...course,
+            courseTitle: title.trim(), // Trim to avoid unnecessary whitespace
+        };
+    
+        const courseIndex = termData?.courses.findIndex(
+            (c) => c.courseTitle.toLowerCase() === course.courseTitle.toLowerCase()
+        );
+    
         if (termData && courseIndex !== -1) {
-            dispatch(updateCourseName({ term: termData.term, courseIndex: courseIndex, course: updatedCourse }));
+            dispatch(updateCourseName({
+                term: termData.term,
+                courseIndex: courseIndex,
+                course: updatedCourse
+            }));
         } else {
             console.log('Course not found for update');
         }
     };
+
+    const handleSubtitleChangeBlur = () => {
+        console.log('Saving updated course details...');
+        const updatedCourse = {
+            ...course,
+            courseSubtitle: subtitle.trim(), // Trim to avoid unnecessary whitespace
+        };
+    
+        const courseIndex = termData?.courses.findIndex(
+            (c) => c.courseTitle.toLowerCase() === course.courseTitle.toLowerCase()
+        );
+    
+        if (termData && courseIndex !== -1) {
+            dispatch(updateCourseSubtitle({
+                term: termData.term,
+                courseIndex: courseIndex,
+                course: updatedCourse
+            }));
+        } else {
+            console.log('Course not found for update');
+        }
+    };
+    
 
     return (
         <Card > {/* Use course's title or id as key */}
@@ -71,9 +110,15 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
                 <div className="h-40 w-40 flex flex-col justify-center gap-4 items-center p-6">
                     <Input
                         className="text-3xl"
-                        value={inputValue}
-                        onChange={handleInputChange}
-                        onBlur={handleBlur} // Trigger the blur function directly
+                        value={title}
+                        onChange={handleTitleChange}
+                        onBlur={handleTitleChangeBlur} // Trigger the blur function directly
+                    />
+                    <Input
+                        className="text-3xl"
+                        value={subtitle}
+                        onChange={handleSubtitleChange}
+                        onBlur={handleSubtitleChangeBlur} // Trigger the blur function directly
                     />
                     <Button variant="outline" onClick={() => handleDeleteCourse(course.courseTitle)}>
                         Delete <Trash2Icon />

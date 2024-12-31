@@ -20,6 +20,7 @@ export type CalendarEvent = {
   start: Date;
   end: Date;
   title: string;
+  course: string;
   color?: 'green' | 'default' | 'blue' | 'pink' | 'purple' | undefined;
 };
 

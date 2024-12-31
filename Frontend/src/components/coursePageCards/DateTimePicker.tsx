@@ -18,7 +18,7 @@ interface DateTimePickerProps {
 }
 
 export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps) {
-  const [date, setDate] = React.useState<Date>(dueDate ? new Date(dueDate) : new Date());
+  const [date, setDate] = React.useState<Date | null>(dueDate ? new Date(dueDate) : null);
   const [isOpen, setIsOpen] = React.useState(false);
  
   const hours = Array.from({ length: 12 }, (_, i) => i + 1);
@@ -48,6 +48,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
         );
       }
       setDate(newDate);
+      setLocalDueDate(newDate.toISOString())
     }
   };
  
@@ -57,20 +58,20 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
         <Button
           variant="outline"
           className={cn(
-            "justify-start text-left font-normal",
+            "justify-start text-left font-normal w-72",
             !date && "text-muted-foreground"
           )}
         >
           <CalendarIcon className="mr-2 h-4 w-4" />
-          {date ? (
-            format(date, "MM/dd/yyyy hh:mm aa")
+          {(date) ? (
+            format(date, `MMMM dd, yyyy '@' hh:mma`)
           ) : (
             <span>MM/DD/YYYY hh:mm aa</span>
           )}
         </Button>
       </PopoverTrigger>
-      <PopoverContent className="w-auto p-0">
-        <div className="sm:flex">
+      <PopoverContent className="w-auto p-4 border border-slate-300 rounded-lg">
+        <div className="sm:flex border border-slate-200 rounded-md p-3">
           <Calendar
             mode="single"
             selected={date ? date : new Date()}
@@ -78,7 +79,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
             initialFocus
           />
           <div className="flex flex-col sm:flex-row sm:h-[300px] divide-y sm:divide-y-0 sm:divide-x">
-            <ScrollArea className="w-64 sm:w-auto">
+            <ScrollArea className="w-64 p-2 sm:w-auto">
               <div className="flex sm:flex-col p-2">
                 {hours.reverse().map((hour) => (
                   <Button
@@ -98,7 +99,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
               </div>
               <ScrollBar orientation="horizontal" className="sm:hidden" />
             </ScrollArea>
-            <ScrollArea className="w-64 sm:w-auto">
+            <ScrollArea className="w-64 p-2 sm:w-auto">
               <div className="flex sm:flex-col p-2">
                 {Array.from({ length: 12 }, (_, i) => i * 5).map((minute) => (
                   <Button
@@ -120,7 +121,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
               </div>
               <ScrollBar orientation="horizontal" className="sm:hidden" />
             </ScrollArea>
-            <ScrollArea className="">
+            <ScrollArea className="p-2">
               <div className="flex sm:flex-col p-2">
                 {["AM", "PM"].map((ampm) => (
                   <Button

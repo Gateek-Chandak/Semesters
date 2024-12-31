@@ -46,7 +46,7 @@ export function NavMain({ data }: {data:any}) {
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={term.term}>
-                  <Link className="truncate text-[1rem]" to={`/home/${term.term.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
+                  <Link className="truncate text-[1.1rem]" to={`/home/${term.term.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
                     {term.term}
                   </Link>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -57,7 +57,7 @@ export function NavMain({ data }: {data:any}) {
                   {(term.courses.length > 0) && term.courses?.map((course: any) => (
                     <SidebarMenuSubItem key={course.courseTitle}>
                       <SidebarMenuSubButton asChild>
-                        <Link className="text-lg" to={`/home/${term.term.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
+                        <Link className="text-[1rem]" to={`/home/${term.term.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
                           <span>{course.courseTitle}</span>
                         </Link>
                       </SidebarMenuSubButton>

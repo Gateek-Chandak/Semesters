@@ -23,7 +23,7 @@ interface CircularProgressProps {
         setStrokeColour('red')
       } else if (percentage >= 50 && percentage < 65) {
         setStrokeColour('orange')
-      } else if (percentage >= 65) {
+      } else if (percentage >= 70) {
         setStrokeColour('green')
       }
     }, [percentage])

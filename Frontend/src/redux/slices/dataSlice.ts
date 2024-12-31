@@ -144,6 +144,13 @@ const dataSlice = createSlice({
                 state.data[termIndex].courses[courseIndex] = course;
             }
         },
+        updateCourseSubtitle(state, action: PayloadAction<{ term: string; courseIndex: number; course: Course }>) {
+          const { term, courseIndex, course } = action.payload;
+          const termIndex = state.data.findIndex((t) => t.term === term);
+          if (termIndex !== -1) {
+              state.data[termIndex].courses[courseIndex] = course;
+          }
+      },
         updateCourse(state, action: PayloadAction<{ term: string; courseIndex: number; course: Course }>) {
           const { term, courseIndex, course } = action.payload;
           const termIndex = state.data.findIndex((t) => t.term === term);
@@ -185,6 +192,6 @@ const dataSlice = createSlice({
     },
 });
 
-export const { setData, updateCourse, addCourse, deleteCourse, updateAssessment, updateTerm, updateCourseName } = dataSlice.actions;
+export const { setData, updateCourse, addCourse, deleteCourse, updateAssessment, updateTerm, updateCourseName, updateCourseSubtitle } = dataSlice.actions;
 
 export default dataSlice.reducer;

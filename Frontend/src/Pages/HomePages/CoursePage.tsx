@@ -62,7 +62,7 @@ const CoursePage = () => {
                         .map((assessment: Assessment) => ({
                             id: uuid(),
                             start: new Date(assessment.dueDate ? assessment.dueDate : ""),
-                            end: addHours(new Date(assessment.dueDate ? assessment.dueDate: ""), 0.5),
+                            end: addHours(new Date(assessment.dueDate ? assessment.dueDate: ""), 1),
                             title: assessment.assessmentName,
                             color: courseData.colour as CalendarEvent["color"],
                             course: courseData.courseTitle
@@ -77,6 +77,21 @@ const CoursePage = () => {
     const [minGradePossible, setMinGradePossible] = useState<number>(0)
     const [maxGradePossible, setMaxGradePossible] = useState<number>(100)
     const grades = [100, 90, 80, 70, 60, 50]
+
+    useEffect(() => {
+        if (isAddingDeliverable) {
+          // Disable scrolling
+          document.body.style.overflow = "hidden";
+        } else {
+          // Re-enable scrolling
+          document.body.style.overflow = "";
+        }
+    
+        // Cleanup on unmount
+        return () => {
+          document.body.style.overflow = "";
+        };
+    }, [isAddingDeliverable]);
 
     useEffect(() => {
       
@@ -130,6 +145,7 @@ const CoursePage = () => {
             // Update the state with the highest grade
             setMaxGradePossible(parseFloat(maxGrade.toFixed(2))); // Round to 2 decimal places
         };  
+        determineHighestGrade()
         calculateMinGrade()
         calculateMaxGrade()
     }, [courseData])
@@ -266,7 +282,7 @@ const CoursePage = () => {
             const parsedValue = inputValue === "" ? null : parseFloat(parseFloat(inputValue).toFixed(2));
         
             // Exit early for invalid numbers or out-of-range values
-            if (parsedValue !== null && (isNaN(parsedValue) || parsedValue > 200 || parsedValue < 0)) {
+            if (parsedValue !== null && (isNaN(parsedValue) || parsedValue > 999 || parsedValue < 0)) {
                 return;
             }
         
@@ -375,18 +391,18 @@ const CoursePage = () => {
                                 <p className='text-xs text-muted-foreground'>*note that this value is an approximation using worst case scenario</p>
                             </div>
                         </Card>
-                        <Card className="w-[100%] pt-6 px-6 flex flex-col justify-center items-center gap-10 col-span-1">
-                            <div className="flex flex-col gap-2">
-                                <div className="flex flex-row">
+                        <Card className="w-[100%] pt-6 px-6 flex flex-col justify-center items-start gap-10 col-span-1">
+                            <div className="w-full flex flex-col gap-2">
+                                <div className="flex flex-row justify-between">
                                     <h1 className="mr-auto text-xl font-medium">Minimum</h1>
                                     <h1 className="ml-auto text-xl font-medium">{minGradePossible}%</h1>
                                 </div>
                                 <p className="text-md font-light">Assuming that you uninstall LEARN and doom scroll for the rest of the term.</p>
                             </div>
-                            <div className="flex flex-col gap-2">
-                                <div className="flex flex-row">
+                            <div className="w-full flex flex-col gap-2">
+                                <div className="flex flex-row justify-between">
                                     <h1 className="mr-auto text-xl font-medium">Maximum</h1>
-                                    <h1 className="ml-auto text-xl font-medium">{maxGradePossible}%</h1>
+                                    <h1 className="ml-auto text-xl font-medium">{minGradePossible}%</h1>
                                 </div>
                                 <p className="text-md font-light">Given that you score 100% on everything remaining.</p>
                             </div>
@@ -396,7 +412,7 @@ const CoursePage = () => {
                 </div>
                 <div className={`h-fit w-full mt-8 mb-10 flex ${isMobile ? 'flex-col' : 'flex-row'} justify-center gap-14 lg:gap-16`}>
                     <div className={`${isMobile ? 'w-[100%]' : 'w-[55%]'} flex flex-col items-center justify-start gap-8 rounded-2xl`}>
-                        <h1 className="mr-auto font-bold text-3xl">Deliverables</h1>
+                        <h1 className="mr-auto text-2xl font-light">Deliverables</h1>
                         <Carousel className="w-full shadow-md border border-slate-200 rounded-2xl">
                             <CarouselContent className=''>
                                 {courseData && (courseData.gradingSchemes.length > 0) && courseData.gradingSchemes.map((scheme, index) => (
@@ -411,6 +427,8 @@ const CoursePage = () => {
                                                                 courseData={courseData}
                                                                 updateGrade={updateGrade}
                                                                 setIsAddingDeliverable={setIsAddingDeliverable}/>
+                                    
+                                    
                                 ))}
                                 {courseData && (courseData.gradingSchemes.length <= 0) && 
                                     <CarouselItem className='min-h-[41rem] bg-card rounded-xl border border-slate-200'>
@@ -425,8 +443,8 @@ const CoursePage = () => {
                         </Carousel>
                     </div>
                     {/* Calendar Component */}
-                    <div className={`${isMobile ? 'w-[100%]' : 'w-[45%]'} flex flex-col items-center justify-start overflow-auto gap-8`}>
-                        <h1 className="mr-auto font-bold text-3xl">Course Calendar</h1>
+                    <div className={`${isMobile ? 'w-[100%]' : 'w-[45%]'} flex flex-col items-center justify-start overflow-auto gap-8 rounded-xl`}>
+                        <h1 className="mr-auto text-2xl font-light">Course Calendar</h1>
                         <Calendar
                             events={calendarEvents}
                             >
@@ -471,7 +489,11 @@ const CoursePage = () => {
                     </div>
                 </div>
             </div>
-            <AddDeliverablePopup isAddingDeliverable={isAddingDeliverable} setIsAddingDeliverable={setIsAddingDeliverable} />
+            <AddDeliverablePopup term={term ? term : ""} 
+                                 courseIndex={(courseIndex === 0 || courseIndex) ? courseIndex : -1}
+                                 courseData={courseData} 
+                                 isAddingDeliverable={isAddingDeliverable} 
+                                 setIsAddingDeliverable={setIsAddingDeliverable} />
         </div>
      );
 }

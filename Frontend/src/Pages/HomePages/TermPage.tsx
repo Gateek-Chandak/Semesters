@@ -31,6 +31,7 @@ import { IncomingCourseInfo } from "@/types/mainTypes";
 import EditCourseCard from "@/components/termPageCards/EditCourseCard";
 import CreateCoursePopup from "@/components/termPageCards/CreateCoursePopup";
 import DisplayCourseCard from "@/components/termPageCards/DisplayCourseCard";
+import EventsInProximity from "@/components/termPageCards/EventsInProximity";
 
 const TermPage = () => {
     const data = useSelector((state: RootState) => state.data.data);
@@ -68,6 +69,30 @@ const TermPage = () => {
     }
 
     const termData = data.find((t) => t.term === term);
+    const calendarEvents = termData?.courses.flatMap((course) => {
+        // Use a Set to track unique assessment names for the course
+        const uniqueAssessments = new Set();
+      
+        return course.gradingSchemes.flatMap((scheme) =>
+          scheme.assessments
+            .filter((assessment) => {
+              // Check if the assessment name is already added for this course
+              if (uniqueAssessments.has(assessment.assessmentName)) {
+                return false; // Skip duplicates
+              }
+              uniqueAssessments.add(assessment.assessmentName); // Mark as added
+              return true;
+            })
+            .map((assessment) => ({
+              id: uuid(),
+              start: new Date(assessment.dueDate),
+              end: addHours(new Date(assessment.dueDate), 1),
+              title: assessment.assessmentName,
+              course: course.courseTitle,
+              color: course.colour,
+            }))
+        );
+    });
 
     useEffect(() => {
         if (termData && termData.courses?.length > 0) {
@@ -194,7 +219,7 @@ const TermPage = () => {
                             <h1 className="text-3xl font-extralight"> {formattedDate}</h1>
                         </div>
                         <div className="w-[100%] mt-2 h-full flex flex-col items-center md:flex-row gap-10">
-                            <Card className="w-[100%] md:w-[35%] px-6 py-[18px]">
+                            <Card className="w-[100%] md:w-[30%] px-6 py-[18px]">
                                 <CircularProgress 
                                     percentage={termGrade} 
                                     label="Term Average"
@@ -203,7 +228,7 @@ const TermPage = () => {
                                     setIsShowingAverage={setIsShowingAverage}
                                 />
                             </Card>
-                            <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-6">
+                            <div className="md:w-[70%] w-[100%] h-full flex flex-col items-center gap-10">
                                 <Card className="w-[100%] h-[50%] py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
                                     <h1 className="text-6xl font-semibold">9</h1>
                                     <p className="font-light text-lg"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
@@ -217,40 +242,18 @@ const TermPage = () => {
                         </div>
                     </div>
                     <div className="w-[100%] lg:w-[40%] flex flex-col gap-10">
-                        <h1 className="w-[100%] text-3xl font-bold">
-                            Next 7 Days...
+                        <h1 className="w-[100%] text-2xl font-light">
+                            Upcoming Deliverables
                         </h1>
                         <div className="h-[100%] w-[100%]"> 
-                            <Card className="w-[100%] h-[25rem] h-max-[27rem] overflow-y-auto p-4 flex flex-col gap-2">
-                                <div className="h-full flex flex-col gap-4 justify-between">
-                                    <Card className="p-5 h-full bg-gradient-to-b from-purple-100 via-purple-50 to-white">
-                                        <h1 className="font-medium">MATH 135</h1>
-                                        <div className="mt-2 flex flex-col justify-center">
-                                            <p className="font-extralight">Assignment 1</p>
-                                            <p className="font-extralight">Quiz 1</p>
-                                        </div>
-                                    </Card>
-                                    <Card className="p-5 h-full bg-gradient-to-b from-blue-100 via-blue-50 to-white">
-                                        <h1 className="font-medium">MATH 137</h1>
-                                        <div className="mt-2 flex flex-col justify-center">
-                                            <p className="font-extralight">Quiz 1</p>
-                                        </div>
-                                    </Card>
-                                    <Card className="p-5 h-full bg-gradient-to-b from-green-100 via-green-50 to-white">
-                                        <h1 className="font-medium">CS 136</h1>
-                                        <div className="mt-2 flex flex-col justify-center">
-                                            <p className="font-extralight">Lab 1</p>
-                                        </div>
-                                    </Card>
-                                </div>
-                            </Card>
+                            <EventsInProximity calendarEvents={calendarEvents} proximityInDays={7} />
                         </div>
                     </div>
                 </div>
                 <div className="w-[100%] flex flex-col gap-10 lg:flex-row h-fit">
                     <div className="h-[100%] w-[100%] lg:w-[55%] flex flex-col gap-10">
                         <div className="flex flex-col gap-7 sm:gap-0 sm:flex-row w-ful pr-12">
-                            <h1 className="sm:mr-auto text-3xl font-bold">Current Courses</h1>
+                            <h1 className="sm:mr-auto text-2xl font-light">Current Courses</h1>
                             <div className="sm:ml-auto flex flex-row gap-4">
                                 {!isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100' onClick={() => setIsManagingCourses(!isManagingCourses)}>Manage Courses <PencilIcon/></Button>}
                                 {isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100' onClick={() => setIsManagingCourses(!isManagingCourses)}>Save Changes <Check/></Button>}
@@ -271,17 +274,9 @@ const TermPage = () => {
                     </div>
                     {/* Calendar Component */}
                     <div className="w-[100%] lg:w-[45%] flex flex-col gap-10">
-                        <h1 className="mr-auto font-bold text-3xl">Course Calendar</h1>
+                        <h1 className="mr-auto text-2xl font-light">Course Calendar</h1>
                         <Calendar
-                            events={termData?.courses.flatMap((course) =>
-                                course.gradingSchemes[0].assessments.map((assessment) => ({
-                                    id: uuid(),
-                                    start: new Date(assessment.dueDate),
-                                    end: addHours(new Date(assessment.dueDate), 0.5),
-                                    title: assessment.assessmentName,
-                                    color: course.colour, 
-                                }))
-                            )}>
+                            events={calendarEvents}>
                             <div className="max-h-[41rem] min-h-[32rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
                                 <div className="flex px-6 items-center gap-2 mb-6">
                                     <CalendarViewTrigger
