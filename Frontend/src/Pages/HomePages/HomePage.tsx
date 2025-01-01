@@ -39,7 +39,7 @@ const HomePage = ( ) => {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block text-lg">
-                  <BreadcrumbLink href="/home">home</BreadcrumbLink>
+                  <BreadcrumbLink href="/home">Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 {term && (
                   <>

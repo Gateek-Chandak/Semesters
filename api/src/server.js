@@ -7,6 +7,7 @@ const app = express();
 const pdfRoutes = require('./routes/pdfRoutes');
 const googleOAuthRoutes = require('./routes/googleOAuthRoutes');
 const calendarRoutes = require('./routes/calendarRoutes');
+const transcriptRoutes = require('./routes/transcriptRoutes')
 
 // GLOBAL CONSTANTS
 const PORT = 4000;
@@ -30,6 +31,7 @@ app.use((req, res, next) => {
 app.use("/api/pdf/", pdfRoutes)
 app.use("/api/auth/", googleOAuthRoutes)
 app.use("/api/calendar/", calendarRoutes)
+app.use("/api/transcript/", transcriptRoutes)
 
 // START SERVER
 app.listen(PORT, () => {

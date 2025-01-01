@@ -15,6 +15,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 
 import {
+    DropdownMenu,
+    DropdownMenuItem,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+    DropDown
+  } from "@/components/ui/dropdown-menu"
+import {
     Calendar,
     CalendarCurrentDate,
     CalendarMonthView,
@@ -35,10 +44,11 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useDispatch } from 'react-redux';
 import { updateCourse } from "@/redux/slices/dataSlice";
 
-import { CalendarEvent, Assessment, Course } from '@/types/mainTypes';
+import { CalendarEvent, Assessment, Course, GradingScheme } from '@/types/mainTypes';
 
 import GradingSchemeCarouselItem from '@/components/coursePageCards/GradingSchemeCarouselItem';
 import AddDeliverablePopup from '@/components/coursePageCards/AddDeliverablePopup';
+import AddSchemePopup from '@/components/coursePageCards/AddSchemePopup';
 
 const CoursePage = () => {
 
@@ -57,18 +67,29 @@ const CoursePage = () => {
     const courseIndex = termData?.courses.findIndex((c) => c.courseTitle.toLowerCase() === courseData?.courseTitle.toLowerCase())
     let calendarEvents: CalendarEvent[] = []
     if (courseData && courseData.gradingSchemes.length > 0) {
-        calendarEvents = courseData.gradingSchemes[0].assessments
-                        .filter((assessment: Assessment) => assessment.dueDate)
-                        .map((assessment: Assessment) => ({
-                            id: uuid(),
-                            start: new Date(assessment.dueDate ? assessment.dueDate : ""),
-                            end: addHours(new Date(assessment.dueDate ? assessment.dueDate: ""), 1),
-                            title: assessment.assessmentName,
-                            color: courseData.colour as CalendarEvent["color"],
-                            course: courseData.courseTitle
-                        }))
+        const uniqueAssessments = new Set();
+        calendarEvents = courseData.gradingSchemes.flatMap((scheme) =>
+                                scheme.assessments
+                                .filter((assessment) => {
+                                    // Check if the assessment name is already added for this course
+                                    if (uniqueAssessments.has(assessment.assessmentName)) {
+                                    return false; // Skip duplicates
+                                    }
+                                    uniqueAssessments.add(assessment.assessmentName); // Mark as added
+                                    return true;
+                                })
+                                .map((assessment) => ({
+                                    id: uuid(),
+                                    start: new Date(assessment.dueDate),
+                                    end: addHours(new Date(assessment.dueDate), 1),
+                                    title: assessment.assessmentName,
+                                    course: courseData.courseTitle,
+                                    color: courseData.colour,
+                                }))
+                            );
     }
 
+    const [isAddingScheme, setIsAddingScheme] = useState<boolean>(false)
     const [isAddingDeliverable, setIsAddingDeliverable] = useState<boolean>(false)
     const [isEditing, setIsEditing] = useState<boolean>(false)
     const [highestCourseGrade, setHighestCourseGrade] = useState<number>(0)
@@ -79,7 +100,7 @@ const CoursePage = () => {
     const grades = [100, 90, 80, 70, 60, 50]
 
     useEffect(() => {
-        if (isAddingDeliverable) {
+        if (isAddingDeliverable || isAddingScheme) {
           // Disable scrolling
           document.body.style.overflow = "hidden";
         } else {
@@ -91,7 +112,7 @@ const CoursePage = () => {
         return () => {
           document.body.style.overflow = "";
         };
-    }, [isAddingDeliverable]);
+    }, [isAddingDeliverable, isAddingScheme]);
 
     useEffect(() => {
       
@@ -145,14 +166,16 @@ const CoursePage = () => {
             // Update the state with the highest grade
             setMaxGradePossible(parseFloat(maxGrade.toFixed(2))); // Round to 2 decimal places
         };  
-        determineHighestGrade()
+        if (courseData) {
+            determineHighestGrade(courseData?.gradingSchemes)
+        }
         calculateMinGrade()
         calculateMaxGrade()
     }, [courseData])
 
-    const determineHighestGrade = () => {
+    const determineHighestGrade = (updatedSchemes: GradingScheme[]) => {
         if (courseData) {
-            const highestGrade = courseData.gradingSchemes.reduce((max: number, scheme) => {
+            const highestGrade = updatedSchemes.reduce((max: number, scheme) => {
                 return Math.max(max, scheme.grade);
             }, 0);
 
@@ -322,18 +345,20 @@ const CoursePage = () => {
             });
 
             if (term && (courseIndex === 0 || courseIndex) && courseData) {
-                const newHighestGrade = determineHighestGrade()
-                dispatch(updateCourse({
-                    term: term,
-                    courseIndex: courseIndex,
-                    course: {
-                        courseTitle: courseData.courseTitle,
-                        courseSubtitle: courseData.courseSubtitle,
-                        colour: courseData.colour,
-                        highestGrade: newHighestGrade,
-                        gradingSchemes: updatedSchemes
-                    }
-                }))
+                const newHighestGrade = determineHighestGrade(updatedSchemes)
+                if (newHighestGrade) {
+                    dispatch(updateCourse({
+                        term: term,
+                        courseIndex: courseIndex,
+                        course: {
+                            courseTitle: courseData.courseTitle,
+                            courseSubtitle: courseData.courseSubtitle,
+                            colour: courseData.colour,
+                            highestGrade: newHighestGrade,
+                            gradingSchemes: updatedSchemes
+                        }
+                    }))
+                }   
             }
             
         
@@ -344,6 +369,10 @@ const CoursePage = () => {
 
     const handleAddDeliverableButton = () => {
         setIsAddingDeliverable(prev => !prev)
+    }
+
+    const handleAddSchemeButton = () => {
+        setIsAddingScheme(prev => !prev)
     }
 
     return ( 
@@ -360,8 +389,9 @@ const CoursePage = () => {
                             <CircularProgress 
                                 percentage={highestCourseGrade} 
                                 label="Overall Average"
-                                description="You still have 5 deliverables left, which account for 80% of your total grade."
+                                description=""//"You still have 5 deliverables left, which account for 80% of your total grade."
                             />
+                            <p className='text-xs text-center mb-4 text-muted-foreground'>*note that this is an approximation, users must consult official school sources.</p>
                         </Card>
                         <Card className="w-[100%] p-6">
                             <div className="space-y-4">
@@ -402,7 +432,7 @@ const CoursePage = () => {
                             <div className="w-full flex flex-col gap-2">
                                 <div className="flex flex-row justify-between">
                                     <h1 className="mr-auto text-xl font-medium">Maximum</h1>
-                                    <h1 className="ml-auto text-xl font-medium">{minGradePossible}%</h1>
+                                    <h1 className="ml-auto text-xl font-medium">{maxGradePossible}%</h1>
                                 </div>
                                 <p className="text-md font-light">Given that you score 100% on everything remaining.</p>
                             </div>
@@ -426,14 +456,15 @@ const CoursePage = () => {
                                                                 courseIndex={(courseIndex === 0 || courseIndex) ? courseIndex : -1}
                                                                 courseData={courseData}
                                                                 updateGrade={updateGrade}
-                                                                setIsAddingDeliverable={setIsAddingDeliverable}/>
+                                                                setIsAddingDeliverable={setIsAddingDeliverable}
+                                                                setIsAddingScheme={setIsAddingScheme}/>
                                     
                                     
                                 ))}
                                 {courseData && (courseData.gradingSchemes.length <= 0) && 
                                     <CarouselItem className='min-h-[41rem] bg-card rounded-xl border border-slate-200'>
                                         <div className='ml-auto flex flex-row justify-end pr-6 relative py-6 gap-3'>                               
-                                            {!isEditing && <Button className='' onClick={handleAddDeliverableButton}>+ Add New Deliverable</Button>}
+                                            {!isEditing && <Button variant={'default'} className='' onClick={handleAddSchemeButton}>+ Add New Grading Scheme</Button>}
                                         </div>
                                         <h1 className='text-2xl font-light text-center mt-52'>No Deliverables Found.</h1>
                                     </CarouselItem>}
@@ -494,6 +525,11 @@ const CoursePage = () => {
                                  courseData={courseData} 
                                  isAddingDeliverable={isAddingDeliverable} 
                                  setIsAddingDeliverable={setIsAddingDeliverable} />
+            <AddSchemePopup term={term ? term : ""} 
+                                 courseIndex={(courseIndex === 0 || courseIndex) ? courseIndex : -1}
+                                 courseData={courseData} 
+                                 isAddingScheme={isAddingScheme} 
+                                 setIsAddingScheme={setIsAddingScheme} />
         </div>
      );
 }

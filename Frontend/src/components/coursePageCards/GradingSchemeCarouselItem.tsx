@@ -8,6 +8,15 @@ import { Table,
          TableBody,
          TableCell
 } from "../ui/table";
+import {
+    DropdownMenu,
+    DropdownMenuItem,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+    DropDown
+} from "@/components/ui/dropdown-menu"
 import { CheckIcon, PencilIcon } from "lucide-react";
 
 import { format } from "date-fns";
@@ -28,6 +37,7 @@ interface GradingSchemeCarouselItemProps {
     courseData: Course;
     updateGrade: (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => void
     setIsAddingDeliverable: React.Dispatch<React.SetStateAction<boolean>>;
+    setIsAddingScheme: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
@@ -40,7 +50,8 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
     courseIndex,
     courseData,
     updateGrade,
-    setIsAddingDeliverable
+    setIsAddingDeliverable,
+    setIsAddingScheme
 }) => {
 
     return ( 
@@ -52,7 +63,21 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
                         {isEditing ? "Save Changes" : "Edit"} {isEditing ? <CheckIcon/> : <PencilIcon/>}
                 </Button>
                 {/* {isEditing && <Button className=''>Dicard Changes</Button>} */}
-                {!isEditing && <Button className={`bg-${courseData.colour}-500`} onClick={() => setIsAddingDeliverable(true)}>+ Add New Deliverable</Button>}
+                {!isEditing && 
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="default">+ Add</Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent className="w-56 flex flex-col gap-1">
+                            <DropdownMenuItem>
+                                <Button variant={'ghost'} className='w-full' onClick={() => setIsAddingDeliverable(true)}><h1 className='w-full text-left'>+ Add New Deliverable</h1></Button>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem>
+                                <Button variant={'ghost'} className='w-full' onClick={() => setIsAddingScheme(true)}><h1 className='w-full text-left'>+ Add New Grading Scheme</h1></Button>
+                            </DropdownMenuItem>                                                  
+                        </DropdownMenuContent>
+                    </DropdownMenu>}
             </div>
             <div className="h-[33.5rem] overflow-y-auto" >
                 <Table className="mb-4">
