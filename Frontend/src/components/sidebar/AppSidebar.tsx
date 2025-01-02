@@ -19,13 +19,17 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 
 // This is sample data.
-const user = {
-    name: "Gateek Chandak",
-    email: "g2chand@uwaterloo.ca",
-    avatar: "/Objects/globe.svg",
-  }
+
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const data = useSelector((state: RootState) => state.data.data);
+  const userName = useSelector((state: RootState) => state.auth.user?.name);
+  const userEmail = useSelector((state: RootState) => state.auth.user?.email);
+
+  const displayUser = {
+    name: userName,
+    email: userEmail,
+    avatar: "/Objects/globe.svg",
+  }
 
   const { open, openMobile } = useSidebar()
 
@@ -45,7 +49,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <NavMain data={data} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={user} />
+        <NavUser user={displayUser} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>

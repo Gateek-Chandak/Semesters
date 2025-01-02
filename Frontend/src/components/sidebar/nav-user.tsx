@@ -5,13 +5,13 @@ import {
     CreditCard,
     LogOut,
     Sparkles,
-  } from "lucide-react"
-  import {
+} from "lucide-react"
+import {
     Avatar,
     AvatarFallback,
     AvatarImage,
-  } from "@/components/ui/avatar"
-  import {
+} from "@/components/ui/avatar"
+import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuGroup,
@@ -19,14 +19,19 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
-  import {
+} from "@/components/ui/dropdown-menu"
+import {
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
     useSidebar,
-  } from "@/components/ui/sidebar"
+} from "@/components/ui/sidebar"
   
+import { useDispatch } from "react-redux"
+import { logout } from "@/redux/slices/authSlice"
+import axios from "axios"
+import { Button } from "../ui/button"
+
 export function NavUser({
     user,
   }: {
@@ -37,6 +42,17 @@ export function NavUser({
     }
   }) {
     const { isMobile, open, openMobile } = useSidebar()
+    const dispatch = useDispatch()
+
+    const handleLogout = async () => {
+      try {
+        await axios.get('http://localhost:4000/api/auth/logout', { withCredentials: true });
+        dispatch(logout()); // Clear user from Redux
+        window.location.href = '/'; // Redirect to landing page after logout
+      } catch (error) {
+        console.error('Error during logout', error);
+      }
+    };
 
     return (
       <SidebarMenu className="w-full pb-2">
@@ -86,7 +102,7 @@ export function NavUser({
                   </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout}>
                   <LogOut />
                   Log out
                 </DropdownMenuItem>

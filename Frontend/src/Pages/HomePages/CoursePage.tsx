@@ -166,7 +166,7 @@ const CoursePage = () => {
             // Update the state with the highest grade
             setMaxGradePossible(parseFloat(maxGrade.toFixed(2))); // Round to 2 decimal places
         };  
-        if (courseData && courseData.gradingSchemes[0].assessments.length > 0) {
+        if (courseData && courseData.gradingSchemes.length > 0 && courseData.gradingSchemes[0].assessments.length > 0) {
             determineHighestGrade(courseData?.gradingSchemes)
         }
         calculateMinGrade()

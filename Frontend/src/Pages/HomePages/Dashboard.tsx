@@ -20,6 +20,7 @@ import UploadTranscriptPopup from "@/components/DashboardPageCards/UploadTranscr
 
 const Dashboard = () => {
     const data = useSelector((state: RootState) => state.data.data);
+    const userName = useSelector((state: RootState) => state.auth.user ? state.auth.user.name : '')
 
     const { toast } = useToast()
     const dispatch = useDispatch()
@@ -102,21 +103,35 @@ const Dashboard = () => {
         <div className="min-h-dvh bg-[#f7f7f7] flex flex-row justify-center">
             <div className="max-w-[1440px] flex flex-col gap-10 px-10 ">
                 <div className="flex pt-10 flex-row gap-10">
-                    <h1 className="text-[1.6rem] font-medium">Welcome, Gateek</h1>
+                    <h1 className="text-[1.6rem] font-medium">Welcome, {userName.split(' ')[0]} {userName.split(' ')[1].slice(0, 1)}.</h1>
                     <h1 className="text-[1.3rem] ml-auto font-light">Today is {formattedDate}</h1>
                 </div>
                 <div className="w-[100%] mt-2 flex flex-col lg:flex-row gap-10 h-fit lg:h-[22rem]">
                     <div className="lg:w-[60%] flex flex-col gap-10 h-[100%]">
-                        <Card className="p-8 h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
-                            <Link to={`/home/${data[data.length-1].term.replace(' ', '-')}`} className="h-full flex flex-col justify-between ">
-                                <h1>Current Term</h1>
-                                <h1 className="text-4xl font-medium">{data[data.length-1].term}</h1>
-                                <Separator />
-                                <h1 className="text-sm text-muted-foreground flex flex-row items-center ml-auto">click for a more detailed view&nbsp;&nbsp; <ChevronRight className="!w-4 !h-4 text-muted-foreground" /></h1>
-                            </Link>
-                        </Card>
+                        {data.length <= 0 &&
+                            <Card className="p-5 h-full border">
+                                <div className="h-full flex flex-col justify-between ">
+                                    <h1>Current Term</h1>
+                                    <div>
+                                        <h1 className="text-4xl font-medium">No term to display</h1>
+                                        <p className="pt-3 text-sm">upload a transcript to import terms</p>
+                                    </div>
+                                    <Separator />
+                                    <h1 className="text-sm text-muted-foreground flex flex-row items-center ml-auto">click for a more detailed view&nbsp;&nbsp; <ChevronRight className="!w-4 !h-4 text-muted-foreground" /></h1>
+                                </div>
+                            </Card>
+                        }
+                        {data.length > 0 &&
+                            <Card className="p-5 h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
+                                <Link to={`/home/${data[data.length-1].term.replace(' ', '-')}`} className="h-full flex flex-col justify-between ">
+                                    <h1>Current Term</h1>
+                                    <h1 className="text-4xl font-medium">{data[data.length-1].term}</h1>
+                                    <Separator />
+                                    <h1 className="text-sm text-muted-foreground flex flex-row items-center ml-auto">click for a more detailed view&nbsp;&nbsp; <ChevronRight className="!w-4 !h-4 text-muted-foreground" /></h1>
+                                </Link>
+                            </Card>}
                         {data.length > 1 &&
-                            <Card className="p-8 h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
+                            <Card className="p-5 h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
                                 <Link to={`/home/${data[data.length-2].term.replace(' ', '-')}`} className="h-full flex flex-col justify-between ">
                                     <h1>Last Term</h1>
                                     <h1 className="text-4xl font-medium">{data[data.length-2].term}</h1>

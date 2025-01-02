@@ -9,6 +9,8 @@ import CoursePage from './Pages/HomePages/CoursePage';
 import Dashboard from './Pages/HomePages/Dashboard';
 import TermPage from './Pages/HomePages/TermPage';
 
+import ProtectedRoute from './components/ProtectedRoute.js'
+
 function App() {
 
   return (
@@ -19,11 +21,17 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           
           {/* Home route with nested routes */}
-          <Route path="/home" element={<HomePage />}>
+          <Route path="/home" 
+                 element={
+                    <ProtectedRoute>
+                      <HomePage />
+                    </ProtectedRoute>
+                  }>
             {/* Nested route for dynamic courses */}
-            <Route index element={<Dashboard />} />
-            <Route path=":term/:course" element={<CoursePage />} />
-            <Route path=":term" element={<TermPage />} />
+
+            <Route index element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path=":term/:course" element={<ProtectedRoute><CoursePage /></ProtectedRoute>} />
+            <Route path=":term" element={<ProtectedRoute><TermPage /></ProtectedRoute>} />
           </Route>
         </Routes>
         <Toaster />

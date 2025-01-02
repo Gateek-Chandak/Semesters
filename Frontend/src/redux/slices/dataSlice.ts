@@ -8,59 +8,10 @@ interface DataState {
 
 const initialState: DataState = {
     data: [
-        {
-          term: 'Winter 2025',
-          courses: [
-            {
-              courseTitle: 'CFM 102',
-              courseSubtitle: 'Introduction to Financial Data Analytics',
-              colour: 'purple',
-              highestGrade: 40,
-              gradingSchemes: [
-                {
-                  schemeName: 'Grading Scheme 1',
-                  grade: 30,
-                  assessments: [
-                    { assessmentName: 'Assignment 1', weight: 5, dueDate: '2024-09-06T00:00:00+00:00', grade: 30 },
-                    { assessmentName: 'Midterm Exam', weight: 30, dueDate: '2024-10-25T00:00:00+00:00', grade: 30 },
-                    { assessmentName: 'Final Exam', weight: 35, dueDate: null, grade: 30 },
-                    { assessmentName: 'Assignment 2', weight: 10, dueDate: '2024-09-20T00:00:00+00:00', grade: 30 },
-                    { assessmentName: 'Project 1', weight: 20, dueDate: '2024-10-09T00:00:00+00:00', grade: 30 }
-                  ]
-                },
-                {
-                  schemeName: 'Grading Scheme 2',
-                  grade: 40,
-                  assessments: [
-                    { assessmentName: 'Homework 1', weight: 10, dueDate: '2024-09-10T00:00:00+00:00', grade: 30 },
-                    { assessmentName: 'Midterm Exam', weight: 30, dueDate: '2024-10-05T00:00:00+00:00', grade: 30 },
-                    { assessmentName: 'Final Exam', weight: 50, dueDate: null, grade: 30 },
-                    { assessmentName: 'Quiz 1', weight: 10, dueDate: '2024-09-25T00:00:00+00:00', grade: 30 }
-                  ]
-                }
-              ]
-            },
-            {
-              courseTitle: 'MATH 136',
-              courseSubtitle: 'Algebra',
-              colour: 'pink',
-              highestGrade: 80,
-              gradingSchemes: [
-                {
-                  schemeName: 'Grading Scheme A',
-                  grade: 60,
-                  assessments: [
-                    { assessmentName: 'Project 1', weight: 20, dueDate: new Date('2024-09-20T11:59:00+00:00').toISOString(), grade: 60 },
-                    { assessmentName: 'Quiz 1', weight: 10, dueDate: new Date('2024-09-25T00:00:00+00:00').toISOString(), grade: 60 },
-                    { assessmentName: 'Final Exam', weight: 40, dueDate: null, grade: 60 },
-                    { assessmentName: 'Assignment 1', weight: 15, dueDate: new Date('2024-10-01T00:00:00+00:00').toISOString(), grade: 60 },
-                    { assessmentName: 'Assignment 2', weight: 15, dueDate: new Date('2024-10-10T23:59:00.000').toISOString(), grade: 60 }
-                  ]
-                }
-              ]
-            },
-          ]
-        },
+       {
+        term: 'Winter 2025',
+        courses: []
+       },
       ], // Initial data can be set here
 };
 

@@ -35,7 +35,6 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
 
     const [error, setError] = useState<string>('')
     const [selectedScheme, setSelectedScheme] = useState<string | null>(null)
-
     const [name, setName] = useState<string>('')
     const [weight, setWeight] = useState<number>(0)
     const [grade, setGrade] = useState<number | null>(null)
@@ -82,15 +81,30 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
         }
     
         setGrade(parsedValue);
-};
+    };
 
-    const handleCourseAdd = () => {
+    const handleClose = () => {
+        setIsAddingDeliverable(false)
+        setName('')
+        setWeight(0)
+        setGrade(null)
+        setDate(null)
+        setSelectedScheme(null)
+    }
+
+    const handleDeliverableAdd = () => {
         const newAssessment = {
             assessmentName: name,
             weight: weight,
             grade: grade,
             dueDate: date,
         };
+
+        if (!name || name.trim() === "") {
+            setError('Name is required');
+            setName("")
+            return;
+        }
 
         const repeatedName = courseData?.gradingSchemes.find((scheme) =>
             scheme.assessments.some((assessment) => (assessment.assessmentName === name && scheme.schemeName === selectedScheme))
@@ -99,6 +113,10 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
         if (repeatedName) {
             setError('A deliverable with this name already exists.')
             return;
+        }
+        if (!selectedScheme) {
+            setError('Please select a grading scheme')
+            return
         }
     
         const updatedSchemes = courseData?.gradingSchemes.map((scheme) => {
@@ -132,7 +150,7 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
                     <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-md">
                         <div className="flex flex-row items-center">
                             <h1 className="mr-auto text-left font-semibold mb-10 text-xl">Add Deliverable</h1>
-                            <button onClick={() => setIsAddingDeliverable(false)}><XIcon className="ml-auto w-5 h-auto -top-8 left-2 relative hover:text-red-600 transform transition-all duration-200 hover:scale-106"/></button>
+                            <button onClick={handleClose}><XIcon className="ml-auto w-5 h-auto -top-8 left-2 relative hover:text-red-600 transform transition-all duration-200 hover:scale-106"/></button>
                         </div>
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1">
@@ -140,7 +158,7 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
                                 <Input placeholder="ex. Quiz 1" value={name} onChange={handleNameChange}></Input>
                             </div>
                             <div className="flex flex-col gap-1">
-                                <h1 className="font-medium">Weight *</h1>
+                                <h1 className="font-medium">Weight</h1>
                                 <Input placeholder="ex. 10" value={weight} onChange={handleWeightChange}></Input>
                             </div>
                             <div className="flex flex-col gap-1">
@@ -171,7 +189,7 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
                         </div>
                         <p className="text-left my-3 text-red-600">{error}</p>
                         <div className="flex flex-row justify-end items-center gap-2 mt-10">
-                            <Button onClick={handleCourseAdd}>+ Add Course</Button>
+                            <Button onClick={handleDeliverableAdd}>+ Add Deliverable</Button>
                         </div>
                     </div>
                 </div>

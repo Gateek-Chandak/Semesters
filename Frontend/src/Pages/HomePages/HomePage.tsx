@@ -1,3 +1,5 @@
+import { useEffect } from "react"
+import axios from "axios"
 
 import { AppSidebar } from "@/components/sidebar/AppSidebar"
 import {
@@ -13,19 +15,16 @@ import {
   SidebarInset,
   SidebarProvider,
 } from "@/components/ui/sidebar"
+import { Trigger } from "@/components/sidebar/trigger";
 
 import { Outlet, useParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
 
-import { Trigger } from "@/components/sidebar/trigger";
-
 const HomePage = ( ) => {
-  
   const isMobile = useIsMobile()
 
   const { term: originalTerm, course: originalCourse } = useParams()
   const term = originalTerm?.replace(/-/g, ' ');
-
   const course = originalCourse?.replace(/-/g, ' ');
 
   return (

@@ -91,6 +91,16 @@ const TermPage = () => {
         );
     });
 
+    const now = new Date();
+    const proximityDaysFromNow = new Date();
+    proximityDaysFromNow.setDate(now.getDate() + 7);
+
+    const eventsNext7Days = calendarEvents?.filter(event => {
+        const eventDate = new Date(event.start);
+        return eventDate >= now && eventDate <= proximityDaysFromNow;
+    });
+    const numOfEventsInNext7Days = eventsNext7Days? eventsNext7Days.length : 0
+
     useEffect(() => {
         if (termData && termData.courses?.length > 0) {
             const courseGrades = termData.courses.reduce((total: number, course) => {
@@ -224,7 +234,7 @@ const TermPage = () => {
                             </Card>
                             <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-10">
                                 <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
-                                    <h1 className="text-5xl font-semibold">9</h1>
+                                    <h1 className="text-5xl font-semibold">{numOfEventsInNext7Days}</h1>
                                     <p className="font-light text-sm"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                                 </Card>
                                 <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">

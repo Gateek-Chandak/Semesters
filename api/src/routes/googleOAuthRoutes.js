@@ -5,6 +5,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken')
 const cookie = require('cookie')
 const {oauth2Client} = require('../inits/googleOAuthInit')
+const { google } = require('googleapis')
 
 require('dotenv').config();
 
@@ -35,28 +36,25 @@ router.get('/redirect', async (req, res) => {
         const response = await oauth2Client.getToken(code);
         await oauth2Client.setCredentials(response.tokens);
 
-        // get user data for identification
-        // const oauth2 = google.oauth2({
-        //     auth: oauth2Client,
-        //     version: 'v2'
-        // });
+        //get user data for identification
+        const oauth2 = google.oauth2({
+            auth: oauth2Client,
+            version: 'v2'
+        });
   
-        // // const { access_token, refresh_token, expiry_date } = oauth2Client.credentials
-        // const userInfo = await oauth2.userinfo.get()
-        // const { id, email, name } = await userInfo.data;
+        // const { access_token, refresh_token, expiry_date } = oauth2Client.credentials
+        const userInfo = await oauth2.userinfo.get()
+        const { id, email, name } = await userInfo.data;
 
-        // // create JWT token to store in cookie with all user data
-        // const token = jwt.sign(
-        //     { id , name, tokens },
-        //     process.env.JWT_SECRET,
-        //     { expiresIn: '1h' } 
-        // );
-
-        // encrypt accessTokens using JWT to store the users google credentials
-        const accessToken = jwt.sign(oauth2Client.credentials, process.env.JWT_SECRET, { expiresIn: '1h' })
+        // create JWT token to store in cookie with all user data
+        const token = jwt.sign(
+            { id , name, email, tokens: oauth2Client.credentials },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' } 
+        );
 
         // create browser cookie to hold user jwt token for user credentials in order to verify future authentications
-        res.setHeader('Set-Cookie', cookie.serialize('accessToken', accessToken, {
+        res.setHeader('Set-Cookie', cookie.serialize('token', token, {
             httpOnly: true,  
             secure: true,    
             sameSite: 'Strict', 
@@ -71,5 +69,27 @@ router.get('/redirect', async (req, res) => {
         res.status(500).json({error: 'Authentication failed' })
     }
 })
+
+router.get('/verify', (req, res) => {
+    const cookies = cookie.parse(req.headers.cookie || '');
+    const token = cookies.token
+  
+    if (!token) {
+      return res.status(401).json({ isAuthenticated: false });
+    }
+  
+    try {
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      res.status(200).json({ isAuthenticated: true, user: decoded }); // Send user data if needed
+    } catch (err) {
+      console.error(err);
+      res.status(401).json({ isAuthenticated: false });
+    }
+});
+
+router.get('/logout', (req, res) => {
+    res.clearCookie('token', { httpOnly: true, secure: true, sameSite: 'Strict' });
+    res.status(200).json({ message: 'Logged out successfully' });
+});
 
 module.exports = router;
