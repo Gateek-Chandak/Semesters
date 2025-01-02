@@ -79,11 +79,15 @@ export function NavMain({ data }: {data:any}) {
       <div className="w-full flex flex-col justify-center items-center gap-5">
         {!open && !isMobile && selectedCourse && selectedTermData.courses.map((course) => {
           if (course.courseTitle === selectedCourse) {
-            console.log(course.courseTitle)
-            console.log(selectedCourse)
+            let hoverColour ='black'
+            if (course.colour === 'black') {
+              hoverColour = 'black'
+            } else {
+              hoverColour = `${course.colour}-500`
+            }
             return (
               <Link key={course.courseTitle} to={`/home/${selectedTerm?.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`}>
-                <Button variant='outline' className={`w-16 h-16 rounded-xl text-xs border border-slate-300 bg-${course.colour}-500 hover:bg-${course.colour}-500 hover:text-gray-200 text-white flex flex-col gap-0`}>
+                <Button variant='outline' className={`w-16 h-16 rounded-xl text-xs border border-slate-300 bg-${hoverColour} hover:bg-${hoverColour} hover:text-gray-200 text-white flex flex-col gap-0`}>
                   <h1 className="text-[1rem] relative top-[5px]">{course.courseTitle.split(' ')[0]}</h1>
                   <h1 className="text-xl">{course.courseTitle.split(' ')[1]}</h1>
                 </Button>

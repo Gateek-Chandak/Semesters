@@ -367,17 +367,13 @@ const CoursePage = () => {
             }
     };
 
-    const handleAddDeliverableButton = () => {
-        setIsAddingDeliverable(prev => !prev)
-    }
-
     const handleAddSchemeButton = () => {
         setIsAddingScheme(prev => !prev)
     }
 
     return ( 
 
-        <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
+        <div className="w-full h-dvh min-h-fit px-10 pt-10 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
             <div className='max-w-[1840px] w-full'>
                 <div>   
                     <div className="w-[100%] flex flex-row items-center justify-start gap-4 text-3xl">

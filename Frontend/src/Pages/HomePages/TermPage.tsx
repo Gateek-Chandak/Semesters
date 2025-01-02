@@ -14,6 +14,7 @@ import { addCourse } from "@/redux/slices/dataSlice";
 
 import { useToast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import { Card } from "@/components/ui/card";
 import {
   Calendar,
@@ -40,10 +41,6 @@ const TermPage = () => {
     const navigate = useNavigate();
     const { toast } = useToast();
     const { term: originalTerm } = useParams();
-
-    // Format the current date
-    const currentDate = new Date();
-    const formattedDate = format(currentDate, 'EEEE, MMMM dd');
 
     // State variables
     const [termGrade, setTermGrade] = useState<number>(0);
@@ -191,14 +188,12 @@ const TermPage = () => {
             setIsCreatingCourse(true);
 
             if (error.response.data.error === "no assessment schedule found") {
-                setError("File not a syllabus");
                 toast({
                     variant: "destructive",
                     title: "File Upload Unsuccessful",
                     description: "Your file is not a syllabus",
                 });
             } else {
-                setError(error.response.data.error);
                 toast({
                     variant: "destructive",
                     title: "File Upload Error",
@@ -210,16 +205,15 @@ const TermPage = () => {
     };
 
     return ( 
-        <div className="w-full h-dvh min-h-fit px-10 pt-14 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
-            <div className="max-w-[1840px] w-full flex flex-col gap-14">
-                <div className="w-[100%] h-fit flex flex-col gap-10 lg:flex-row">
+        <div className="w-full h-dvh min-h-fit px-10 pt-10 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
+            <div className="max-w-[1840px] w-full flex flex-col gap-10">
+                <div className="w-[100%] h-[30rem] flex flex-col gap-10 lg:flex-row">
                     <div className="w-[100%] lg:w-[60%] flex flex-col gap-10">
                         <div className="flex flex-row items-center justify-start gap-4 text-3xl">
                             <h1 className="text-3xl font-bold">{term}</h1>
-                            <h1 className="text-3xl font-extralight"> {formattedDate}</h1>
                         </div>
                         <div className="w-[100%] mt-2 h-full flex flex-col items-center md:flex-row gap-10">
-                            <Card className="w-[100%] md:w-[30%] px-6 py-[18px]">
+                            <Card className="w-[100%] md:w-[35%] h-full px-6">
                                 <CircularProgress 
                                     percentage={termGrade} 
                                     label="Term Average"
@@ -228,12 +222,12 @@ const TermPage = () => {
                                     setIsShowingAverage={setIsShowingAverage}
                                 />
                             </Card>
-                            <div className="md:w-[70%] w-[100%] h-full flex flex-col items-center gap-10">
-                                <Card className="w-[100%] h-[50%] py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
+                            <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-10">
+                                <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
                                     <h1 className="text-6xl font-semibold">9</h1>
                                     <p className="font-light text-lg"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                                 </Card>
-                                <Card className="w-[100%] h-[50%] py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
+                                <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
                                     <h1 className="text-6xl font-semibold">111</h1>
                                     <p className="font-light text-lg"><span className="font-bold">days to go.</span> Stay focused and keep pushing - you're almost there!</p>
                                 </Card>
@@ -250,6 +244,7 @@ const TermPage = () => {
                         </div>
                     </div>
                 </div>
+                <Separator />
                 <div className="w-[100%] flex flex-col gap-10 lg:flex-row h-fit">
                     <div className="h-[100%] w-[100%] lg:w-[55%] flex flex-col gap-10">
                         <div className="flex flex-col gap-7 sm:gap-0 sm:flex-row w-ful pr-12">
@@ -274,7 +269,7 @@ const TermPage = () => {
                     </div>
                     {/* Calendar Component */}
                     <div className="w-[100%] lg:w-[45%] flex flex-col gap-10">
-                        <h1 className="mr-auto text-2xl font-light">Course Calendar</h1>
+                        <h1 className="mr-auto text-2xl font-light">Term Calendar</h1>
                         <Calendar
                             events={calendarEvents}>
                             <div className="max-h-[41rem] min-h-[32rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
