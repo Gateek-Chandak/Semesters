@@ -38,13 +38,13 @@ const HomePage = ( ) => {
             <Separator orientation="vertical" className="mr-2 h-4" />
             <Breadcrumb>
               <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block text-lg">
+                <BreadcrumbItem className="hidden md:block text-sm">
                   <BreadcrumbLink href="/home">Home</BreadcrumbLink>
                 </BreadcrumbItem>
                 {term && (
                   <>
                     <BreadcrumbSeparator className="hidden md:block" />
-                    <BreadcrumbItem className="text-lg">
+                    <BreadcrumbItem className="text-sm">
                       <BreadcrumbLink href={`/home/${term}`} className="text-muted-foreground">
                         {term}
                       </BreadcrumbLink>
@@ -54,7 +54,7 @@ const HomePage = ( ) => {
                 {term && course && (
                   <>
                     <BreadcrumbSeparator className="hidden md:block" />
-                    <BreadcrumbItem className="text-lg">
+                    <BreadcrumbItem className="text-sm">
                       <BreadcrumbPage>{course}</BreadcrumbPage>
                     </BreadcrumbItem>
                   </>

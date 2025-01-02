@@ -37,9 +37,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       <SidebarContent>
         <div className={(open || openMobile) ? "px-6 py-4 flex flex-row items-center gap-2 rounded-xl hover:bg-gray-100" : "px-6 py-4 flex flex-row items-center gap-2 rounded-xl transform hover:scale-105 transition duration-100 ease-in-out hover:border-gray-500"}>
           <Link to="/home" className={(open) ? "" : "transform hover:scale-110 transition duration-300 ease-in-out"}>
-            <HomeIcon className="!h-6 !w-6"/>
+            <HomeIcon className="!h-5 !w-5"/>
           </Link>
-          {(open || openMobile) && <Link to="/home" className="truncate top-[3px] relative">Home</Link>}
+          {(open || openMobile) && <Link to="/home" className="truncate relative text-sm">Home</Link>}
         </div>
         {(open || openMobile) && <SidebarSeparator />}
         <NavMain data={data} />

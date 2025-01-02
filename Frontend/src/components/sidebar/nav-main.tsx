@@ -46,7 +46,7 @@ export function NavMain({ data }: {data:any}) {
             <SidebarMenuItem>
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={term.term}>
-                  <Link className="truncate text-[1.1rem]" to={`/home/${term.term.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
+                  <Link className="truncate text-md" to={`/home/${term.term.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
                     {term.term}
                   </Link>
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
@@ -57,7 +57,7 @@ export function NavMain({ data }: {data:any}) {
                   {(term.courses.length > 0) && term.courses?.map((course: any) => (
                     <SidebarMenuSubItem key={course.courseTitle}>
                       <SidebarMenuSubButton asChild>
-                        <Link className="text-[1rem]" to={`/home/${term.term.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
+                        <Link className="text-sm" to={`/home/${term.term.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
                           <span>{course.courseTitle}</span>
                         </Link>
                       </SidebarMenuSubButton>
@@ -71,7 +71,7 @@ export function NavMain({ data }: {data:any}) {
         ))}
       </SidebarMenu>}
       {!open && !isMobile && selectedCourse && 
-        <div className="flex mb-6 flex-row items-center justify-center text-2xl text-muted-foreground">
+        <div className="flex mb-6 flex-row items-center justify-center text-xl text-muted-foreground">
           <h1>{selectedTermData.term.split('')[0]}</h1>
           <h1>{selectedTermData.term.split(' ')[1].slice(-2)}</h1>
         </div>
@@ -87,18 +87,18 @@ export function NavMain({ data }: {data:any}) {
             }
             return (
               <Link key={course.courseTitle} to={`/home/${selectedTerm?.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`}>
-                <Button variant='outline' className={`w-16 h-16 rounded-xl text-xs border border-slate-300 bg-${hoverColour} hover:bg-${hoverColour} hover:text-gray-200 text-white flex flex-col gap-0`}>
-                  <h1 className="text-[1rem] relative top-[5px]">{course.courseTitle.split(' ')[0]}</h1>
-                  <h1 className="text-xl">{course.courseTitle.split(' ')[1]}</h1>
+                <Button variant='outline' className={`w-12 h-12 rounded-xl text-sm border border-slate-300 bg-${hoverColour} hover:bg-${hoverColour} hover:text-gray-200 text-white flex flex-col gap-0`}>
+                  <h1>{course.courseTitle.split(' ')[0]}</h1>
+                  <h1>{course.courseTitle.split(' ')[1]}</h1>
                 </Button>
               </Link>
             )
           } else {
             return (
               <Link key={course.courseTitle} to={`/home/${selectedTerm?.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`}>
-                <Button variant='outline' className="w-16 h-16 p-2 rounded-xl text-xs border border-slate-300 flex flex-col gap-0">
-                <h1 className="text-[1rem] relative top-[5px]">{course.courseTitle.split(' ')[0]}</h1>
-                <h1 className="text-xl">{course.courseTitle.split(' ')[1]}</h1>
+                <Button variant='outline' className="w-12 h-12 p-2 rounded-xl text-sm border border-slate-300 flex flex-col gap-0">
+                <h1 className="">{course.courseTitle.split(' ')[0]}</h1>
+                <h1 className="">{course.courseTitle.split(' ')[1]}</h1>
                 </Button>
               </Link>
             )
@@ -110,7 +110,7 @@ export function NavMain({ data }: {data:any}) {
           if (term.term === selectedTerm) {
             return (
               <Link key={term.term} to={`/home/${term.term.replace(/\s+/g, '-')}`}>
-                <Button variant='outline' className={`w-16 h-16 rounded-xl text-xl border border-slate-300 bg-black hover:bg-gray-800 hover:text-white text-white flex flex-row gap-0`}>
+                <Button variant='outline' className={`w-12 h-12 rounded-xl text-sm border border-slate-300 bg-black hover:bg-gray-800 hover:text-white text-white flex flex-row gap-0`}>
                   <h1>{term.term.split('')[0]}</h1>
                   <h1>{term.term.split(' ')[1].slice(-2)}</h1>
                 </Button>
@@ -119,7 +119,7 @@ export function NavMain({ data }: {data:any}) {
           } else {
             return (
               <Link key={term.term} to={`/home/${term.term.replace(/\s+/g, '-')}`}>
-                <Button variant='outline' className={`w-16 h-16 rounded-xl text-xl border border-slate-300 bg-black-500 flex flex-row gap-0`}>
+                <Button variant='outline' className={`w-12 h-12 rounded-xl text-sm border border-slate-300 bg-black-500 flex flex-row gap-0`}>
                   <h1>{term.term.split('')[0]}</h1>
                   <h1>{term.term.split(' ')[1].slice(-2)}</h1>
                 </Button>

@@ -166,7 +166,7 @@ const CoursePage = () => {
             // Update the state with the highest grade
             setMaxGradePossible(parseFloat(maxGrade.toFixed(2))); // Round to 2 decimal places
         };  
-        if (courseData) {
+        if (courseData && courseData.gradingSchemes[0].assessments.length > 0) {
             determineHighestGrade(courseData?.gradingSchemes)
         }
         calculateMinGrade()
@@ -376,11 +376,11 @@ const CoursePage = () => {
         <div className="w-full h-dvh min-h-fit px-10 pt-10 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
             <div className='max-w-[1840px] w-full'>
                 <div>   
-                    <div className="w-[100%] flex flex-row items-center justify-start gap-4 text-3xl">
+                    <div className="w-[100%] flex flex-row items-center justify-start gap-4 text-2xl">
                         <h1 className={`font-bold text-${courseData?.colour}-600`}>{courseData?.courseTitle}</h1>
                         <h1 className="font-extralight">{courseData?.courseSubtitle}</h1>
                     </div>
-                    <div className="mt-12 lg:mb-16 w-full h-fit flex flex-col lg:flex-row mb-20 gap-4 justify-between">
+                    <div className="lg:h-[20rem] mt-12 lg:mb-16 w-full flex flex-col lg:flex-row mb-20 gap-4 justify-between">
                         <Card className="w-[100%] px-6">
                             <CircularProgress 
                                 percentage={highestCourseGrade} 
@@ -389,9 +389,9 @@ const CoursePage = () => {
                             />
                             <p className='text-xs text-center mb-4 text-muted-foreground'>*note that this is an approximation, users must consult official school sources.</p>
                         </Card>
-                        <Card className="w-[100%] p-6">
-                            <div className="space-y-4">
-                                <div className="space-y-2">
+                        <Card className="w-[100%] px-6 py-4">
+                            <div className="flex flex-col gap-3 justify-center">
+                                <div className="flex flex-col gap-2 justify-center">
                                     <label className="text-sm font-medium">Enter Specific Grade (%)</label>
                                     <Input type="text" 
                                         value={targetGrade || ""} 
@@ -404,7 +404,7 @@ const CoursePage = () => {
                                     {grades.map((grade) => (
                                     <Button
                                         key={grade}
-                                        className={`p-2 text-center rounded-md border bg-white text-black hover:bg-black hover:text-white active:bg-gray-700`}
+                                        className={`!text-xs text-center rounded-md border bg-white text-black hover:bg-black hover:text-white active:bg-gray-700`}
                                         onClick={() => gradeButtonAction(grade)}
                                     >
                                         {grade}%
@@ -412,27 +412,27 @@ const CoursePage = () => {
                                     ))}
                                 </div>
 
-                                <h3 className="font-semibold">Desired Average</h3>
-                                <p className="text-sm">To get {targetGrade}% in this class, you need to average of <span className='font-bold text-md'>{gradeNeeded}%</span> on everything that's left.</p>
+                                <h3 className="font-semibold text-sm">Desired Average</h3>
+                                <p className="text-xs">To get {targetGrade}% in this class, you need to average of <span className='font-bold text-xs'>{gradeNeeded}%</span> on everything that's left.</p>
                                 <p className='text-xs text-muted-foreground'>*note that this value is an approximation using worst case scenario</p>
                             </div>
                         </Card>
-                        <Card className="w-[100%] pt-6 px-6 flex flex-col justify-center items-start gap-10 col-span-1">
+                        <Card className="w-[100%] py-6 px-6 flex flex-col justify-center items-start gap-10 col-span-1">
                             <div className="w-full flex flex-col gap-2">
                                 <div className="flex flex-row justify-between">
-                                    <h1 className="mr-auto text-xl font-medium">Minimum</h1>
-                                    <h1 className="ml-auto text-xl font-medium">{minGradePossible}%</h1>
+                                    <h1 className="mr-auto text-md font-medium">Minimum</h1>
+                                    <h1 className="ml-auto text-md font-medium">{minGradePossible}%</h1>
                                 </div>
-                                <p className="text-md font-light">Assuming that you uninstall LEARN and doom scroll for the rest of the term.</p>
+                                <p className="text-sm font-light">Assuming that you uninstall LEARN and doom scroll for the rest of the term.</p>
                             </div>
                             <div className="w-full flex flex-col gap-2">
                                 <div className="flex flex-row justify-between">
-                                    <h1 className="mr-auto text-xl font-medium">Maximum</h1>
-                                    <h1 className="ml-auto text-xl font-medium">{maxGradePossible}%</h1>
+                                    <h1 className="mr-auto text-md font-medium">Maximum</h1>
+                                    <h1 className="ml-auto text-md font-medium">{maxGradePossible}%</h1>
                                 </div>
-                                <p className="text-md font-light">Given that you score 100% on everything remaining.</p>
+                                <p className="text-sm font-light">Given that you score 100% on everything remaining.</p>
                             </div>
-                            <p className="text-xs text-muted-foreground mt-1">*if multiple grading schemes are availble, metrics will be estimated using worst/best case possibilities respectively.</p>
+                            <p className="text-xs text-muted-foreground">*if multiple grading schemes are availble, metrics will be estimated using worst/best case possibilities respectively.</p>
                         </Card>
                     </div>
                 </div>
@@ -475,7 +475,7 @@ const CoursePage = () => {
                         <Calendar
                             events={calendarEvents}
                             >
-                            <div className="h-[41rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
+                            <div className="min-h-[30rem] max-h-[35rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
                                 <div className="flex px-6 items-center gap-2 mb-6">
                                     <CalendarViewTrigger
                                         view="week"

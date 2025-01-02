@@ -19,7 +19,7 @@ const EventsInProximity: React.FC<EventsInProximityProps> = ( {proximityInDays, 
     });
 
     return ( 
-        <Card className="w-[100%] h-[25rem] h-max-[27rem] overflow-y-auto p-4 flex flex-col gap-2">
+        <Card className="w-[100%] h-full h-max-[27rem] overflow-y-auto p-4 flex flex-col gap-2">
             <div className="h-full flex flex-col gap-4 justify-between">
                 {eventsNextXDays.length > 0 && eventsNextXDays.map((event) => {
                     return (

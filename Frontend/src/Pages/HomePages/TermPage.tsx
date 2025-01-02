@@ -207,12 +207,12 @@ const TermPage = () => {
     return ( 
         <div className="w-full h-dvh min-h-fit px-10 pt-10 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
             <div className="max-w-[1840px] w-full flex flex-col gap-10">
-                <div className="w-[100%] h-[30rem] flex flex-col gap-10 lg:flex-row">
+                <div className="w-[100%] lg:h-[25rem] flex flex-col gap-10 lg:flex-row">
                     <div className="w-[100%] lg:w-[60%] flex flex-col gap-10">
-                        <div className="flex flex-row items-center justify-start gap-4 text-3xl">
+                        <div className="flex flex-row items-center justify-start gap-4">
                             <h1 className="text-3xl font-bold">{term}</h1>
                         </div>
-                        <div className="w-[100%] mt-2 h-full flex flex-col items-center md:flex-row gap-10">
+                        <div className="w-[100%] h-full flex flex-col items-center md:flex-row gap-10">
                             <Card className="w-[100%] md:w-[35%] h-full px-6">
                                 <CircularProgress 
                                     percentage={termGrade} 
@@ -224,12 +224,12 @@ const TermPage = () => {
                             </Card>
                             <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-10">
                                 <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
-                                    <h1 className="text-6xl font-semibold">9</h1>
-                                    <p className="font-light text-lg"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
+                                    <h1 className="text-5xl font-semibold">9</h1>
+                                    <p className="font-light text-sm"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                                 </Card>
                                 <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
-                                    <h1 className="text-6xl font-semibold">111</h1>
-                                    <p className="font-light text-lg"><span className="font-bold">days to go.</span> Stay focused and keep pushing - you're almost there!</p>
+                                    <h1 className="text-5xl font-semibold">111</h1>
+                                    <p className="font-light text-sm"><span className="font-bold">days to go.</span> Stay focused and keep pushing - you're almost there!</p>
                                 </Card>
                             </div>
                             
@@ -250,17 +250,17 @@ const TermPage = () => {
                         <div className="flex flex-col gap-7 sm:gap-0 sm:flex-row w-ful pr-12">
                             <h1 className="sm:mr-auto text-2xl font-light">Current Courses</h1>
                             <div className="sm:ml-auto flex flex-row gap-4">
-                                {!isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100' onClick={() => setIsManagingCourses(!isManagingCourses)}>Manage Courses <PencilIcon/></Button>}
-                                {isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100' onClick={() => setIsManagingCourses(!isManagingCourses)}>Save Changes <Check/></Button>}
-                                {!isManagingCourses && !gradesShown && <Button className='' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}
-                                {!isManagingCourses && gradesShown && <Button className='' onClick={() => setGradesShown(!gradesShown)}>Hide Grades <EyeOffIcon /></Button>}
+                                {!isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100 !text-xs' onClick={() => setIsManagingCourses(!isManagingCourses)}>Manage Courses <PencilIcon/></Button>}
+                                {isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100 !text-xs' onClick={() => setIsManagingCourses(!isManagingCourses)}>Save Changes <Check/></Button>}
+                                {!isManagingCourses && !gradesShown && <Button className='!text-xs' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}
+                                {!isManagingCourses && gradesShown && <Button className='!text-xs' onClick={() => setGradesShown(!gradesShown)}>Hide Grades <EyeOffIcon /></Button>}
                             </div>
                         </div>
                         <div className="flex flex-row flex-wrap gap-10">
                             {!isManagingCourses && termData && termData.courses.map((course) => { return ( <DisplayCourseCard key={course.courseTitle} course={course} gradesShown={gradesShown}/> ); })}
                             {isManagingCourses && termData && termData.courses.map((course) => { return ( <EditCourseCard key={course.courseTitle} course={course} /> ); })}
                             <div onClick={() => setIsCreatingCourse(!isCreatingCourse)} 
-                                 className="h-40 w-40 flex flex-col justify-center items-center border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-md"
+                                 className="h-32 w-32 flex flex-col justify-center items-center border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-md"
                                  role="button" 
                                  tabIndex={0}>
                                 <h1 className="text-7xl font-extralight">+</h1>

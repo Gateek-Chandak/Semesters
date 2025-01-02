@@ -7,7 +7,7 @@ interface CircularProgressProps {
   }
   
   export function CircularProgress({ percentage, label, description }: CircularProgressProps) {
-    const circumference = 2 * Math.PI * 75
+    const circumference = 2 * Math.PI * 70
     const strokeDasharray = circumference
     let strokeDashoffset = circumference - (percentage / 100) * circumference
     if (percentage >= 100) {
@@ -29,14 +29,14 @@ interface CircularProgressProps {
     }, [percentage])
   
     return (
-      <div className="flex flex-col items-center text-center p-6 gap-5">
-        <h3 className="text-2xl font-medium">{label}</h3>
+      <div className="flex flex-col items-center text-center p-4 gap-2">
+        <h3 className="text-xl font-medium">{label}</h3>
         <div className="relative inline-flex items-center justify-center">
           <svg className="w-60 h-48 transform -rotate-90 ">
             <circle
               cx="120"
               cy="95"
-              r="75"
+              r="70"
               stroke="currentColor"
               strokeWidth="7"
               fill="none"
@@ -45,7 +45,7 @@ interface CircularProgressProps {
             <circle
               cx="120"
               cy="95"
-              r="75"
+              r="70"
               stroke={strokeColour}
               strokeWidth="7"
               fill="none"
@@ -59,7 +59,7 @@ interface CircularProgressProps {
           </svg>
           <span className="absolute text-4xl font-bold" style={{color: strokeColour}}>{percentage}%</span>
         </div>
-        <p className="text-sm font-light">{description}</p>
+        {/* <p className="text-sm font-light">{description}</p> */}
 
       </div>
     )

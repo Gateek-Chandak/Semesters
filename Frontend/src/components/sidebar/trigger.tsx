@@ -22,7 +22,7 @@ export function Trigger() {
               ${(isMobile && openMobile) ? 'pb-4' : ''} 
               ${(isMobile && !openMobile) ? 'relative' : ''} 
               ${(!isMobile) ? 'pb-4' : ''}
-              px-7 pt-4 mr-auto`} />
+              px-6 pt-4 mr-auto`} />
         </div>
         {isMobile && openMobile && <SidebarSeparator />}
         {!isMobile && <SidebarSeparator />}

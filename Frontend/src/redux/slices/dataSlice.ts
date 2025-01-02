@@ -9,7 +9,7 @@ interface DataState {
 const initialState: DataState = {
     data: [
         {
-          term: 'Fall 2023',
+          term: 'Winter 2025',
           courses: [
             {
               courseTitle: 'CFM 102',
@@ -71,13 +71,24 @@ const dataSlice = createSlice({
         setData(state, action: PayloadAction<Term[]>) {
             state.data = action.payload;
         },
+        addTerms(state, action: PayloadAction<{ terms: Term[] }>) {
+          const { terms } = action.payload;
+      
+          if (terms) {
+              const combinedTerms = [
+                  ...terms.filter(newTerm => !state.data.some(existingTerm => existingTerm.term === newTerm.term)),
+                  ...state.data
+              ];
+              state.data = combinedTerms; 
+          }
+        },       
         addTerm(state, action: PayloadAction<{ term: Term }>) {
           const { term } = action.payload;
           if (term) {
               // Ensure the state is updated immutably by spreading the previous state and adding the new term
               state.data = [...state.data, term];
           }
-      },            
+        },            
         updateTerm(state, action: PayloadAction<{ term: string; courses: Course[] }>) {
             const { term, courses } = action.payload;
             const termIndex = state.data.findIndex((t) => t.term === term);
@@ -146,6 +157,6 @@ const dataSlice = createSlice({
     },
 });
 
-export const { setData, updateCourse, addCourse, deleteCourse, updateAssessment, updateTerm, updateCourseName, updateCourseSubtitle, addTerm } = dataSlice.actions;
+export const { setData, updateCourse, addCourse, deleteCourse, updateAssessment, updateTerm, updateCourseName, updateCourseSubtitle, addTerm, addTerms } = dataSlice.actions;
 
 export default dataSlice.reducer;
