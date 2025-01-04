@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const cookie = require('cookie')
+const jwt = require('jsonwebtoken')
 
 require('dotenv').config();
 
@@ -9,61 +10,66 @@ const { createCalendar, createEvents } = require('../controllers/calendarControl
 
 // GET: retrieve user data (NEEDS TO BE SET UP STILL)
 router.get('/create-calendar', async (req, res) => {
-    // parse HTTP req header
-    const cookies = cookie.parse(req.headers.cookie || '');
-    // get accessToken from cookies
-    const tokens = cookies.accessToken
+    const { calendarName } = req.query;
+    if (!calendarName) {
+        return res.status(400).json({ error: 'Calendar name is required' });
+    }
 
-    // Calendar Data (should be coming from req.params, temp set for testing purposes)
-    const calendarData = {
-        summary: 'Fall 2024',
-        description: 'A secondary calendar created via API',
-    };
+    const cookies = cookie.parse(req.headers.cookie || '');
+    const token = cookies.token;
+
+    if (!token) {
+        return res.status(401).json({ error: 'Authorization token is missing' });
+    }
 
     try {
-        // create the calendar
-        const createdCalendar = await createCalendar(calendarData, tokens)
-        console.log('calendar created:' + calendarData.summary)
-        const id = await createdCalendar.id
-        res.status(200).json({ id: id }) // need to return the calendar ID in order to make future updates
-    } catch (error){
-        res.status(500).json({ error })
+        const verifiedToken = jwt.verify(token, process.env.JWT_SECRET);
+        if (!verifiedToken || !verifiedToken.tokens) {
+            return res.status(401).json({ error: 'Invalid or expired token' });
+        }
+
+        const calendarData = {
+            summary: calendarName,
+            description: 'hello',
+        };
+
+        const createdCalendar = await createCalendar(calendarData, token);
+        console.log('Calendar created:', createdCalendar.summary);
+        res.status(200).json({ id: createdCalendar.id });
+    } catch (error) {
+        console.error('Error creating calendar:', error.message); // Log the error message
+        res.status(500).json({ error: error.message }); // Return only the error message to the client
     }
-})
+});
 
-router.get('/create-events', async (req, res) => {
-    // parse HTTP req header
+
+router.post('/create-events', async (req, res) => {
+    // Parse cookies from the request
     const cookies = cookie.parse(req.headers.cookie || '');
-    // get accessToken from cookies
-    const tokens = cookies.accessToken
+    const accessToken = cookies.token; // Correct token name
 
-    const { calendarID } = req.params
+    // Get calendar ID and events from query params or body
+    const { id } = req.query;  // Get calendar ID from query params
+    const events = req.body.events;  // Events should come from the request body
 
-    // Calendar Data
-    const eventsDetails = {
-        summary: 'Midterm Exam',
-        description: 'Midterm exam for the Fall 2025 course.',
-        location: 'Room 101, University of Washington',
-        start: {
-            dateTime: '2024-10-15T10:00:00-07:00',
-            timeZone: 'America/Los_Angeles',
-        },
-        end: {
-            dateTime: '2024-10-15T12:00:00-07:00',
-            timeZone: 'America/Los_Angeles',
-        },
-    };
+    // Check if events are provided
+    if (!events || events.length === 0) {
+        return res.status(400).json({ error: 'No events provided' });
+    }
 
     try {
-        // create the event(s)
-        const createdEvents = await createEvents(calendarID, eventsDetails, tokens)
-        console.log('events created:' + createdEvents.data)
+        // Create events in the calendar
+        const createdEvents = await createEvents(id, events, accessToken);
+        console.log('Events created');
 
-        res.status(200).json({ data: 'Events Created' })
-    } catch (error){
-        res.status(500).json({ error })
+        res.status(200).json({ data: 'Events Created' });
+    } catch (error) {
+        console.error('Error creating events:', error);
+        res.status(500).json({ error: 'Failed to create events' });
     }
-})
+});
+
+
 
 
 module.exports = router;

@@ -76,6 +76,7 @@ function parseCourses(inputText) {
 
     terms.push({
       term,
+      isCompleted: true,
       courses,
     });
   }

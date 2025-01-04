@@ -44,11 +44,11 @@ router.get('/redirect', async (req, res) => {
   
         // const { access_token, refresh_token, expiry_date } = oauth2Client.credentials
         const userInfo = await oauth2.userinfo.get()
-        const { id, email, name } = await userInfo.data;
+        const { id, email, name, picture } = await userInfo.data;
 
         // create JWT token to store in cookie with all user data
         const token = jwt.sign(
-            { id , name, email, tokens: oauth2Client.credentials },
+            { id , name, email, picture, tokens: oauth2Client.credentials },
             process.env.JWT_SECRET,
             { expiresIn: '1h' } 
         );

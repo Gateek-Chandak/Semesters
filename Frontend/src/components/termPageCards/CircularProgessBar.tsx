@@ -12,7 +12,7 @@ interface CircularProgressProps {
   }
   
   export function CircularProgress({ percentage, label, description, isShowingAverage, setIsShowingAverage }: CircularProgressProps) {
-    const circumference = 2 * Math.PI * 70
+    const circumference = 2 * Math.PI * 75
     const strokeDasharray = circumference
     let strokeDashoffset = circumference - (percentage / 100) * circumference
     if (percentage >= 100) {
@@ -34,7 +34,7 @@ interface CircularProgressProps {
     // }, [percentage])
   
     return (
-      <div className="flex flex-col items-center text-center py-4 gap-8">
+      <div className="flex flex-col items-center text-center py-4 gap-6">
         <div className="relative inline-flex items-center justify-center">
           {isShowingAverage && 
             <svg className="w-60 h-48 transform -rotate-90 ">
@@ -50,7 +50,7 @@ interface CircularProgressProps {
               <circle
                 cx="120"
                 cy="95"
-                r="70"
+                r="75"
                 stroke={strokeColour}
                 strokeWidth="7"
                 fill="none"
@@ -67,7 +67,7 @@ interface CircularProgressProps {
               <circle
                 cx="120"
                 cy="95"
-                r="70"
+                r="75"
                 stroke="currentColor"
                 strokeWidth="7"
                 fill="none"

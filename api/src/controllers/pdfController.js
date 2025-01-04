@@ -1,4 +1,3 @@
-const { spawn } = require('child_process');
 const Configuration = require('openai');
 const OpenAIApi = require('openai')
 require("dotenv").config();
@@ -104,53 +103,6 @@ const retrieve_schedule = async (req, res) => {
       console.error('Error parsing JSON:', err);
       return res.status(500).json({ error: 'Invalid JSON from Python script' });
     }
-
-  // const pythonProcess = spawn('python3', ['src/pythonScripts/calendarSchedules/main.py']);
-  // let output = '';
-  // let errorOutput = '';
-
-  // pythonProcess.stdin.write(fileBuffer);
-  // pythonProcess.stdin.end();
-
-  // pythonProcess.stdout.on('data', (data) => {
-  //   output += data.toString();
-  // });
-
-  // pythonProcess.stderr.on('data', (data) => {
-  //   errorOutput += data.toString();
-  // });
-
-  // pythonProcess.on('close', async (code) => {
-  //   if (code !== 0 || errorOutput) {
-  //     console.error('Python script error:', errorOutput);
-  //     return res.status(500).json({ error: 'Error processing PDF', details: errorOutput });
-  //   }
-
-  //   try {
-
-  //     const result = await callOpenAI(prompt, output)
-
-  //     if (result === "no assessment schedule found") {
-  //       return res.status(400).json({ error: 'no assessment schedule found' });
-  //     }
-
-  //     if (result.error) {
-  //       return res.status(500).json({ error: result.error });
-  //     }
-
-  //     console.log(result)
-  //     return res.status(200).json(result);
-
-  //   } catch (err) {
-  //     console.error('Error parsing JSON:', err);
-  //     return res.status(500).json({ error: 'Invalid JSON from Python script' });
-  //   }
-  // });
-
-  // pythonProcess.on('error', (err) => {
-  //   console.error('Failed to start Python process:', err);
-  //   return res.status(500).json({ error: 'Failed to process PDF' });
-  // });
 };
 
 module.exports = { retrieve_schedule };

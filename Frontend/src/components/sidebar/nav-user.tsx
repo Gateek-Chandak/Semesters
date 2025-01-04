@@ -65,9 +65,9 @@ export function NavUser({
                   size="lg"
                   className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
                 >
-                  <Avatar className="!h-10 !w-10 rounded-lg">
-                    <AvatarImage className="" src={user.avatar} alt={user.name} />
-                    <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                  <Avatar className="!h-10 !w-10 rounded-full">
+                    <AvatarImage src={user.avatar} alt={user.name} />
+                    <AvatarFallback className="rounded-lg">{user.name.slice(0, 1)}{user.name.split(' ')[0].slice(0, 1)}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user.name}</span>
@@ -84,7 +84,7 @@ export function NavUser({
               >
                 <DropdownMenuLabel className="p-0 font-normal">
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                    <Avatar className="h-8 w-8 rounded-lg">
+                    <Avatar className="h-8 w-8 rounded-full">
                       <AvatarImage src={user.avatar} alt={user.name} />
                       <AvatarFallback className="rounded-lg">CN</AvatarFallback>
                     </Avatar>
@@ -95,13 +95,6 @@ export function NavUser({
                   </div>
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
-                <DropdownMenuGroup>
-                  <DropdownMenuItem>
-                    <BadgeCheck />
-                    Account
-                  </DropdownMenuItem>
-                </DropdownMenuGroup>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleLogout}>
                   <LogOut />
                   Log out
@@ -110,13 +103,13 @@ export function NavUser({
             </DropdownMenu>
           </div>}
           {(!open && !openMobile) && 
-            <div className="w-full flex flex-col items-center gap-3">
-              <Avatar className="!h-10 !w-10 rounded-lg">
+            <div className="w-full flex flex-col items-center gap-5">
+              <Avatar className="!h-8 !w-8 rounded-full">
                 <AvatarImage className="" src={user.avatar} alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
-              <Avatar className="!h-10 !w-10 rounded-lg">
-                <AvatarImage className="" src={user.avatar} alt={user.name} />
+              <Avatar className="!h-8 !w-8 rounded-lg">
+                <AvatarImage className="" src='/Objects/SemesterLogo.svg' alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
             </div>  

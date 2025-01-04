@@ -13,11 +13,7 @@
   font-weight: 300;
   font-style: normal;
 }
-:focus-visible {
-  outline: 2px solid #4A90E2; /* Example: Blue outline */
-  outline-offset: 2px; /* Adds space between the outline and element */
-  box-shadow: 0 0 0 4px rgba(74, 144, 226, 0.5); /* Optional: Add a shadow */
-}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

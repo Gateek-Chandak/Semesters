@@ -17,10 +17,15 @@ import {
     DropdownMenuTrigger,
     DropDown
 } from "@/components/ui/dropdown-menu"
-import { CheckIcon, PencilIcon } from "lucide-react";
+import { CheckIcon, PencilIcon, Trash2Icon } from "lucide-react";
 
 import { format } from "date-fns";
-import { ChangeEvent } from "react";
+import { ChangeEvent, useState } from "react";
+
+import { useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { updateCourse } from "@/redux/slices/dataSlice";
+import { useDispatch } from "react-redux";
 
 import { Course, GradingScheme } from "@/types/mainTypes";
 
@@ -54,10 +59,75 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
     setIsAddingScheme
 }) => {
 
+    const data = useSelector((state: RootState) => state.data.data)
+    const dispatch = useDispatch()
+    
+    const [schemeName, setSchemeName] = useState<string>(scheme.schemeName)
+
+    const handleSchemeNameUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value.trim().slice(0, 25); // Use `e.target.value` to get the input's current value
+        setSchemeName(inputValue); // Update the state with the new value
+    };
+    
+    const handleSchemeNameBlur = () => {
+        if (!schemeName || schemeName.trim() === "") {
+            // If the scheme name is empty or consists of only whitespace, reset it
+            setSchemeName(scheme.schemeName);
+        } else {
+            // Dispatch an action to update the scheme name in the Redux store
+            const updatedSchemes = courseData.gradingSchemes.map((s) => 
+                s.schemeName === scheme.schemeName
+                    ? { ...s, schemeName: schemeName.trim() }
+                    : s
+            );
+    
+            const updatedCourse = {
+                ...courseData,
+                gradingSchemes: updatedSchemes,
+            };
+    
+            dispatch(
+                updateCourse({
+                    term: term,
+                    courseIndex: courseIndex,
+                    course: updatedCourse,
+                })
+            );
+        }
+    };    
+
+    const deleteScheme = () => {
+        const updatedSchemes = courseData.gradingSchemes.filter((s) => 
+            s.schemeName !== scheme.schemeName // Ensure this returns a boolean
+        );
+    
+        const updatedCourse = {
+            ...courseData,
+            gradingSchemes: updatedSchemes.length > 0 ? updatedSchemes : [],
+        };
+
+        console.log(updateCourse)
+        dispatch(
+            updateCourse({
+                term: term,
+                courseIndex: courseIndex,
+                course: updatedCourse,
+            })
+        );
+    };
+
     return ( 
-        <CarouselItem className="pt-3 rounded-2xl bg-card text-card-foreground">
-            <h1 className="mr-auto ml-[27px] py-5 text-lg font-medium">{scheme.schemeName}</h1>
-            <div className='ml-auto pr-7 flex flex-row justify-end -top-14 relative gap-3'>
+        <CarouselItem className={`w-full pt-5 rounded-2xl bg-card text-card-foreground flex flex-col gap-8`}>
+            <div className='w-full pr-7 flex flex-row justify-between items-center gap-3'>
+            {!isEditing && <h1 className="mr-auto text-left relative left-20 top-1 text-lg font-medium">{scheme.schemeName}</h1>}
+            {isEditing && <Input className="w-60 text-left relative left-20 h-10 !text-lg font-medium" 
+                                 value={schemeName}
+                                 onChange={handleSchemeNameUpdate}
+                                 onBlur={handleSchemeNameBlur}/>}
+            {isEditing && 
+                <Button variant="outline" className="ml-auto bg-white text-black border border-red-500 hover:bg-gray-100" onClick={() => deleteScheme()}>
+                    <Trash2Icon className="text-red-500" />
+                </Button>}
                 <Button className='bg-white text-black border-2 border-black hover:bg-gray-100'
                         onClick={() => setIsEditing(!isEditing)}>
                         {isEditing ? "Save Changes" : "Edit"} {isEditing ? <CheckIcon/> : <PencilIcon/>}

@@ -2,46 +2,67 @@ import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { XIcon } from "lucide-react";
 
+import ColourPicker from "./ColourPicker";
+
 interface CreateCoursePopupProps {
     isUploading: boolean;
     isCreatingCourse: boolean;
     setIsCreatingCourse: React.Dispatch<React.SetStateAction<boolean>>;
-    courseTitle: string;
-    setCourseTitle: React.Dispatch<React.SetStateAction<string>>;
+    courseCode: string;
+    setCourseCode: React.Dispatch<React.SetStateAction<string>>;
+    courseNumber: number | null;
+    setCourseNumber: React.Dispatch<React.SetStateAction<number | null>>;
     courseSubtitle: string;
     setCourseSubtitle: React.Dispatch<React.SetStateAction<string>>;
     createNewCourse: () => Promise<void>;
     error: string
     setError: React.Dispatch<React.SetStateAction<string>>;
     setUploadedFile: React.Dispatch<React.SetStateAction<File | null>>;
+    selectedColour: string
+    setSelectedColour: React.Dispatch<React.SetStateAction<string>>;
 }
   
   const CreateCoursePopup: React.FC<CreateCoursePopupProps> = ({
         isUploading,
         isCreatingCourse,
         setIsCreatingCourse,
-        courseTitle,
-        setCourseTitle,
+        courseCode,
+        setCourseCode,
+        courseNumber,
+        setCourseNumber,
         courseSubtitle,
         setCourseSubtitle,
         createNewCourse,
         error,
         setError,
-        setUploadedFile
+        setUploadedFile,
+        selectedColour,
+        setSelectedColour
     }) => {
 
-    const manageCourseTitle = (e: any) => {
-        const isAlphanumeric = (value: string): value is string => {
-            return /^[a-zA-Z0-9\s]*$/.test(value);
-        };
-
-        if (isAlphanumeric(e.target.value)) {
-            setCourseTitle(e.target.value)
-            setError("")
-        } else {
-            setError('name can only contain letters and numbers')
-        }
+    const manageCourseCode = (e: any) => {
+        const inputValue = e.target.value.trimStart().slice(0, 6);
+        setCourseCode(inputValue)
     }
+
+    const manageCourseNumber = (e: any) => {
+        const inputValue = e.target.value;
+        const parsedValue = parseInt(inputValue, 10);
+    
+        // Check if the parsed value is a number and within the range [0, 999]
+        if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 9999) {
+            setCourseNumber(parsedValue);
+        } else if (inputValue === "") {
+            // Allow clearing the input
+            setCourseNumber(null);
+        }
+    };    
+
+    const manageCourseSubtitle = (e: any) => {
+        const inputValue = e.target.value.trimStart().slice(0, 30);
+        setCourseSubtitle(inputValue)
+    }
+
 
     const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
         let file = null;
@@ -66,16 +87,24 @@ interface CreateCoursePopupProps {
                             <button onClick={() => setIsCreatingCourse(!isCreatingCourse)}><XIcon className="ml-auto w-5 h-auto -top-4 left-2 relative hover:text-red-600 transform transition-all duration-200 hover:scale-106"/></button>
                         </div>
                         <p className="text-sm mb-5 font-extralight">Add a new course by entering its name and uploading the syllabus. Although the upload is optional, we'll use this information to st up your calendar and grading system</p>
-                        <div className="flex flex-col gap-4">
-                            <div className="flex flex-col gap-1">
-                                <h1 className="font-medium">Course *</h1>
-                                <Input placeholder="Math 135" value={courseTitle} onChange={(e) => manageCourseTitle(e)}></Input>
+                        <div className="flex flex-col gap-6 text-sm">
+                            <div className="flex flex-col gap-4">
+                                <h1 className="font-medium">Course Code *</h1>
+                                <Input placeholder="SYDE" value={courseCode} onChange={(e) => manageCourseCode(e)}></Input>
                             </div>
-                            <div className="flex flex-col gap-1">
-                                <h1 className="font-medium">Subtitle</h1>
-                                <Input placeholder="Algebra" value={courseSubtitle} onChange={(e) => setCourseSubtitle(e.target.value)}></Input>
+                            <div className="flex flex-col gap-4">
+                                <h1 className="font-medium">Course Number *</h1>
+                                <Input placeholder="223" value={courseNumber !== null ? courseNumber : ""} onChange={(e) => manageCourseNumber(e)}></Input>
                             </div>
-                            <div className="flex flex-col gap-1">
+                            <div className="flex flex-col gap-4">
+                                <h1 className="font-medium">Course Name *</h1>
+                                <Input placeholder="Data Structures & Algorithms" value={courseSubtitle} onChange={(e) => manageCourseSubtitle(e)}></Input>
+                            </div>
+                            <div className="flex flex-col gap-4">
+                                <h1 className="font-medium">Course Colour *</h1>
+                                <ColourPicker selectedColour={selectedColour} setSelectedColour={setSelectedColour}/>
+                            </div>
+                            <div className="flex flex-col gap-4">
                                 <h1 className="font-medium">Syllabus Upload</h1>
                                 <Input
                                     type="file" // Accept only PDF files
@@ -85,7 +114,7 @@ interface CreateCoursePopupProps {
                                 />
                             </div>
                         </div>
-                        <p className="text-left my-3 text-red-600">{error}</p>
+                        <p className="text-left mt-6 text-red-600">{error}</p>
                         <div className="flex flex-row justify-end items-center gap-2 mt-10">
                             <Button onClick={() => createNewCourse()}>Add Course</Button>
                         </div>

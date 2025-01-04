@@ -44,7 +44,7 @@ interface UploadTranscriptPopupProps {
                             <h1 className="mr-auto text-left font-semibold mb-2 text-xl">Upload Transcript</h1>
                             <button onClick={() => setIsActive(!isActive)}><XIcon className="ml-auto w-5 h-auto -top-4 left-2 relative hover:text-red-600 transform transition-all duration-200 hover:scale-106"/></button>
                         </div>
-                        <p className="text-sm mb-5 font-extralight">By uploading your transcript, you'll be able to view all your terms, courses, and respective grades. Rest assured, duplicate terms will not be overwritten.</p>
+                        <p className="text-sm mb-5 font-extralight">By uploading your transcript, you'll be able to view all your terms, courses, and respective grades. <span className="font-medium">Rest assured, duplicate terms will not be overwritten.</span></p>
                         <div className="flex flex-col gap-4">
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-medium">File</h1>

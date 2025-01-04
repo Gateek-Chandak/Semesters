@@ -21,7 +21,7 @@ export type CalendarEvent = {
   end: Date;
   title: string;
   course: string;
-  color?: 'green' | 'default' | 'blue' | 'pink' | 'purple' | undefined;
+  color?: 'green' | 'black' | 'blue' | 'pink' | 'purple' | 'orange' | 'red' | undefined;
 };
 
 export type Assessment = {
@@ -48,5 +48,6 @@ export type Course = {
 
 export type Term = {
     term: string;
+    isCompleted: boolean;
     courses: Course[];
 };

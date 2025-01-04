@@ -38,7 +38,12 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
 
   // If still loading, show a loading indicator or nothing
   if (loading) {
-    return <div>Loading...</div>; // Or a spinner, or nothing
+    return (
+      <div className='w-full h-dvh bg-[#f7f7f7] flex flex-row justify-center items-center gap-4'>
+        <img src="/Objects/SemesterLogo.svg" className='h-10 w-10' alt="Semester Logo" />
+        <h1 className='text-4xl'>Loading</h1>
+      </div>
+    )
   }
 
   // If authenticated, show the children (HomePage); otherwise, redirect to login

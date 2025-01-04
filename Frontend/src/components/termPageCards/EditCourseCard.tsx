@@ -34,11 +34,26 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
     const termData = data.find((t) => t.term === term);
 
-    const [title, setTitle] = useState<string>(course.courseTitle);
+    const [code, setCode] = useState<string>(course.courseTitle.split(' ')[0]);
+    const [number, setNumber] = useState<number | null>(Number(course.courseTitle.split(' ')[1]));
     const [subtitle, setSubtitle] = useState<string>(course.courseSubtitle);
 
-    const handleTitleChange = (e) => {
-        setTitle(e.target.value)
+    const handleCodeChange = (e) => {
+        const inputValue = e.target.value.trimStart().slice(0, 6);
+        setCode(inputValue)
+    }
+
+    const handleNumberChange = (e) => {
+        const inputValue = e.target.value;
+        const parsedValue = parseInt(inputValue, 10);
+    
+        // Check if the parsed value is a number and within the range [0, 999]
+        if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 9999) {
+            setNumber(parsedValue);
+        } else if (inputValue === "") {
+            // Allow clearing the input
+            setNumber(null)
+        }
     }
 
     const handleSubtitleChange = (e) => {
@@ -61,9 +76,17 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
     const handleTitleChangeBlur = () => {
         console.log('Saving updated course details...');
+        if (!code.trim() || number === null) {
+            console.log("Title or number cannot be empty");
+            
+            // Reset to the original course title if invalid
+            setCode(course.courseTitle.split(" ")[0]);
+            setNumber(Number(course.courseTitle.split(" ")[1]));
+            return;
+        }
         const updatedCourse = {
             ...course,
-            courseTitle: title.trim(), // Trim to avoid unnecessary whitespace
+            courseTitle: (code + ' ' + number).trim(), // Trim to avoid unnecessary whitespace
         };
     
         const courseIndex = termData?.courses.findIndex(
@@ -82,7 +105,6 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
     };
 
     const handleSubtitleChangeBlur = () => {
-        console.log('Saving updated course details...');
         const updatedCourse = {
             ...course,
             courseSubtitle: subtitle.trim(), // Trim to avoid unnecessary whitespace
@@ -106,12 +128,18 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
     return (
         <Card > {/* Use course's title or id as key */}
-            <div className="border-2 border-slate-200 bg-card rounded-2xl">
-                <div className="h-32 w-32 flex flex-col justify-center gap-2 items-center p-6">
+            <div className="bg-card rounded-2xl">
+                <div className="h-40 w-40 flex flex-col justify-center gap-2 items-center p-6">
                     <Input
-                        className="!text-md"
-                        value={title}
-                        onChange={handleTitleChange}
+                        className="!text-sm"
+                        value={code}
+                        onChange={handleCodeChange}
+                        onBlur={handleTitleChangeBlur} // Trigger the blur function directly
+                    />
+                    <Input
+                        className="!text-sm"
+                        value={number !== null ? number : ""}
+                        onChange={handleNumberChange}
                         onBlur={handleTitleChangeBlur} // Trigger the blur function directly
                     />
                     <Input
@@ -120,8 +148,8 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
                         onChange={handleSubtitleChange}
                         onBlur={handleSubtitleChangeBlur} // Trigger the blur function directly
                     />
-                    <Button variant="outline" onClick={() => handleDeleteCourse(course.courseTitle)}>
-                        Delete <Trash2Icon />
+                    <Button variant="outline" className="border border-red-500" onClick={() => handleDeleteCourse(course.courseTitle)}>
+                        <Trash2Icon className="text-red-500" />
                     </Button>
                 </div>
             </div>

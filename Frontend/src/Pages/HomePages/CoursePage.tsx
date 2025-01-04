@@ -475,7 +475,7 @@ const CoursePage = () => {
                         <Calendar
                             events={calendarEvents}
                             >
-                            <div className="min-h-[30rem] max-h-[35rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
+                            <div className="min-h-[35rem] max-h-[35rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
                                 <div className="flex px-6 items-center gap-2 mb-6">
                                     <CalendarViewTrigger
                                         view="week"

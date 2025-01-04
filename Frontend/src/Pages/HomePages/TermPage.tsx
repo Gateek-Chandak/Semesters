@@ -33,6 +33,8 @@ import EditCourseCard from "@/components/termPageCards/EditCourseCard";
 import CreateCoursePopup from "@/components/termPageCards/CreateCoursePopup";
 import DisplayCourseCard from "@/components/termPageCards/DisplayCourseCard";
 import EventsInProximity from "@/components/termPageCards/EventsInProximity";
+import ExportGoogleCalPopup from "@/components/coursePageCards/ExportGoogleCalPopup";
+import CompletedTermCourseCard from "@/components/termPageCards/CompletedTermCourseCard";
 
 const TermPage = () => {
     const data = useSelector((state: RootState) => state.data.data);
@@ -46,13 +48,17 @@ const TermPage = () => {
     const [termGrade, setTermGrade] = useState<number>(0);
     const [gradesShown, setGradesShown] = useState<boolean>(false);
     const [isCreatingCourse, setIsCreatingCourse] = useState<boolean>(false);
+    const [isExporting, setIsExporting] = useState<boolean>(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState<boolean>(false);
-    const [courseTitle, setCourseTitle] = useState<string>("");
+
+    const [courseCode, setCourseCode] = useState<string>("");
+    const [courseNumber, setCourseNumber] = useState<number | null>(null);
     const [courseSubtitle, setCourseSubtitle] = useState<string>("");
     const [error, setError] = useState<string>("");
     const [isManagingCourses, setIsManagingCourses] = useState<boolean>(false)
     const [isShowingAverage, setIsShowingAverage] = useState<boolean>(true)
+    const [selectedColour, setSelectedColour] = useState<string>(''); 
 
     // Term processing logic
     let term = originalTerm;
@@ -130,28 +136,41 @@ const TermPage = () => {
 
     // Create a new course
     const createNewCourse = async (): Promise<void> => {
-        if (!courseTitle || courseTitle.trim() === "") {
-            setError('title is required');
+        if (!courseCode || courseCode.trim() === "") {
+            setError('Course code is required');
+            setIsUploading(false);
+            setIsCreatingCourse(true)
+            return;
+        }
+
+        if (!courseNumber) {
+            setError('Course Number is required');
             setIsUploading(false);
             setIsCreatingCourse(true)
             return;
         }
 
         if (!courseSubtitle || courseSubtitle.trim() === "") {
-            setError('subtitle is required');
+            setError('Subtitle is required');
             setIsUploading(false);
             setIsCreatingCourse(true)
             return;
         }
 
-        const courseParam = courseTitle
-                .replace(' ', '-') 
+        if (selectedColour === '') {
+            setError('Please select a colour')
+            setIsUploading(false)
+            setIsCreatingCourse(true)
+            return;
+        }
+
+        const courseParam =  courseCode + '-' + courseNumber
 
         if (!uploadedFile) {
             const newCourse = {
-                courseTitle: courseTitle,
+                courseTitle: courseCode + ' ' + courseNumber,
                 courseSubtitle: courseSubtitle,
-                colour: 'blue',
+                colour: selectedColour,
                 highestGrade: 0,
                 gradingSchemes: []
             }
@@ -174,16 +193,15 @@ const TermPage = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
-
             const data = await response.data;
             const json = await JSON.parse(data);
 
             const gradingSchemes = formatNewGradingScheme(json)
 
             const newCourse = {
-                courseTitle: courseTitle,
+                courseTitle: courseCode + ' ' + courseNumber,
                 courseSubtitle: courseSubtitle,
-                colour: 'blue',
+                colour: selectedColour,
                 highestGrade: 0,
                 gradingSchemes: gradingSchemes
             }
@@ -216,14 +234,126 @@ const TermPage = () => {
 
     return ( 
         <div className="w-full h-dvh min-h-fit px-10 pt-10 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
-            <div className="max-w-[1840px] w-full flex flex-col gap-10">
-                <div className="w-[100%] lg:h-[25rem] flex flex-col gap-10 lg:flex-row">
-                    <div className="w-[100%] lg:w-[60%] flex flex-col gap-10">
-                        <div className="flex flex-row items-center justify-start gap-4">
+            {!termData?.isCompleted && 
+                <div className="max-w-[1840px] w-full flex flex-col gap-10">
+                    <div className="w-[100%] lg:h-[25rem] flex flex-col gap-10 lg:flex-row">
+                        <div className="w-[100%] lg:w-[60%] flex flex-col gap-10">
+                            <div className="flex flex-row items-center justify-start gap-4">
+                                <h1 className="text-3xl font-bold">{term}</h1>
+                            </div>
+                            <div className="w-[100%] h-full flex flex-col items-center md:flex-row gap-10">
+                                <Card className="w-[100%] md:w-[35%] h-full px-6">
+                                    <CircularProgress 
+                                        percentage={termGrade} 
+                                        label="Term Average"
+                                        description=""
+                                        isShowingAverage={isShowingAverage}
+                                        setIsShowingAverage={setIsShowingAverage}
+                                    />
+                                </Card>
+                                <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-6">
+                                    <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
+                                        <h1 className="text-5xl font-semibold">{numOfEventsInNext7Days}</h1>
+                                        <p className="font-light text-sm"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
+                                    </Card>
+                                    <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
+                                        
+                                    </Card>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        <div className="w-[100%] lg:w-[40%] flex flex-col gap-10">
+                            <h1 className="w-[100%] text-2xl font-light">
+                                Upcoming Deliverables
+                            </h1>
+                            <div className="h-[100%] min-h-[15rem] w-[100%]"> 
+                                <EventsInProximity calendarEvents={calendarEvents} proximityInDays={7} />
+                            </div>
+                        </div>
+                    </div>
+                    <Separator />
+                    <div className="w-[100%] flex flex-col gap-10 lg:flex-row h-fit">
+                        <div className="h-[100%] w-[100%] lg:w-[55%] flex flex-col gap-10">
+                            <div className="flex flex-col gap-7 sm:gap-0 sm:flex-row w-ful pr-12">
+                                <h1 className="sm:mr-auto text-2xl font-light">Current Courses</h1>
+                                <div className="sm:ml-auto flex flex-row gap-4">
+                                    {!isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100 !text-xs' onClick={() => setIsManagingCourses(!isManagingCourses)}>Manage Courses <PencilIcon/></Button>}
+                                    {isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100 !text-xs' onClick={() => setIsManagingCourses(!isManagingCourses)}>Save Changes <Check/></Button>}
+                                    {!isManagingCourses && !gradesShown && <Button className='!text-xs' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}
+                                    {!isManagingCourses && gradesShown && <Button className='!text-xs' onClick={() => setGradesShown(!gradesShown)}>Hide Grades <EyeOffIcon /></Button>}
+                                </div>
+                            </div>
+                            <div className="flex flex-row flex-wrap gap-10">
+                                {!isManagingCourses && termData && termData.courses.map((course) => { return ( <DisplayCourseCard key={course.courseTitle} course={course} gradesShown={gradesShown}/> ); })}
+                                {isManagingCourses && termData && termData.courses.map((course) => { return ( <EditCourseCard key={course.courseTitle} course={course} /> ); })}
+                                <div onClick={() => setIsCreatingCourse(!isCreatingCourse)} 
+                                    className={`${isManagingCourses ? 'h-40 w-40' : 'h-32 w-32'} flex flex-col justify-center items-center border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-md`}
+                                    role="button" 
+                                    tabIndex={0}>
+                                    <h1 className="text-7xl font-extralight">+</h1>
+                                </div>
+                            </div>
+                        </div>
+                        {/* Calendar Component */}
+                        <div className="w-[100%] lg:w-[45%] flex flex-col gap-10">
+                            <h1 className="mr-auto text-2xl font-light">Term Calendar</h1>
+                            <Calendar
+                                events={calendarEvents}>
+                                <div className="max-h-[41rem] min-h-[35rem] w-full bg-card rounded-xl pt-6 flex flex-col border border-slate-200 shadow-md">
+                                    <div className="flex px-6 items-center gap-2 mb-6">
+                                        <CalendarViewTrigger
+                                            view="week"
+                                            className="aria-[current=true]:bg-accent"
+                                        >
+                                            Week
+                                        </CalendarViewTrigger>
+                                        <CalendarViewTrigger
+                                            view="month"
+                                            className="aria-[current=true]:bg-accent"
+                                        >
+                                            Month
+                                        </CalendarViewTrigger>
+
+                                        <span className="flex-1" />
+
+                                        <CalendarCurrentDate />
+
+                                        <CalendarPrevTrigger>
+                                            <ChevronLeft size={20} />
+                                            <span className="sr-only">Previous</span>
+                                        </CalendarPrevTrigger>
+
+                                        <CalendarTodayTrigger>Today</CalendarTodayTrigger>
+
+                                        <CalendarNextTrigger>
+                                            <ChevronRight size={20} />
+                                            <span className="sr-only">Next</span>
+                                        </CalendarNextTrigger>
+                                    </div>
+
+                                    <div className="flex-1 px-6 relative overflow-y-auto">
+                                        <CalendarWeekView />
+                                        <CalendarMonthView />
+                                    </div>
+                                    <div className="w-full py-3 px-6">
+                                        <Button variant={'outline'} className="border border-blue-500 text-blue-500 hover:text-blue-600" onClick={() => setIsExporting(!isExporting)}>
+                                            Export to Google Calendar
+                                        </Button>
+                                    </div>  
+                                </div>
+                            </Calendar>
+                        </div>
+                    </div>
+                </div>}
+            {termData?.isCompleted && 
+                <div className="max-w-[1840px] w-full flex flex-col gap-10">
+                    <div className="w-full lg:h-[25rem] flex flex-col gap-10">
+                        <div className="w-full flex flex-row items-center justify-start gap-4">
                             <h1 className="text-3xl font-bold">{term}</h1>
                         </div>
-                        <div className="w-[100%] h-full flex flex-col items-center md:flex-row gap-10">
-                            <Card className="w-[100%] md:w-[35%] h-full px-6">
+                        <div className="flex flex-col lg:flex-row justify-start gap-10">
+                            <Card className="h-full px-6">
                                 <CircularProgress 
                                     percentage={termGrade} 
                                     label="Term Average"
@@ -232,109 +362,38 @@ const TermPage = () => {
                                     setIsShowingAverage={setIsShowingAverage}
                                 />
                             </Card>
-                            <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-10">
-                                <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
-                                    <h1 className="text-5xl font-semibold">{numOfEventsInNext7Days}</h1>
-                                    <p className="font-light text-sm"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
-                                </Card>
-                                <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
-                                    <h1 className="text-5xl font-semibold">111</h1>
-                                    <p className="font-light text-sm"><span className="font-bold">days to go.</span> Stay focused and keep pushing - you're almost there!</p>
-                                </Card>
-                            </div>
-                            
-                        </div>
-                    </div>
-                    <div className="w-[100%] lg:w-[40%] flex flex-col gap-10">
-                        <h1 className="w-[100%] text-2xl font-light">
-                            Upcoming Deliverables
-                        </h1>
-                        <div className="h-[100%] w-[100%]"> 
-                            <EventsInProximity calendarEvents={calendarEvents} proximityInDays={7} />
-                        </div>
-                    </div>
-                </div>
-                <Separator />
-                <div className="w-[100%] flex flex-col gap-10 lg:flex-row h-fit">
-                    <div className="h-[100%] w-[100%] lg:w-[55%] flex flex-col gap-10">
-                        <div className="flex flex-col gap-7 sm:gap-0 sm:flex-row w-ful pr-12">
-                            <h1 className="sm:mr-auto text-2xl font-light">Current Courses</h1>
-                            <div className="sm:ml-auto flex flex-row gap-4">
-                                {!isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100 !text-xs' onClick={() => setIsManagingCourses(!isManagingCourses)}>Manage Courses <PencilIcon/></Button>}
-                                {isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100 !text-xs' onClick={() => setIsManagingCourses(!isManagingCourses)}>Save Changes <Check/></Button>}
-                                {!isManagingCourses && !gradesShown && <Button className='!text-xs' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}
-                                {!isManagingCourses && gradesShown && <Button className='!text-xs' onClick={() => setGradesShown(!gradesShown)}>Hide Grades <EyeOffIcon /></Button>}
-                            </div>
-                        </div>
-                        <div className="flex flex-row flex-wrap gap-10">
-                            {!isManagingCourses && termData && termData.courses.map((course) => { return ( <DisplayCourseCard key={course.courseTitle} course={course} gradesShown={gradesShown}/> ); })}
-                            {isManagingCourses && termData && termData.courses.map((course) => { return ( <EditCourseCard key={course.courseTitle} course={course} /> ); })}
-                            <div onClick={() => setIsCreatingCourse(!isCreatingCourse)} 
-                                 className="h-32 w-32 flex flex-col justify-center items-center border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-md"
-                                 role="button" 
-                                 tabIndex={0}>
-                                <h1 className="text-7xl font-extralight">+</h1>
-                            </div>
-                        </div>
-                    </div>
-                    {/* Calendar Component */}
-                    <div className="w-[100%] lg:w-[45%] flex flex-col gap-10">
-                        <h1 className="mr-auto text-2xl font-light">Term Calendar</h1>
-                        <Calendar
-                            events={calendarEvents}>
-                            <div className="max-h-[41rem] min-h-[32rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
-                                <div className="flex px-6 items-center gap-2 mb-6">
-                                    <CalendarViewTrigger
-                                        view="week"
-                                        className="aria-[current=true]:bg-accent"
-                                    >
-                                        Week
-                                    </CalendarViewTrigger>
-                                    <CalendarViewTrigger
-                                        view="month"
-                                        className="aria-[current=true]:bg-accent"
-                                    >
-                                        Month
-                                    </CalendarViewTrigger>
 
-                                    <span className="flex-1" />
-
-                                    <CalendarCurrentDate />
-
-                                    <CalendarPrevTrigger>
-                                        <ChevronLeft size={20} />
-                                        <span className="sr-only">Previous</span>
-                                    </CalendarPrevTrigger>
-
-                                    <CalendarTodayTrigger>Today</CalendarTodayTrigger>
-
-                                    <CalendarNextTrigger>
-                                        <ChevronRight size={20} />
-                                        <span className="sr-only">Next</span>
-                                    </CalendarNextTrigger>
+                            <div className="flex flex-col lg:flex-row gap-10 justify-start">
+                                <div className="w-full items-center lg:w-40 h-40 text-xs text-muted-foreground flex flex-col justify-between">
+                                    <p className="text-lg lg:text-xs">This term is complete. You may view your grades and make any adjustments as you wish.</p>
+                                    {!isManagingCourses && !gradesShown && <Button className='!text-xs lg:!w-40 w-[80%]' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}
+                                    {!isManagingCourses && gradesShown && <Button className='!text-xs lg:!w-40 w-[80%]' onClick={() => setGradesShown(!gradesShown)}>Hide Grades <EyeOffIcon /></Button>}
                                 </div>
-
-                                <div className="flex-1 px-6 relative overflow-y-auto">
-                                    <CalendarWeekView />
-                                    <CalendarMonthView />
-                                </div>
+                                {!isManagingCourses && termData && termData.courses.map((course) => { return ( <CompletedTermCourseCard key={course.courseTitle} course={course} gradesShown={gradesShown}/> ); })}
                             </div>
-                        </Calendar>
-                    </div>
+                        </div>
+                    </div>         
                 </div>
-            </div>
+            }
             {/* Pop Up When Creating Course */}
             <CreateCoursePopup  isUploading={isUploading} 
                                 isCreatingCourse={isCreatingCourse} 
                                 setIsCreatingCourse={setIsCreatingCourse} 
-                                courseTitle={courseTitle} 
-                                setCourseTitle={setCourseTitle} 
+                                courseCode={courseCode} 
+                                setCourseCode={setCourseCode} 
+                                courseNumber={courseNumber}
+                                setCourseNumber={setCourseNumber}
                                 courseSubtitle={courseSubtitle} 
                                 setCourseSubtitle={setCourseSubtitle} 
                                 createNewCourse={createNewCourse} 
                                 error={error}
                                 setError={setError}
-                                setUploadedFile={setUploadedFile}/>
+                                setUploadedFile={setUploadedFile}
+                                selectedColour={selectedColour}
+                                setSelectedColour={setSelectedColour}/>
+            <ExportGoogleCalPopup isExporting={isExporting}
+                                  setIsExporting={setIsExporting}
+                                  calendarEvents={calendarEvents}/>
         </div>
         );
 }

@@ -19,11 +19,15 @@ const EventsInProximity: React.FC<EventsInProximityProps> = ( {proximityInDays, 
     });
 
     return ( 
-        <Card className="w-[100%] h-full h-max-[27rem] overflow-y-auto p-4 flex flex-col gap-2">
-            <div className="h-full flex flex-col gap-4 justify-between">
+        <Card className="w-[100%] h-full h-min-[15rem] h-max-[25rem] overflow-y-auto p-4 flex flex-col gap-2">
+            <div className="h-full h-min-[15rem] flex flex-col gap-4 justify-between overflow-y-auto">
                 {eventsNextXDays.length > 0 && eventsNextXDays.map((event) => {
                     return (
-                        <Card key={event.id} className={`p-5 h-full bg-gradient-to-b from-${event.color}-100 via-${event.color}-100 to-white`}>
+                        <Card 
+                            key={event.id} 
+                            className={`p-5 h-full border-${event.color}-500 bg-gradient-to-r from-${event.color}-300 to-${event.color}-100`}  // Light gradient
+                            style={{  }} // Fallback style (if needed)
+                            >
                             <h1 className={`font-medium text-${event.color}-600`}>{event.course}</h1>
                             <div className="mt-2 flex flex-row justify-between">
                                 <p className="font-normal">{event.title}</p>

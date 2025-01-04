@@ -10,6 +10,7 @@ const initialState: DataState = {
     data: [
        {
         term: 'Winter 2025',
+        isCompleted: false,
         courses: []
        },
       ], // Initial data can be set here
@@ -31,6 +32,7 @@ const dataSlice = createSlice({
                   ...state.data
               ];
               state.data = combinedTerms; 
+              console.log(combinedTerms)
           }
         },       
         addTerm(state, action: PayloadAction<{ term: Term }>) {
@@ -77,7 +79,7 @@ const dataSlice = createSlice({
         addCourse(state, action: PayloadAction<{ term: string; course: Course }>) {
           const { term, course } = action.payload;
           const termIndex = state.data.findIndex((t) => t.term === term);
-      
+
           if (termIndex !== -1) {
               const existingCourse = state.data[termIndex].courses.find(
                   (c) => c.courseTitle.toLowerCase() === course.courseTitle.toLowerCase() // Case insensitive comparison

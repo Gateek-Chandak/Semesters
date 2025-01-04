@@ -63,7 +63,7 @@ export function NavMain({ data }: {data:any}) {
                       </SidebarMenuSubButton>
                     </SidebarMenuSubItem>
                   ))}
-                  {term.courses.length <= 0 && <h1>no courses found</h1>}
+                  {term.courses.length <= 0 && <h1 className="text-sm">no courses found</h1>}
                 </SidebarMenuSub>
               </CollapsibleContent>
             </SidebarMenuItem>
@@ -71,12 +71,12 @@ export function NavMain({ data }: {data:any}) {
         ))}
       </SidebarMenu>}
       {!open && !isMobile && selectedCourse && 
-        <div className="flex mb-6 flex-row items-center justify-center text-xl text-muted-foreground">
+        <Link to={`/home/${selectedTermData.term.replace(' ', '-')}`} className="flex mb-6 flex-row items-center justify-center text-xl text-muted-foreground">
           <h1>{selectedTermData.term.split('')[0]}</h1>
           <h1>{selectedTermData.term.split(' ')[1].slice(-2)}</h1>
-        </div>
+        </Link>
       }
-      <div className="w-full flex flex-col justify-center items-center gap-5">
+      <div className="w-full flex flex-col-reverse justify-center items-center gap-5">
         {!open && !isMobile && selectedCourse && selectedTermData.courses.map((course) => {
           if (course.courseTitle === selectedCourse) {
             let hoverColour ='black'
@@ -105,7 +105,7 @@ export function NavMain({ data }: {data:any}) {
           }
         })}
       </div>
-      <div className="w-full flex flex-col justify-center items-center gap-5">
+      <div className="w-full flex flex-col-reverse justify-center items-center gap-5">
         {!open && !isMobile && selectedTerm && !selectedCourse && data.map((term) => {
           if (term.term === selectedTerm) {
             return (

@@ -59,6 +59,7 @@ const AddSchemePopup: React.FC<AddSchemePopupProps> = ( {isAddingScheme, setIsAd
             })
         );
         setIsAddingScheme(false);
+        setName('')
     };
     
 
