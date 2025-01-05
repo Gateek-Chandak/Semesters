@@ -36,8 +36,8 @@ app.use("/api/transcript/", transcriptRoutes)
 app.use("/api/term-database/", termDatabaseRoutes)
 
 // START SERVER
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}/`);
-});
+// app.listen(PORT, () => {
+//   console.log(`Server running at http://localhost:${PORT}/`);
+// });
 
 module.exports = app
