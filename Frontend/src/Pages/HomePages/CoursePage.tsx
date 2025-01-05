@@ -15,15 +15,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 
 import {
-    DropdownMenu,
-    DropdownMenuItem,
-    DropdownMenuContent,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-    DropDown
-  } from "@/components/ui/dropdown-menu"
-import {
     Calendar,
     CalendarCurrentDate,
     CalendarMonthView,
@@ -44,7 +35,7 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useDispatch } from 'react-redux';
 import { updateCourse } from "@/redux/slices/dataSlice";
 
-import { CalendarEvent, Assessment, Course, GradingScheme } from '@/types/mainTypes';
+import { CalendarEvent, Course, GradingScheme } from '@/types/mainTypes';
 
 import GradingSchemeCarouselItem from '@/components/coursePageCards/GradingSchemeCarouselItem';
 import AddDeliverablePopup from '@/components/coursePageCards/AddDeliverablePopup';
@@ -62,7 +53,7 @@ const CoursePage = () => {
     term = term?.replace('-', ' ')
 
     const termData = data.find((t) => t.term.toLowerCase() === term?.toLowerCase());
-    const termIndex = data.findIndex((t) => t.term.toLowerCase() === term?.toLowerCase())
+    // const termIndex = data.findIndex((t) => t.term.toLowerCase() === term?.toLowerCase())
     const courseData = termData?.courses.find((c: Course) => c.courseTitle.toLowerCase() === course?.toLowerCase())
     const courseIndex = termData?.courses.findIndex((c) => c.courseTitle.toLowerCase() === courseData?.courseTitle.toLowerCase())
     let calendarEvents: CalendarEvent[] = []
