@@ -1,4 +1,4 @@
-import { ChevronRight, Heading1, type LucideIcon } from "lucide-react"
+import { ChevronRight } from "lucide-react"
 import {
   Collapsible,
   CollapsibleContent,
@@ -20,12 +20,13 @@ import { Link } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import { Button } from "../ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { Course, Term } from "@/types/mainTypes";
 
-export function NavMain({ data }: {data:any}) {
+export function NavMain({ data }: {data: any}) {
 
   let { term: selectedTerm, course: selectedCourse } = useParams()
   selectedTerm = selectedTerm?.replace('-', ' ')
-  const selectedTermData = data.find((t) => t.term.toLowerCase() === selectedTerm?.toLowerCase());
+  const selectedTermData = data.find((t: Term) => t.term.toLowerCase() === selectedTerm?.toLowerCase());
   selectedCourse = selectedCourse?.replace('-', ' ')
 
   const { open, setOpenMobile, openMobile } = useSidebar()
@@ -36,7 +37,7 @@ export function NavMain({ data }: {data:any}) {
       <SidebarGroupLabel className="text-md mb-3">Courses</SidebarGroupLabel>
       {(isMobile || open) && 
       <SidebarMenu className="">
-        {data.map((term) => (
+        {data.map((term: Term) => (
           <Collapsible
             key={term.term}
             asChild
@@ -54,7 +55,7 @@ export function NavMain({ data }: {data:any}) {
               </CollapsibleTrigger>
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {(term.courses.length > 0) && term.courses?.map((course: any) => (
+                  {(term.courses.length > 0) && term.courses?.map((course: Course) => (
                     <SidebarMenuSubItem key={course.courseTitle}>
                       <SidebarMenuSubButton asChild>
                         <Link className="text-sm" to={`/home/${term.term.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
@@ -77,7 +78,7 @@ export function NavMain({ data }: {data:any}) {
         </Link>
       }
       <div className="w-full flex flex-col-reverse justify-center items-center gap-5">
-        {!open && !isMobile && selectedCourse && selectedTermData.courses.map((course) => {
+        {!open && !isMobile && selectedCourse && selectedTermData.courses.map((course: Course) => {
           if (course.courseTitle === selectedCourse) {
             let hoverColour ='black'
             if (course.colour === 'black') {
@@ -106,7 +107,7 @@ export function NavMain({ data }: {data:any}) {
         })}
       </div>
       <div className="w-full flex flex-col-reverse justify-center items-center gap-5">
-        {!open && !isMobile && selectedTerm && !selectedCourse && data.map((term) => {
+        {!open && !isMobile && selectedTerm && !selectedCourse && data.map((term: Term) => {
           if (term.term === selectedTerm) {
             return (
               <Link key={term.term} to={`/home/${term.term.replace(/\s+/g, '-')}`}>

@@ -10,7 +10,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 
 export function Trigger() {
   const isMobile = useIsMobile()
-  const { openMobile, open } = useSidebar()
+  const { openMobile } = useSidebar()
 
   return (
     <SidebarMenu className={`

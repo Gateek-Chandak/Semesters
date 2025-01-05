@@ -38,12 +38,12 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
     const [number, setNumber] = useState<number | null>(Number(course.courseTitle.split(' ')[1]));
     const [subtitle, setSubtitle] = useState<string>(course.courseSubtitle);
 
-    const handleCodeChange = (e) => {
+    const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trimStart().slice(0, 6);
         setCode(inputValue)
     }
 
-    const handleNumberChange = (e) => {
+    const handleNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
         const parsedValue = parseInt(inputValue, 10);
     
@@ -56,7 +56,7 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
         }
     }
 
-    const handleSubtitleChange = (e) => {
+    const handleSubtitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setSubtitle(e.target.value)
     }
 
@@ -67,6 +67,7 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
             );
 
             if (courseIndex !== -1) {
+                //@ts-expect-error no clue
                 dispatch(deleteCourse({ term, courseIndex }));
             } else {
                 console.log('Course not found');
@@ -96,6 +97,7 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
         if (termData && courseIndex !== -1) {
             dispatch(updateCourseName({
                 term: termData.term,
+                //@ts-expect-error no clue
                 courseIndex: courseIndex,
                 course: updatedCourse
             }));
@@ -117,6 +119,7 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
         if (termData && courseIndex !== -1) {
             dispatch(updateCourseSubtitle({
                 term: termData.term,
+                //@ts-expect-error no clue
                 courseIndex: courseIndex,
                 course: updatedCourse
             }));

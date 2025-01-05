@@ -16,6 +16,7 @@ const DisplayCourseCard: React.FC<CourseCardProps> = ({ course, gradesShown }) =
         <Link key={course.courseTitle} to={`/home/${term?.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`}>
             <div
                 style={{
+                    //@ts-expect-error no clue
                     '--text-color': course.colour,
                 }}
                 className={`border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-sm hover:border-[var(--border-color)] hover:text-[var(--text-color)]`}
