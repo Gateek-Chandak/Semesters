@@ -88,8 +88,10 @@ const TermPage = () => {
             })
             .map((assessment) => ({
               id: uuid(),
-              start: assessment.dueDate ? new Date(assessment.dueDate) : null,
-              end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : null,
+              //@ts-expect-error idk
+              start: new Date(assessment.dueDate),
+              //@ts-expect-error idk
+              end: addHours(new Date(assessment.dueDate), 1),
               title: assessment.assessmentName,
               course: course.courseTitle,
               color: course.colour,
@@ -310,7 +312,6 @@ const TermPage = () => {
                         <div className="w-[100%] lg:w-[45%] flex flex-col gap-10">
                             <h1 className="mr-auto text-2xl font-light">Term Calendar</h1>
                             <Calendar
-                                //@ts-expect-error calendar expects Date but I can only give Date | null
                                 events={calendarEvents}>
                                 <div className="max-h-[41rem] min-h-[35rem] w-full bg-card rounded-xl pt-6 flex flex-col border border-slate-200 shadow-md">
                                     <div className="flex px-6 items-center gap-2 mb-6">
@@ -405,7 +406,6 @@ const TermPage = () => {
                                 setSelectedColour={setSelectedColour}/>
             {calendarEvents && <ExportGoogleCalPopup isExporting={isExporting}
                                   setIsExporting={setIsExporting}
-                                  //@ts-expect-error calendar expects Date but I can only give Date | null
                                   calendarEvents={calendarEvents}/>}
         </div>
         );

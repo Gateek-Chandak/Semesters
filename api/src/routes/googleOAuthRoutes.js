@@ -57,13 +57,13 @@ router.get('/redirect', async (req, res) => {
         res.setHeader('Set-Cookie', cookie.serialize('token', token, {
             httpOnly: true,  
             secure: true,    
-            sameSite: 'Strict', 
+            sameSite: 'None', 
             maxAge: 3600, // 1hr
             path: '/', 
         }));
 
         //redirect back to the front-end
-        res.redirect(`https://uw-study-buddy-gateek-chandaks-projects.vercel.app/home`);
+        res.redirect(`https://semester-gateek-chandaks-projects.vercel.app/home`);
     } catch (err) {
         console.log(err);
         res.status(500).json({error: 'Authentication failed' })
@@ -73,7 +73,7 @@ router.get('/redirect', async (req, res) => {
 router.get('/verify', (req, res) => {
     const cookies = cookie.parse(req.headers.cookie || '');
     const token = cookies.token
-  
+
     if (!token) {
       return res.status(401).json({ isAuthenticated: false });
     }

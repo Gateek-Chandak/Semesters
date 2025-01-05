@@ -15,7 +15,7 @@ const PORT = 4000;
 
 // MIDDLEWARE
 const corsOptions = {
-    origin: ['http://localhost:5173', 'https://uw-study-buddy-gateek-chandaks-projects.vercel.app'],
+    origin: ['http://localhost:5173', 'https://semester-gateek-chandaks-projects.vercel.app'],
     methods: 'GET,POST',    
     credentials: true,
   };
