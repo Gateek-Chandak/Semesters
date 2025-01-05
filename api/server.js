@@ -4,11 +4,11 @@ const cors = require('cors');
 const app = express();
 
 // ROUTES
-const pdfRoutes = require('./routes/pdfRoutes');
-const googleOAuthRoutes = require('./routes/googleOAuthRoutes');
-const calendarRoutes = require('./routes/calendarRoutes');
-const transcriptRoutes = require('./routes/transcriptRoutes')
-const termDatabaseRoutes = require('./routes/termDatabaseRoutes')
+const pdfRoutes = require('./src/routes/pdfRoutes');
+const googleOAuthRoutes = require('./src/routes/googleOAuthRoutes');
+const calendarRoutes = require('./src/routes/calendarRoutes');
+const transcriptRoutes = require('./src/routes/transcriptRoutes')
+const termDatabaseRoutes = require('./src/routes/termDatabaseRoutes')
 
 // GLOBAL CONSTANTS
 const PORT = 4000;
