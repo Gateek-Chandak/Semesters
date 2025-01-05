@@ -41,7 +41,7 @@ interface CreateCoursePopupProps {
     }) => {
 
     const manageCourseCode = (e: any) => {
-        const inputValue = e.target.value.trimStart().slice(0, 6);
+        const inputValue = e.target.value.trimStart().slice(0, 7);
         setCourseCode(inputValue)
     }
 

@@ -365,7 +365,7 @@ const TermPage = () => {
 
                             <div className="flex flex-col lg:flex-row gap-10 justify-start">
                                 <div className="w-full items-center lg:w-40 h-40 text-xs text-muted-foreground flex flex-col justify-between">
-                                    <p className="text-lg lg:text-xs">This term is complete. You may view your grades and make any adjustments as you wish.</p>
+                                    <p className="text-lg lg:text-xs">This term is complete. You may view your grades.</p>
                                     {!isManagingCourses && !gradesShown && <Button className='!text-xs lg:!w-40 w-[80%]' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}
                                     {!isManagingCourses && gradesShown && <Button className='!text-xs lg:!w-40 w-[80%]' onClick={() => setGradesShown(!gradesShown)}>Hide Grades <EyeOffIcon /></Button>}
                                 </div>

@@ -8,6 +8,7 @@ const pdfRoutes = require('./routes/pdfRoutes');
 const googleOAuthRoutes = require('./routes/googleOAuthRoutes');
 const calendarRoutes = require('./routes/calendarRoutes');
 const transcriptRoutes = require('./routes/transcriptRoutes')
+const termDatabaseRoutes = require('./routes/termDatabaseRoutes')
 
 // GLOBAL CONSTANTS
 const PORT = 4000;
@@ -32,6 +33,7 @@ app.use("/api/pdf/", pdfRoutes)
 app.use("/api/auth/", googleOAuthRoutes)
 app.use("/api/calendar/", calendarRoutes)
 app.use("/api/transcript/", transcriptRoutes)
+app.use("/api/term-database/", termDatabaseRoutes)
 
 // START SERVER
 app.listen(PORT, () => {

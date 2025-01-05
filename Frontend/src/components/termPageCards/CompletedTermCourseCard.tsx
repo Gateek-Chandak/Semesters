@@ -13,13 +13,8 @@ const CompletedTermCourseCard: React.FC<CompletedTermCourseCardProps> = ({ cours
     const { term } = useParams()
 
     return ( 
-        <Link key={course.courseTitle} to={`/home/${term?.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`}>
-            <div
-                style={{
-                    '--text-color': course.colour,
-                }}
-                className={`border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-sm hover:border-[var(--border-color)] hover:text-[var(--text-color)]`}
-            >
+        <div key={course.courseTitle} className="h-40" >
+            <div className={`border-2 border-slate-200 bg-card rounded-2xl`}>
                 <div className="h-40 lg:w-40 flex flex-col justify-center gap-1 items-center">
                     {!gradesShown && <h1 className="text-2xl">{course.courseTitle.split(' ')[0]}</h1>}
                     {gradesShown && <h1 className="text-xl">{course.courseTitle}</h1>}
@@ -27,7 +22,7 @@ const CompletedTermCourseCard: React.FC<CompletedTermCourseCardProps> = ({ cours
                     {gradesShown && <h1 className="text-3xl font-medium">{course.highestGrade}%</h1>}
                 </div>
             </div>
-        </Link>
+        </div>
      );
 }
  

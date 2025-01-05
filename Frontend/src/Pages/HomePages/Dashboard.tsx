@@ -109,7 +109,6 @@ const Dashboard = () => {
         LastTermGPA = 0
     }
 
-
     useEffect(() => {
         if (isUploading || isActive) {
         // Disable scrolling
@@ -229,10 +228,10 @@ const Dashboard = () => {
                             <h1 className="text-6xl font-semibold">{numOfEventsInNext7Days}</h1>
                             <p className="font-light text-md"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                         </Card>
-                        <Card className="px-4 py-4 lg:py-4 h-full flex flex-col">
+                        <Card className="px-4 py-4 lg:pb-4 lg:pt-0 h-full flex flex-col">
                             <div className="flex flex-row justify-center items-center gap-6">
                                 <CircularProgress percentage={cGPA} label="" description="" setIsShowingAverage={setIsShowingAverage} isShowingAverage={isShowingAverage} />
-                                <div className="flex flex-col justify-center h-full py-8 px-10 text-center gap-10 text-md">
+                                <div className="flex flex-col justify-center h-full py-4 px-10 text-center gap-10 text-md">
                                     <h1 className="font-medium text-xl text-center">Cumulative GPA</h1>
                                     <p className="text-md ">Upload your transcript to fill out your academic history</p>
                                 </div>

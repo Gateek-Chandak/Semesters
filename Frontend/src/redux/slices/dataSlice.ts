@@ -2,18 +2,16 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { Assessment, Course, Term } from '@/types/mainTypes';
 
+import { syncTermDataChanges } from '../actions/termDataActions';
+
 interface DataState {
   data: Term[];
+  error: string | null;
 }
 
 const initialState: DataState = {
-    data: [
-       {
-        term: 'Winter 2025',
-        isCompleted: false,
-        courses: []
-       },
-      ], // Initial data can be set here
+    data: [], // Initial data can be set here
+    error: null
 };
 
 const dataSlice = createSlice({
@@ -107,6 +105,15 @@ const dataSlice = createSlice({
                 state.data[termIndex].courses[courseIndex].gradingSchemes[schemeIndex].assessments[assessmentIndex] = assessment;
             }
         },
+    },
+    extraReducers: (builder) => {
+        builder
+          .addCase(syncTermDataChanges.fulfilled, (state) => {
+            state.error = null; // Reset error on success
+          })
+          .addCase(syncTermDataChanges.rejected, (state) => {
+            state.error = 'Error Syncing Data'
+          });
     },
 });
 

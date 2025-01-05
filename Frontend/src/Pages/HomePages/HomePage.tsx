@@ -19,8 +19,21 @@ import { Trigger } from "@/components/sidebar/trigger";
 
 import { Outlet, useParams } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useToast } from "@/hooks/use-toast"
+import { useSelector } from "react-redux"
+import { RootState } from "@/redux/store"
 
 const HomePage = ( ) => {
+  const { toast } = useToast()
+  const error = useSelector((state: RootState) => state.data.error)
+  if (error) {
+    toast({
+      variant: "destructive",
+      title: error,
+      description: "Sync failed, please reload the page before making any further changes",
+    });
+  }
+
   const isMobile = useIsMobile()
 
   const { term: originalTerm, course: originalCourse } = useParams()
