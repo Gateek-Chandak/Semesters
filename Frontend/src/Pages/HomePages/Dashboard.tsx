@@ -68,8 +68,8 @@ const Dashboard = () => {
             })
             .map((assessment) => ({
               id: uuid(),
-              start:  assessment.dueDate ? new Date(assessment.dueDate) : new Date(),
-              end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : new Date(),
+              start:  assessment.dueDate ? new Date(assessment.dueDate) : null,
+              end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : null,
               title: assessment.assessmentName,
               course: course.courseTitle,
               color: course.colour,
@@ -82,8 +82,11 @@ const Dashboard = () => {
     proximityDaysFromNow.setDate(now.getDate() + 7);
 
     const eventsNext7Days = calendarEvents?.filter(event => {
-        const eventDate = new Date(event.start);
-        return eventDate >= now && eventDate <= proximityDaysFromNow;
+        if (event.start) {
+            const eventDate = new Date(event.start);
+            return eventDate >= now && eventDate <= proximityDaysFromNow;
+        }
+        return false;
     });
     const numOfEventsInNext7Days = eventsNext7Days? eventsNext7Days.length : 0
 

@@ -56,28 +56,32 @@ const CoursePage = () => {
     // const termIndex = data.findIndex((t) => t.term.toLowerCase() === term?.toLowerCase())
     const courseData = termData?.courses.find((c: Course) => c.courseTitle.toLowerCase() === course?.toLowerCase())
     const courseIndex = termData?.courses.findIndex((c) => c.courseTitle.toLowerCase() === courseData?.courseTitle.toLowerCase())
-    let calendarEvents: CalendarEvent[] = []
+    let calendarEvents: CalendarEvent[] | undefined = undefined
     if (courseData && courseData.gradingSchemes.length > 0) {
         const uniqueAssessments = new Set();
         calendarEvents = courseData.gradingSchemes.flatMap((scheme) =>
-                                scheme.assessments
-                                .filter((assessment) => {
-                                    // Check if the assessment name is already added for this course
-                                    if (uniqueAssessments.has(assessment.assessmentName)) {
-                                    return false; // Skip duplicates
-                                    }
-                                    uniqueAssessments.add(assessment.assessmentName); // Mark as added
-                                    return true;
-                                })
-                                .map((assessment) => ({
-                                    id: uuid(),
-                                    start: assessment.dueDate ? new Date(assessment.dueDate) : null,
-                                    end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : null,
-                                    title: assessment.assessmentName,
-                                    course: courseData.courseTitle,
-                                    color: courseData.colour,
-                                }))
-                            );
+            scheme.assessments
+                .filter((assessment) => assessment.dueDate !== null) // Filter out assessments with null dueDate
+                .filter((assessment) => {
+                    // Check if the assessment name is already added for this course
+                    if (uniqueAssessments.has(assessment.assessmentName)) {
+                        return false; // Skip duplicates
+                    }
+                    uniqueAssessments.add(assessment.assessmentName); // Mark as added
+                    return true;
+                })
+                .map((assessment) => ({
+                    id: uuid(),
+                    //@ts-expect-error calendar expects Date but I can only give Date | null
+                    start: new Date(assessment.dueDate),
+                    //@ts-expect-error calendar expects Date but I can only give Date | null
+                    end: addHours(new Date(assessment.dueDate), 1),
+                    title: assessment.assessmentName,
+                    course: courseData.courseTitle,
+                    color: courseData.colour,
+                }))
+        );
+        
     }
 
     const [isAddingScheme, setIsAddingScheme] = useState<boolean>(false)
@@ -465,6 +469,7 @@ const CoursePage = () => {
                     <div className={`${isMobile ? 'w-[100%]' : 'w-[45%]'} flex flex-col items-center justify-start overflow-auto gap-8 rounded-xl`}>
                         <h1 className="mr-auto text-2xl font-light">Course Calendar</h1>
                         <Calendar
+                            //@ts-expect-error calendar expects Date but I can only give Date | null
                             events={calendarEvents}
                             >
                             <div className="min-h-[35rem] max-h-[35rem] w-full bg-card rounded-xl py-6 flex flex-col border border-slate-200 shadow-md">
