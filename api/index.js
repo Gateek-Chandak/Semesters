@@ -2,6 +2,9 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+require('dotenv').config()
+
+const PORT = process.env.PORT || 4000
 
 // ROUTES
 const pdfRoutes = require('./routes/pdfRoutes');
@@ -9,9 +12,6 @@ const googleOAuthRoutes = require('./routes/googleOAuthRoutes');
 const calendarRoutes = require('./routes/calendarRoutes');
 const transcriptRoutes = require('./routes/transcriptRoutes')
 const termDatabaseRoutes = require('./routes/termDatabaseRoutes')
-
-// GLOBAL CONSTANTS
-const PORT = 4000;
 
 // MIDDLEWARE
 const corsOptions = {
