@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { cn } from '../lib/utils';
+import { cn } from '../libs/utils';
 import { VariantProps, cva } from 'class-variance-authority';
 import {
   Locale,
