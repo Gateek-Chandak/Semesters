@@ -10,7 +10,7 @@ interface CircularProgressProps {
     setIsShowingAverage: React.Dispatch<React.SetStateAction<boolean>>;
   }
   
-  export function CircularProgress({ percentage, label, description, isShowingAverage, setIsShowingAverage }: CircularProgressProps) {
+  export function CircularProgress({ percentage, isShowingAverage, setIsShowingAverage }: CircularProgressProps) {
     const circumference = 2 * Math.PI * 65
     const strokeDasharray = circumference
     let strokeDashoffset = circumference - (percentage / 100) * circumference

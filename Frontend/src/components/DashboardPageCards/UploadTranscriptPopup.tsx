@@ -18,7 +18,6 @@ interface UploadTranscriptPopupProps {
         setIsActive,
         uploadTranscript,
         error,
-        setError,
         setUploadedFile
     }) => {
 

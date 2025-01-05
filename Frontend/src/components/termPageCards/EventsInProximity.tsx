@@ -14,6 +14,7 @@ const EventsInProximity: React.FC<EventsInProximityProps> = ( {proximityInDays, 
     proximityDaysFromNow.setDate(now.getDate() + proximityInDays);
 
     const eventsNextXDays = calendarEvents.filter(event => {
+        //@ts-expect-error no clue
         const eventDate = new Date(event.start);
         return eventDate >= now && eventDate <= proximityDaysFromNow;
     });
@@ -31,7 +32,11 @@ const EventsInProximity: React.FC<EventsInProximityProps> = ( {proximityInDays, 
                             <h1 className={`font-medium text-${event.color}-600`}>{event.course}</h1>
                             <div className="mt-2 flex flex-row justify-between">
                                 <p className="font-normal">{event.title}</p>
-                                <p className="font-extralight text-sm">{format(event.start, `MMMM dd, yyyy '@' hh:mma`)}</p>
+                                <p className="font-extralight text-sm">{
+                                    //@ts-expect-error no clue
+                                    format(event.start, `MMMM dd, yyyy '@' hh:mma`)
+                                    }
+                                </p>
                             </div>
                         </Card>
                     )

@@ -56,6 +56,7 @@ const ExportGoogleCalPopup: React.FC<ExportGoogleCalPopupProps> = ( {isExporting
             });
             const { id } = response.data;
             console.log(calendarEvents)
+            
             const eventsResponse = await axios.post('http://localhost:4000/api/calendar/create-events', 
                 {
                     events: calendarEvents // Send the events array directly as part of the request body
@@ -68,7 +69,7 @@ const ExportGoogleCalPopup: React.FC<ExportGoogleCalPopupProps> = ( {isExporting
                     params: { id: id }, // Pass the calendar ID as a query parameter
                 }
             );
-            
+            console.log(eventsResponse.data)
             
             const data = response.data
             setError('')
@@ -81,6 +82,7 @@ const ExportGoogleCalPopup: React.FC<ExportGoogleCalPopupProps> = ( {isExporting
             setLoading(false)
             console.log('Calendar Created:', data);
         } catch (err) {
+            //@ts-expect-error no clue
             console.error('Error:', err.response?.data || err.message);
             toast({
                 variant: "destructive",

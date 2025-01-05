@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react"
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 import { Separator } from "../ui/separator"
 import { Button } from "../ui/button"
@@ -17,9 +16,8 @@ interface CircularProgressProps {
     let strokeDashoffset = circumference - (percentage / 100) * circumference
     if (percentage >= 100) {
       strokeDashoffset = circumference - (100 / 100) * circumference
-    } 
-
-    const [strokeColour, setStrokeColour] = useState<string>('currentColor')
+    }
+    const strokeColour = 'currentColor'
 
     // useEffect(() => {
     //   if (percentage == 0) {
@@ -93,22 +91,7 @@ interface CircularProgressProps {
         <Separator />
         <div className="flex flex-row justify-center items-center gap-8">
           <h3 className="text-sm font-medium">{label}</h3>
-          <Button onClick={() => {const showing: boolean = !isShowingAverage
-                                  setIsShowingAverage(!isShowingAverage)
-                                  // if (showing) {
-                                  //   if (percentage == 0) {
-                                  //     setStrokeColour('currentColor')
-                                  //   } else if (percentage < 50) {
-                                  //     setStrokeColour('red')
-                                  //   } else if (percentage >= 50 && percentage < 65) {
-                                  //     setStrokeColour('orange')
-                                  //   } else if (percentage >= 70) {
-                                  //     setStrokeColour('green')
-                                  //   }
-                                  // } else if (!showing) {
-                                  //   setStrokeColour('black')
-                                  // }
-                                }}
+          <Button onClick={() => {setIsShowingAverage(!isShowingAverage)}}
                     variant={"ghost"}>
             {isShowingAverage &&<EyeOffIcon className='!w-6 !h-6'/>}
             {!isShowingAverage &&<EyeIcon className='!w-6 !h-6'/>}
