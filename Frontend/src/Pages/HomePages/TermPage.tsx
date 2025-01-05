@@ -157,13 +157,6 @@ const TermPage = () => {
             return;
         }
 
-        if (selectedColour) {
-            setError('Please select a colour')
-            setIsUploading(false)
-            setIsCreatingCourse(true)
-            return;
-        }
-
         const courseParam =  courseCode + '-' + courseNumber
 
         if (!uploadedFile && term) {

@@ -17,8 +17,8 @@ export type IncomingCourseInfo = {
 
 export type CalendarEvent = {
   id: string;
-  start: Date;
-  end: Date;
+  start: Date | null;
+  end: Date | null;
   title: string;
   course: string;
   color?: 'green' | 'black' | 'blue' | 'pink' | 'purple' | 'orange' | 'red' 

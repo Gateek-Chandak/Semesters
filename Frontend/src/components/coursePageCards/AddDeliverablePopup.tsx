@@ -3,10 +3,8 @@ import { Input } from "../ui/input";
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuLabel,
     DropdownMenuRadioGroup,
     DropdownMenuRadioItem,
-    DropdownMenuSeparator,
     DropdownMenuTrigger,
   } from "@/components/ui/dropdown-menu"
 import { XIcon } from "lucide-react";
@@ -176,7 +174,7 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
                                         <Button variant="outline">{selectedScheme ? selectedScheme : 'Choose Grading Scheme'}</Button>
                                     </DropdownMenuTrigger>
                                     <DropdownMenuContent className="w-56">
-                                        <DropdownMenuRadioGroup value={selectedScheme} onValueChange={setSelectedScheme}>
+                                        <DropdownMenuRadioGroup value={selectedScheme || undefined} onValueChange={setSelectedScheme}>
                                             {courseData && courseData.gradingSchemes.map((scheme) => {
                                                 return (
                                                     <DropdownMenuRadioItem key={scheme.schemeName} value={scheme.schemeName}>{scheme.schemeName}</DropdownMenuRadioItem>

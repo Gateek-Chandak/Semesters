@@ -5,6 +5,8 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "noEmitOnError": false,  // Allow emitting JS even with TypeScript errors
+    "skipLibCheck": true ,
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"]

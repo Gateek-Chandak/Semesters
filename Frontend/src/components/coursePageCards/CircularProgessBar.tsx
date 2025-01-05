@@ -6,7 +6,7 @@ interface CircularProgressProps {
     description: string
   }
   
-  export function CircularProgress({ percentage, label, description }: CircularProgressProps) {
+  export function CircularProgress({ percentage, label }: CircularProgressProps) {
     const circumference = 2 * Math.PI * 70
     const strokeDasharray = circumference
     let strokeDashoffset = circumference - (percentage / 100) * circumference

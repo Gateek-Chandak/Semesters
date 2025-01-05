@@ -71,8 +71,8 @@ const CoursePage = () => {
                                 })
                                 .map((assessment) => ({
                                     id: uuid(),
-                                    start: assessment.dueDate ? new Date(assessment.dueDate) : new Date(),
-                                    end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : new Date(),
+                                    start: assessment.dueDate ? new Date(assessment.dueDate) : null,
+                                    end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : null,
                                     title: assessment.assessmentName,
                                     course: courseData.courseTitle,
                                     color: courseData.colour,

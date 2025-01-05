@@ -1,6 +1,3 @@
-import { useEffect } from "react"
-import axios from "axios"
-
 import { AppSidebar } from "@/components/sidebar/AppSidebar"
 import {
   Breadcrumb,

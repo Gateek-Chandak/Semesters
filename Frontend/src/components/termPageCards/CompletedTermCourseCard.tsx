@@ -1,8 +1,4 @@
-import { Link } from "react-router-dom";
-
 import { Course } from "@/types/mainTypes";
-
-import { useParams } from "react-router-dom";
 
 interface CompletedTermCourseCardProps {
   course: Course;
@@ -10,7 +6,6 @@ interface CompletedTermCourseCardProps {
 }
 
 const CompletedTermCourseCard: React.FC<CompletedTermCourseCardProps> = ({ course, gradesShown }) =>  {
-    const { term } = useParams()
 
     return ( 
         <div key={course.courseTitle} className="h-40" >
