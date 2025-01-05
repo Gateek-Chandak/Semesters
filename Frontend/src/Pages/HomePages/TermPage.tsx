@@ -189,7 +189,7 @@ const TermPage = () => {
 
 
         try {
-            const response = await axios.post("http://localhost:4000/api/pdf/upload-schedule/", formData, {
+            const response = await axios.post(`${import.meta.env.VITE_SITE_URL}/api/pdf/upload-schedule/`, formData, {
                 headers: {
                     "Content-Type": "multipart/form-data",
                 },
@@ -361,11 +361,11 @@ const TermPage = () => {
                 </div>}
             {termData?.isCompleted && 
                 <div className="max-w-[1840px] w-full flex flex-col gap-10">
-                    <div className="w-full lg:h-[25rem] flex flex-col gap-10">
+                    <div className="w-[100%] lg:h-[25rem] flex flex-col gap-10">
                         <div className="w-full flex flex-row items-center justify-start gap-4">
                             <h1 className="text-3xl font-bold">{term}</h1>
                         </div>
-                        <div className="flex flex-col lg:flex-row justify-start gap-10">
+                        <div className="flex flex-col lg:flex-row  justify-start gap-10">
                             <Card className="h-full px-6">
                                 <CircularProgress 
                                     percentage={termGrade} 
@@ -376,7 +376,7 @@ const TermPage = () => {
                                 />
                             </Card>
 
-                            <div className="flex flex-col lg:flex-row gap-10 justify-start">
+                            <div className="flex flex-col lg:flex-row lg:flex-wrap gap-10 justify-start">
                                 <div className="w-full items-center lg:w-40 h-40 text-xs text-muted-foreground flex flex-col justify-between">
                                     <p className="text-lg lg:text-xs">This term is complete. You may view your grades.</p>
                                     {!isManagingCourses && !gradesShown && <Button className='!text-xs lg:!w-40 w-[80%]' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}

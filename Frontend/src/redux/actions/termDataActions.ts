@@ -8,7 +8,7 @@ export const syncTermDataChanges = createAsyncThunk(
     async (termData: Term[], { rejectWithValue }) => {
         try {
             const response = await axios.post(
-                'http://localhost:4000/api/term-database/update-term-data',  // Replace with actual endpoint
+                `${import.meta.env.VITE_SITE_URL}/api/term-database/update-term-data`,  // Replace with actual endpoint
                 { termData },
                 { withCredentials: true }  // Ensures cookies are sent with the request
             );

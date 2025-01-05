@@ -143,7 +143,7 @@ const Dashboard = () => {
             formData.append("pdf", uploadedFile);
     
             try {
-                const response = await axios.post("http://localhost:4000/api/transcript/upload-transcript/", formData, {
+                const response = await axios.post(`${import.meta.env.VITE_SITE_URL}/api/transcript/upload-transcript/`, formData, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                     },
@@ -238,14 +238,15 @@ const Dashboard = () => {
                             <p className="font-light text-md"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                         </Card>
                         <Card className="px-4 py-4 lg:pb-4 lg:pt-0 h-full flex flex-col">
-                            <div className="flex flex-row justify-center items-center gap-6">
+                            <div className="flex flex-row justify-center items-center gap-4">
                                 <CircularProgress percentage={cGPA} label="" description="" setIsShowingAverage={setIsShowingAverage} isShowingAverage={isShowingAverage} />
                                 <div className="flex flex-col justify-center h-full py-4 px-10 text-center gap-10 text-md">
                                     <h1 className="font-medium text-xl text-center">Cumulative GPA</h1>
                                     <p className="text-md ">Upload your transcript to fill out your academic history</p>
+                                    <p className="text-xs text-muted-foreground text-center">* this may include incomplete term(s) with no course data</p>
                                 </div>
                             </div>
-                           <p className="text-xs text-muted-foreground text-center">* this may include incomplete term(s) with no course data</p>
+
                         </Card>
                     </div>
                 </div>

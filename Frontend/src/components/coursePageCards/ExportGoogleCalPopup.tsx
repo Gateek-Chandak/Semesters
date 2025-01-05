@@ -50,14 +50,14 @@ const ExportGoogleCalPopup: React.FC<ExportGoogleCalPopupProps> = ( {isExporting
         setLoading(true)
 
         try {
-            const response = await axios.get('http://localhost:4000/api/calendar/create-calendar', {
+            const response = await axios.get(`${import.meta.env.VITE_SITE_URL}/api/calendar/create-calendar`, {
                 withCredentials: true, // Include cookies
                 params: { calendarName: calendarName }, // Pass the calendar name
             });
             const { id } = response.data;
             console.log(calendarEvents)
             
-            const eventsResponse = await axios.post('http://localhost:4000/api/calendar/create-events', 
+            const eventsResponse = await axios.post(`${import.meta.env.VITE_SITE_URL}/api/calendar/create-events`, 
                 {
                     events: calendarEvents // Send the events array directly as part of the request body
                 },

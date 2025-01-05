@@ -4,7 +4,7 @@ const LandingPage = () => {
 
   const handleLogin = async () => {
       try {
-          const response = await axios.get('http://localhost:4000/api/auth/log-in', {
+          const response = await axios.get(`${import.meta.env.VITE_SITE_URL}/api/auth/log-in`, {
             method: 'GET',
             withCredentials: true,
           });
