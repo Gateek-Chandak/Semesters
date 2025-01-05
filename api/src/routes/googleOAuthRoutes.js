@@ -63,7 +63,7 @@ router.get('/redirect', async (req, res) => {
         }));
 
         //redirect back to the front-end
-        res.redirect(`https://semester-gateek-chandaks-projects.vercel.app/home`);
+        res.redirect(`${process.env.URL}/home`);
     } catch (err) {
         console.log(err);
         res.status(500).json({error: 'Authentication failed' })
