@@ -1,4 +1,4 @@
-import { configureStore, Middleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import dataReducer from './slices/dataSlice';
 import authReducer from './slices/authSlice';
 import termDataSyncMiddleware from './middleware/termDataSyncMiddleware';

@@ -21,7 +21,7 @@ export type CalendarEvent = {
   end: Date;
   title: string;
   course: string;
-  color?: 'green' | 'black' | 'blue' | 'pink' | 'purple' | 'orange' | 'red' | undefined;
+  color?: 'green' | 'black' | 'blue' | 'pink' | 'purple' | 'orange' | 'red' 
 };
 
 export type Assessment = {
@@ -41,7 +41,7 @@ export type GradingScheme = {
 export type Course = {
     courseTitle: string;
     courseSubtitle: string;
-    colour: string;
+    colour: 'green' | 'black' | 'blue' | 'pink' | 'purple' | 'orange' | 'red' 
     highestGrade: number;
     gradingSchemes: GradingScheme[];
 };

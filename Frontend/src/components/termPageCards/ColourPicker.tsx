@@ -1,14 +1,16 @@
+type Colour = "green" | "black" | "blue" | "pink" | "purple" | "orange" | "red"
+
 interface ColourPickerProps {
-    selectedColour: string
-    setSelectedColour: React.Dispatch<React.SetStateAction<string>>;
+    selectedColour: Colour
+    setSelectedColour: React.Dispatch<React.SetStateAction<Colour>>;
 }
 
 const ColourPicker: React.FC<ColourPickerProps> = ({selectedColour, setSelectedColour}) => {
 
     // Array of colors you want to show in the picker
-    const colors = ['red', 'pink', 'orange', 'green', 'blue', 'purple', 'black'];
+    const colors: Colour[] = ['red', 'pink', 'orange', 'green', 'blue', 'purple', 'black'];
     // Handle color selection
-    const handleColorSelect = (colour: string) => {
+    const handleColorSelect = (colour: "green" | "black" | "blue" | "pink" | "purple" | "orange" | "red") => {
         setSelectedColour(colour);
     };
 
@@ -23,7 +25,7 @@ const ColourPicker: React.FC<ColourPickerProps> = ({selectedColour, setSelectedC
                         height: '33px',
                         borderRadius: '50%',
                         cursor: 'pointer',
-                        opacity: (selectedColour !== colour && selectedColour !== '') ? '50%' : '100%'
+                        opacity: (selectedColour !== colour) ? '50%' : '100%'
                     }}
                     className={`${colour === 'black' ? 'bg-black' : `bg-${colour}-500`}
                                 ${selectedColour === colour ? `transform transition-all duration-300 scale-110 border-${colour}-600'` : ''}`}

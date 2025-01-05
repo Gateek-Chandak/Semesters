@@ -1,7 +1,7 @@
 import { Card } from "../../components/ui/card";
 import { format } from 'date-fns';
 import { Separator } from "@/components/ui/separator";
-import { ChevronRight, Heading1 } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { UploadIcon, EyeIcon, EyeOffIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
@@ -9,13 +9,13 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useDispatch } from "react-redux";
 import { addTerms } from "@/redux/slices/dataSlice";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { v4 as uuid} from 'uuid'
 import { addHours } from "date-fns";
 
-import { Term } from "@/types/mainTypes";
+import { Term, Course } from "@/types/mainTypes";
 
 import DisplayTermCard from "@/components/DashboardPageCards/DisplayTermCard";
 import UploadTranscriptPopup from "@/components/DashboardPageCards/UploadTranscriptPopup";
@@ -68,8 +68,8 @@ const Dashboard = () => {
             })
             .map((assessment) => ({
               id: uuid(),
-              start: new Date(assessment.dueDate),
-              end: addHours(new Date(assessment.dueDate), 1),
+              start:  assessment.dueDate ? new Date(assessment.dueDate) : new Date(),
+              end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : new Date(),
               title: assessment.assessmentName,
               course: course.courseTitle,
               color: course.colour,
@@ -155,20 +155,26 @@ const Dashboard = () => {
                 setIsActive(false)
                 setUploadedFile(null)
                 return;
-            } catch (error: any) {
-    
+            } catch (error: unknown) {
                 setIsUploading(false);
                 setIsActive(true);
     
-                if (error.response.data.error === "no transcript found") {
-                    toast({
-                        variant: "destructive",
-                        title: "Transcript Upload Unsuccessful",
-                        description: "Your file is not a transcript",
-                    });
+                // Type-check if error is an AxiosError
+                if (error instanceof AxiosError) {
+                    if (error.response?.data?.error === "no transcript found") {
+                        toast({
+                            variant: "destructive",
+                            title: "Transcript Upload Unsuccessful",
+                            description: "Your file is not a transcript",
+                        });
+                    } else {
+                        setError(error.response?.data?.error || 'Unknown error');
+                    }
                 } else {
-                    setError(error.response.data.error);
+                    // Handle non-AxiosError
+                    setError('An unknown error occurred');
                 }
+    
                 console.log(error);
             }
         } else {

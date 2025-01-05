@@ -1,6 +1,7 @@
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { XIcon } from "lucide-react";
+import { ChangeEvent } from "react";
 
 import ColourPicker from "./ColourPicker";
 
@@ -18,8 +19,8 @@ interface CreateCoursePopupProps {
     error: string
     setError: React.Dispatch<React.SetStateAction<string>>;
     setUploadedFile: React.Dispatch<React.SetStateAction<File | null>>;
-    selectedColour: string
-    setSelectedColour: React.Dispatch<React.SetStateAction<string>>;
+    selectedColour: "green" | "black" | "blue" | "pink" | "purple" | "orange" | "red"
+    setSelectedColour: React.Dispatch<React.SetStateAction<"green" | "black" | "blue" | "pink" | "purple" | "orange" | "red">>;
 }
   
   const CreateCoursePopup: React.FC<CreateCoursePopupProps> = ({
@@ -34,18 +35,17 @@ interface CreateCoursePopupProps {
         setCourseSubtitle,
         createNewCourse,
         error,
-        setError,
         setUploadedFile,
         selectedColour,
         setSelectedColour
     }) => {
 
-    const manageCourseCode = (e: any) => {
+    const manageCourseCode = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trimStart().slice(0, 7);
         setCourseCode(inputValue)
     }
 
-    const manageCourseNumber = (e: any) => {
+    const manageCourseNumber = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
         const parsedValue = parseInt(inputValue, 10);
     
@@ -58,7 +58,7 @@ interface CreateCoursePopupProps {
         }
     };    
 
-    const manageCourseSubtitle = (e: any) => {
+    const manageCourseSubtitle = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trimStart().slice(0, 30);
         setCourseSubtitle(inputValue)
     }

@@ -71,8 +71,8 @@ const CoursePage = () => {
                                 })
                                 .map((assessment) => ({
                                     id: uuid(),
-                                    start: new Date(assessment.dueDate),
-                                    end: addHours(new Date(assessment.dueDate), 1),
+                                    start: assessment.dueDate ? new Date(assessment.dueDate) : new Date(),
+                                    end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : new Date(),
                                     title: assessment.assessmentName,
                                     course: courseData.courseTitle,
                                     color: courseData.colour,
@@ -220,18 +220,17 @@ const CoursePage = () => {
     
             // Track the lowest required grade (minimum required grade across all schemes)
             if (minGradeNeeded === null) {
-                minGradeNeeded = parseFloat(requiredGrade.toFixed(4));
-                console.log(minGradeNeeded)
+                minGradeNeeded = requiredGrade
             } else {
-                minGradeNeeded = Math.min(minGradeNeeded, parseFloat(requiredGrade.toFixed(4)));
+                minGradeNeeded = Math.min(minGradeNeeded, parseFloat(requiredGrade.toFixed(2)));
             }
         });
     
         // Set the lowest grade needed, rounded to 2 decimal places
-        if (minGradeNeeded !== null && parseFloat(minGradeNeeded.toFixed(2)) >= 0) {
-            setGradeNeeded(parseFloat(minGradeNeeded.toFixed(2)));
+        if (minGradeNeeded !== null && minGradeNeeded >= 0) {
+            setGradeNeeded(parseFloat(minGradeNeeded));
         } else if (minGradeNeeded !== null && minGradeNeeded < 0) {
-            setGradeNeeded(0)
+            setGradeNeeded(0);
         }
     };    
 
@@ -278,13 +277,13 @@ const CoursePage = () => {
             if (minGradeNeeded === null) {
                 minGradeNeeded = parseFloat(requiredGrade.toFixed(4));
             } else {
-                minGradeNeeded = Math.min(minGradeNeeded, parseFloat(requiredGrade.toFixed(4)));
+                minGradeNeeded = Math.min(minGradeNeeded, parseFloat(requiredGrade.toFixed(2)));
             }
         });
     
         // Set the lowest grade needed, rounded to 2 decimal places
         if (minGradeNeeded !== null) {
-            setGradeNeeded(parseFloat(minGradeNeeded.toFixed(2)));
+            setGradeNeeded(parseFloat(minGradeNeeded));
         }
         if (minGradeNeeded && minGradeNeeded < 0) {
             setGradeNeeded(0)
@@ -292,16 +291,17 @@ const CoursePage = () => {
     }
 
     const updateGrade = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
-            const inputValue = e.target.value.trim();
-            const parsedValue = inputValue === "" ? null : parseFloat(parseFloat(inputValue).toFixed(2));
-        
-            // Exit early for invalid numbers or out-of-range values
-            if (parsedValue !== null && (isNaN(parsedValue) || parsedValue > 999 || parsedValue < 0)) {
-                return;
-            }
-        
-            // Update gradingSchemes state
-            const updatedSchemes = courseData?.gradingSchemes.map((scheme) => {
+        const inputValue = e.target.value.trim();
+        const parsedValue = inputValue === "" ? null : parseFloat(parseFloat(inputValue).toFixed(2));
+
+        // Exit early for invalid numbers or out-of-range values
+        if (parsedValue !== null && (isNaN(parsedValue) || parsedValue > 999 || parsedValue < 0)) {
+            return;
+        }
+
+        // Update gradingSchemes state
+        if (courseData) {
+            const updatedSchemes = courseData.gradingSchemes.map((scheme) => {
                 let totalGrade = 0;
                 let totalWeight = 0;
         
@@ -356,6 +356,7 @@ const CoursePage = () => {
             if (targetGrade) {
                 gradeButtonAction(targetGrade);
             }
+        }
     };
 
     const handleAddSchemeButton = () => {
@@ -507,16 +508,16 @@ const CoursePage = () => {
                     </div>
                 </div>
             </div>
-            <AddDeliverablePopup term={term ? term : ""} 
+            {courseData && <AddDeliverablePopup term={term ? term : ""} 
                                  courseIndex={(courseIndex === 0 || courseIndex) ? courseIndex : -1}
                                  courseData={courseData} 
                                  isAddingDeliverable={isAddingDeliverable} 
-                                 setIsAddingDeliverable={setIsAddingDeliverable} />
-            <AddSchemePopup term={term ? term : ""} 
+                                 setIsAddingDeliverable={setIsAddingDeliverable} />}
+            {courseData && <AddSchemePopup term={term ? term : ""} 
                                  courseIndex={(courseIndex === 0 || courseIndex) ? courseIndex : -1}
                                  courseData={courseData} 
                                  isAddingScheme={isAddingScheme} 
-                                 setIsAddingScheme={setIsAddingScheme} />
+                                 setIsAddingScheme={setIsAddingScheme} />}
         </div>
      );
 }

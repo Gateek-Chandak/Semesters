@@ -1,11 +1,11 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { format } from 'date-fns';
 import { CircularProgress } from "@/components/termPageCards/CircularProgessBar";
 import { v4 as uuid } from 'uuid';
 import { addHours } from "date-fns";
 import { useState, useEffect } from "react";
 import { EyeOffIcon, EyeIcon, PencilIcon, ChevronRight, ChevronLeft, Check } from "lucide-react";
 import axios from "axios";
+import { AxiosError } from "axios";
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
@@ -58,7 +58,7 @@ const TermPage = () => {
     const [error, setError] = useState<string>("");
     const [isManagingCourses, setIsManagingCourses] = useState<boolean>(false)
     const [isShowingAverage, setIsShowingAverage] = useState<boolean>(true)
-    const [selectedColour, setSelectedColour] = useState<string>(''); 
+    const [selectedColour, setSelectedColour] = useState<'green' | 'black' | 'blue' | 'pink' | 'purple' | 'orange' | 'red' >('black'); 
 
     // Term processing logic
     let term = originalTerm;
@@ -88,8 +88,8 @@ const TermPage = () => {
             })
             .map((assessment) => ({
               id: uuid(),
-              start: new Date(assessment.dueDate),
-              end: addHours(new Date(assessment.dueDate), 1),
+              start: assessment.dueDate ? new Date(assessment.dueDate) : new Date(),
+              end: assessment.dueDate ? addHours(new Date(assessment.dueDate), 1) : new Date(),
               title: assessment.assessmentName,
               course: course.courseTitle,
               color: course.colour,
@@ -157,7 +157,7 @@ const TermPage = () => {
             return;
         }
 
-        if (selectedColour === '') {
+        if (selectedColour) {
             setError('Please select a colour')
             setIsUploading(false)
             setIsCreatingCourse(true)
@@ -166,7 +166,7 @@ const TermPage = () => {
 
         const courseParam =  courseCode + '-' + courseNumber
 
-        if (!uploadedFile) {
+        if (!uploadedFile && term) {
             const newCourse = {
                 courseTitle: courseCode + ' ' + courseNumber,
                 courseSubtitle: courseSubtitle,
@@ -185,7 +185,10 @@ const TermPage = () => {
         setIsCreatingCourse(false);
 
         const formData = new FormData();
-        formData.append("pdf", uploadedFile);
+        if (uploadedFile) {
+            formData.append("pdf", uploadedFile);
+        }
+
 
         try {
             const response = await axios.post("http://localhost:4000/api/pdf/upload-schedule/", formData, {
@@ -193,41 +196,53 @@ const TermPage = () => {
                     "Content-Type": "multipart/form-data",
                 },
             });
+        
             const data = await response.data;
             const json = await JSON.parse(data);
-
-            const gradingSchemes = formatNewGradingScheme(json)
-
+        
+            const gradingSchemes = formatNewGradingScheme(json);
+        
             const newCourse = {
                 courseTitle: courseCode + ' ' + courseNumber,
                 courseSubtitle: courseSubtitle,
                 colour: selectedColour,
                 highestGrade: 0,
                 gradingSchemes: gradingSchemes
-            }
-
+            };
+        
             dispatch(addCourse({ term: term ? term : "", course: newCourse }));
             setIsUploading(false);
             navigate(`/home/${originalTerm}/${courseParam}`);
             return;
-        } catch (error: any) {
-
+        
+        } catch (error: unknown) {
             setIsUploading(false);
             setIsCreatingCourse(true);
-
-            if (error.response.data.error === "no assessment schedule found") {
-                toast({
-                    variant: "destructive",
-                    title: "File Upload Unsuccessful",
-                    description: "Your file is not a syllabus",
-                });
+        
+            // Type narrowing for the error
+            if (error instanceof AxiosError) {
+                if (error.response?.data?.error === "no assessment schedule found") {
+                    toast({
+                        variant: "destructive",
+                        title: "File Upload Unsuccessful",
+                        description: "Your file is not a syllabus",
+                    });
+                } else {
+                    toast({
+                        variant: "destructive",
+                        title: "File Upload Error",
+                        description: "There was an error uploading your file. Please try again.",
+                    });
+                }
             } else {
+                // Handle unexpected errors
                 toast({
                     variant: "destructive",
-                    title: "File Upload Error",
-                    description: "There was an error uploading your file. Please try again.",
+                    title: "Unknown Error",
+                    description: "An unknown error occurred.",
                 });
             }
+        
             console.log(error);
         }
     };
@@ -268,7 +283,7 @@ const TermPage = () => {
                                 Upcoming Deliverables
                             </h1>
                             <div className="h-[100%] min-h-[15rem] w-[100%]"> 
-                                <EventsInProximity calendarEvents={calendarEvents} proximityInDays={7} />
+                                {calendarEvents && <EventsInProximity calendarEvents={calendarEvents} proximityInDays={7} />}
                             </div>
                         </div>
                     </div>
@@ -391,9 +406,9 @@ const TermPage = () => {
                                 setUploadedFile={setUploadedFile}
                                 selectedColour={selectedColour}
                                 setSelectedColour={setSelectedColour}/>
-            <ExportGoogleCalPopup isExporting={isExporting}
+            {calendarEvents && <ExportGoogleCalPopup isExporting={isExporting}
                                   setIsExporting={setIsExporting}
-                                  calendarEvents={calendarEvents}/>
+                                  calendarEvents={calendarEvents}/>}
         </div>
         );
 }

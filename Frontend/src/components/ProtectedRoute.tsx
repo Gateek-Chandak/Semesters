@@ -14,7 +14,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const [loading, setLoading] = useState(true); // Loading state to wait for authentication check
   const dispatch = useDispatch();
   const isAuthenticated = useSelector((state: RootState) => state.auth.isAuthenticated);
-  const userID = useSelector((state: RootState) => state.auth.user ? state.auth.user.id : null)
 
   useEffect(() => {
     const verifyAuth = async () => {
