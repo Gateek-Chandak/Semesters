@@ -39,3 +39,5 @@ app.use("/api/term-database/", termDatabaseRoutes)
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}/`);
 });
+
+module.exports = app
