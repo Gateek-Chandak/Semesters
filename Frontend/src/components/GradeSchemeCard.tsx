@@ -12,6 +12,7 @@ import { Input } from "./ui/input";
 import React, { ChangeEvent, useState } from "react";
 
 // Interfaces
+//@ts-expect-error no clue
 import { Assessment, GradingScheme } from "@/Pages/Testing/Grades";
 
 type GradeSchemeCardProps = {
@@ -75,7 +76,7 @@ const GradeSchemeCard: React.FC<GradeSchemeCardProps> = ( {schemeName, schemeDet
                         </TableRow>
                     </TableHeader>
                     <TableBody>
-                    {localScheme.schemeDetails.slice(startIndex, startIndex + rowsPerPage).map((assessment) => {
+                    {localScheme.schemeDetails.slice(startIndex, startIndex + rowsPerPage).map((assessment: Assessment) => {
                         return (
                                 <TableRow key={assessment.assessmentName}>
                                     <TableCell className="text-center">{assessment.assessmentName}</TableCell>

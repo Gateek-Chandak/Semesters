@@ -36,7 +36,11 @@ const DisplayTermCard: React.FC<DisplayTermCardProps> = ({ term, isShowingGrades
           <div className="border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm">
                   <div className="h-40 w-40 flex flex-col justify-center gap-4 items-center">
                       <h1 className='text-2xl'>{term.term}</h1>
-                      <h1 className='text-4xl font-medium'>{parseFloat(termGPA?.toFixed(2))}%</h1>
+                      <h1 className='text-4xl font-medium'>{
+                        //@ts-expect-error no clue
+                        parseFloat(termGPA?.toFixed(2))
+                        }%
+                      </h1>
                   </div>
           </div>}
     </Link>

@@ -12,18 +12,14 @@ import {
     DropdownMenu,
     DropdownMenuItem,
     DropdownMenuContent,
-    DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-    DropDown
 } from "@/components/ui/dropdown-menu"
 import { CheckIcon, PencilIcon, Trash2Icon } from "lucide-react";
 
 import { format } from "date-fns";
 import { ChangeEvent, useState } from "react";
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
 import { updateCourse } from "@/redux/slices/dataSlice";
 import { useDispatch } from "react-redux";
 
@@ -59,7 +55,6 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
     setIsAddingScheme
 }) => {
 
-    const data = useSelector((state: RootState) => state.data.data)
     const dispatch = useDispatch()
     
     const [schemeName, setSchemeName] = useState<string>(scheme.schemeName)
