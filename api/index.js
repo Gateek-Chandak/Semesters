@@ -23,6 +23,9 @@ const corsOptions = {
 app.get('/', (req, res) => {
   res.send('Hey this is my API running 🥳')
 })
+app.get('/favicon.ico', (req, res) => {
+  res.status(204).end(); // No Content
+});
 
 app.use(cors(corsOptions));
 app.use(express.json());
