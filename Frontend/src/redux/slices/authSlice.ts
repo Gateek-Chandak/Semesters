@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { redirect } from "react-router-dom";
 
 // Define a type for the user
 interface User {
@@ -29,6 +30,7 @@ const authSlice = createSlice({
     logout(state) {
       state.isAuthenticated = false;
       state.user = null;
+      redirect('/')
     },
   },
 });
