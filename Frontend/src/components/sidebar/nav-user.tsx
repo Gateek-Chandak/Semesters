@@ -40,7 +40,7 @@ export function NavUser({
 
     const handleLogout = async () => {
       try {
-        await axios.get('http://localhost:4000/api/auth/logout', { withCredentials: true });
+        await axios.get(`${process.env.VITE_SITE_URL}/api/auth/logout`, { withCredentials: true });
         dispatch(logout()); // Clear user from Redux
         window.location.href = '/'; // Redirect to landing page after logout
       } catch (error) {
