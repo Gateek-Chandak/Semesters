@@ -297,7 +297,6 @@ const CoursePage = () => {
     const updateGrade = (e: ChangeEvent<HTMLInputElement>, assessmentName: string) => {
         const inputValue = e.target.value.trim();
         const parsedValue = inputValue === "" ? null : parseFloat(parseFloat(inputValue).toFixed(2));
-
         // Exit early for invalid numbers or out-of-range values
         if (parsedValue !== null && (isNaN(parsedValue) || parsedValue > 999 || parsedValue < 0)) {
             return;
@@ -320,7 +319,6 @@ const CoursePage = () => {
                         totalGrade += (assessment.grade * assessment.weight) / 100;
                         totalWeight += assessment.weight;
                     }
-        
                     return assessment;
                 });
         
@@ -528,15 +526,3 @@ const CoursePage = () => {
 }
  
 export default CoursePage;
-
-// const getData = async () => {
-//     try {
-//         const response = await axios.get("http://localhost:4000/api/calendar/create-calendar", {
-//             withCredentials: true,
-//         })
-//         const data = await response.data
-//         console.log(data)
-//     } catch {
-//         navigate("/")
-//     }
-// }

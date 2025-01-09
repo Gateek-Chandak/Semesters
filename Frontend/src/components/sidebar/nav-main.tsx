@@ -37,7 +37,7 @@ export function NavMain({ data }: {data: any}) {
       <SidebarGroupLabel className="text-md mb-3">Courses</SidebarGroupLabel>
       {(isMobile || open) && 
       <SidebarMenu className="">
-        {data.map((term: Term) => (
+        {data.slice().reverse().map((term: Term) => (
           <Collapsible
             key={term.term}
             asChild
@@ -45,20 +45,29 @@ export function NavMain({ data }: {data: any}) {
             className="group/collapsible"
           >
             <SidebarMenuItem>
+              {!term.isCompleted &&
               <CollapsibleTrigger asChild>
                 <SidebarMenuButton tooltip={term.term}>
-                  <Link className="truncate text-md" to={`/home/${term.term.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
+                  <Link className="truncate text-md w-full" to={`/home/${term.term.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
                     {term.term}
                   </Link>
+                  {term.isCompleted && <p className="text-xs text-muted-foreground">completed</p>}
                   <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
                 </SidebarMenuButton>
-              </CollapsibleTrigger>
+              </CollapsibleTrigger>}
+              {term.isCompleted &&
+                <SidebarMenuButton tooltip={term.term}>
+                  <Link className="truncate text-md w-full" to={`/home/${term.term.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
+                    {term.term}
+                  </Link>
+                  {term.isCompleted && <p className="text-xs text-muted-foreground">completed</p>}
+                </SidebarMenuButton>}
               <CollapsibleContent>
                 <SidebarMenuSub>
-                  {(term.courses.length > 0) && term.courses?.map((course: Course) => (
+                  {!term.isCompleted && (term.courses.length > 0) && term.courses?.map((course: Course) => (
                     <SidebarMenuSubItem key={course.courseTitle}>
                       <SidebarMenuSubButton asChild>
-                        <Link className="text-sm" to={`/home/${term.term.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
+                        <Link className="text-sm w-full" to={`/home/${term.term.replace(/\s+/g, '-')}/${course.courseTitle.replace(/\s+/g, '-')}`} onClick={() => setOpenMobile(!openMobile)}>
                           <span>{course.courseTitle}</span>
                         </Link>
                       </SidebarMenuSubButton>
@@ -113,7 +122,7 @@ export function NavMain({ data }: {data: any}) {
               <Link key={term.term} to={`/home/${term.term.replace(/\s+/g, '-')}`}>
                 <Button variant='outline' className={`w-12 h-12 rounded-xl text-sm border border-slate-300 bg-black hover:bg-gray-800 hover:text-white text-white flex flex-row gap-0`}>
                   <h1>{term.term.split('')[0]}</h1>
-                  <h1>{term.term.split(' ')[1].slice(-2)}</h1>
+                  {term.term.split(' ').length > 1 && <h1>{term.term.split(' ')[1].slice(-2)}</h1>}
                 </Button>
               </Link>
             )

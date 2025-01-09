@@ -44,7 +44,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
           <Link to="/home" className={(open) ? "" : "transform hover:scale-110 transition duration-300 ease-in-out"}>
             <HomeIcon className="!h-5 !w-5"/>
           </Link>
-          {(open || openMobile) && <Link to="/home" className="truncate relative text-sm">Home</Link>}
+          {(open || openMobile) && <Link to="/home" className="w-full truncate relative text-sm">Home</Link>}
         </div>
         {(open || openMobile) && <SidebarSeparator />}
         <NavMain data={data} />

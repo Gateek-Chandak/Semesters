@@ -7,16 +7,16 @@ import { Course } from "@/types/mainTypes";
 
 import { useSelector, useDispatch } from 'react-redux';
 import { RootState } from '../../redux/store';
-import { deleteCourse, updateCourseName, updateCourseSubtitle } from "@/redux/slices/dataSlice";
+import { deleteCourse, updateCourseName, updateCompletedCourseGrade } from "@/redux/slices/dataSlice";
 
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
-interface CourseCardProps {
+interface CompletedCourseCardProps {
   course: Course;
 }
 
-const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
+const EditCompletedCourseCard: React.FC<CompletedCourseCardProps> = ({ course }) => {
     const data = useSelector((state: RootState) => state.data.data);
     const dispatch = useDispatch();
 
@@ -36,7 +36,7 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
 
     const [code, setCode] = useState<string>(course.courseTitle.split(' ')[0]);
     const [number, setNumber] = useState<string>(course.courseTitle.split(' ')[1]);
-    const [subtitle, setSubtitle] = useState<string>(course.courseSubtitle);
+    const [grade, setGrade] = useState<number | null>(course.highestGrade);
 
     const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trimStart().slice(0, 6);
@@ -48,8 +48,17 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
         setNumber(inputValue)
     }
 
-    const handleSubtitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setSubtitle(e.target.value)
+    const handleGradeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value;
+        const parsedValue = parseInt(inputValue, 10);
+    
+        // Check if the parsed value is a number and within the range [0, 999]
+        if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 200) {
+            setGrade(parsedValue);
+        } else if (inputValue === "") {
+            // Allow clearing the input
+            setGrade(null)
+        }
     }
 
     const handleDeleteCourse = (courseName: string) => {
@@ -67,10 +76,37 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
         }
     };
 
+    const handleGradeChangeBlur = () => {
+        if (grade === null) {
+            // console.log("Title or number cannot be empty");
+            setGrade(course.highestGrade)
+            return;
+        }
+        const updatedCourse = {
+            ...course,
+            highestGrade: grade, // Trim to avoid unnecessary whitespace
+        };
+    
+        const courseIndex = termData?.courses.findIndex(
+            (c) => c.courseTitle.toLowerCase() === course.courseTitle.toLowerCase()
+        );
+    
+        if (termData && courseIndex !== -1) {
+            dispatch(updateCompletedCourseGrade({
+                term: termData.term,
+                //@ts-expect-error no clue
+                courseIndex: courseIndex,
+                course: updatedCourse
+            }));
+        } else {
+            console.log('Course not found for update');
+        }
+    };
+
+
     const handleTitleChangeBlur = () => {
-        console.log('Saving updated course details...');
         if (!code.trim() || !number.trim()) {
-            console.log("Title or number cannot be empty");
+            // console.log("Title or number cannot be empty");
             
             // Reset to the original course title if invalid
             setCode(course.courseTitle.split(" ")[0]);
@@ -98,28 +134,6 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
         }
     };
 
-    const handleSubtitleChangeBlur = () => {
-        const updatedCourse = {
-            ...course,
-            courseSubtitle: subtitle.trim(), // Trim to avoid unnecessary whitespace
-        };
-    
-        const courseIndex = termData?.courses.findIndex(
-            (c) => c.courseTitle.toLowerCase() === course.courseTitle.toLowerCase()
-        );
-    
-        if (termData && courseIndex !== -1) {
-            dispatch(updateCourseSubtitle({
-                term: termData.term,
-                //@ts-expect-error no clue
-                courseIndex: courseIndex,
-                course: updatedCourse
-            }));
-        } else {
-            console.log('Course not found for update');
-        }
-    };
-    
 
     return (
         <Card > {/* Use course's title or id as key */}
@@ -139,9 +153,9 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
                     />
                     <Input
                         className="text-lg"
-                        value={subtitle}
-                        onChange={handleSubtitleChange}
-                        onBlur={handleSubtitleChangeBlur} // Trigger the blur function directly
+                        value={grade !== null ? grade : ""}
+                        onChange={handleGradeChange}
+                        onBlur={handleGradeChangeBlur} // Trigger the blur function directly
                     />
                     <Button variant="outline" className="border border-red-500" onClick={() => handleDeleteCourse(course.courseTitle)}>
                         <Trash2Icon className="text-red-500" />
@@ -152,4 +166,4 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
     );
 };
 
-export default EditCourseCard;
+export default EditCompletedCourseCard;

@@ -15,7 +15,7 @@ export const syncTermDataChanges = createAsyncThunk(
             if (response.data.exists) {
                 return response.data;  // Return response data if successful
             } 
-            
+        
             return rejectWithValue('Error syncing data');
 
         } catch (error) {

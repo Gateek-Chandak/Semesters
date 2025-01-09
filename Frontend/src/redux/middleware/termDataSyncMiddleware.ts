@@ -15,7 +15,11 @@ const termDataSyncMiddleware: Middleware = (store: Store) => (next: Dispatch) =>
     action.type === 'data/updateTerm' ||
     action.type === 'data/addCourse' ||
     action.type === 'data/updateCourse' ||
-    action.type === 'data/deleteCourse'
+    action.type === 'data/deleteCourse' ||
+    action.type === 'data/updateAssessment' ||
+    action.type === 'data/updateCourseName' ||
+    action.type === 'data/updateCourseSubtitle' ||
+    action.type === 'data/updateCompletedCourseGrade'  
   ) {
     const state: RootState = store.getState();
     const data = state.data.data; // Access the terms data in the Redux state
@@ -33,3 +37,4 @@ const termDataSyncMiddleware: Middleware = (store: Store) => (next: Dispatch) =>
 };
 
 export default termDataSyncMiddleware;
+

@@ -74,6 +74,7 @@ const HomePage = ( ) => {
           </div>
         </header>
         <Outlet/>
+        {/* <div className="bg-[#f7f7f7] flex flex-row justify-center border-t border-t-gray-2-- py-2 text-muted-foreground">Developed by Gateek Chandak and Designed by David Stirling</div> */}
       </SidebarInset>
     </SidebarProvider>
   );

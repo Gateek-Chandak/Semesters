@@ -30,7 +30,6 @@ const dataSlice = createSlice({
                   ...state.data
               ];
               state.data = combinedTerms; 
-              console.log(combinedTerms)
           }
         },       
         addTerm(state, action: PayloadAction<{ term: Term }>) {
@@ -66,7 +65,14 @@ const dataSlice = createSlice({
           if (termIndex !== -1) {
               state.data[termIndex].courses[courseIndex] = course;
           }
-      },
+        },
+        updateCompletedCourseGrade(state, action: PayloadAction<{ term: string; courseIndex: number; course: Course }>) {
+          const { term, courseIndex, course } = action.payload;
+          const termIndex = state.data.findIndex((t) => t.term === term);
+          if (termIndex !== -1) {
+              state.data[termIndex].courses[courseIndex] = course;
+          }
+        },
         updateCourse(state, action: PayloadAction<{ term: string; courseIndex: number; course: Course }>) {
           const { term, courseIndex, course } = action.payload;
           const termIndex = state.data.findIndex((t) => t.term === term);
@@ -117,6 +123,6 @@ const dataSlice = createSlice({
     },
 });
 
-export const { setData, updateCourse, addCourse, deleteCourse, updateAssessment, updateTerm, updateCourseName, updateCourseSubtitle, addTerm, addTerms } = dataSlice.actions;
+export const { setData, updateCourse, addCourse, deleteCourse, updateAssessment, updateTerm, updateCourseName, updateCourseSubtitle, addTerm, addTerms, updateCompletedCourseGrade } = dataSlice.actions;
 
 export default dataSlice.reducer;

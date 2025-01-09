@@ -30,7 +30,9 @@ import {
 import { IncomingCourseInfo } from "@/types/mainTypes";
 
 import EditCourseCard from "@/components/termPageCards/EditCourseCard";
+import EditCompletedCourseCard from "@/components/termPageCards/EditCompletedCourseCard";
 import CreateCoursePopup from "@/components/termPageCards/CreateCoursePopup";
+import CreateCompletedCoursePopup from "@/components/termPageCards/CreateCompletedCoursePopup";
 import DisplayCourseCard from "@/components/termPageCards/DisplayCourseCard";
 import EventsInProximity from "@/components/termPageCards/EventsInProximity";
 import ExportGoogleCalPopup from "@/components/coursePageCards/ExportGoogleCalPopup";
@@ -48,13 +50,15 @@ const TermPage = () => {
     const [termGrade, setTermGrade] = useState<number>(0);
     const [gradesShown, setGradesShown] = useState<boolean>(false);
     const [isCreatingCourse, setIsCreatingCourse] = useState<boolean>(false);
+    const [isCreatingCompletedCourse, setIsCreatingCompletedCourse] = useState<boolean>(false);
     const [isExporting, setIsExporting] = useState<boolean>(false);
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState<boolean>(false);
 
     const [courseCode, setCourseCode] = useState<string>("");
-    const [courseNumber, setCourseNumber] = useState<number | null>(null);
+    const [courseNumber, setCourseNumber] = useState<string>("");
     const [courseSubtitle, setCourseSubtitle] = useState<string>("");
+    const [completedCourseGrade, setCompletedCourseGrade] = useState<number>(0)
     const [error, setError] = useState<string>("");
     const [isManagingCourses, setIsManagingCourses] = useState<boolean>(false)
     const [isShowingAverage, setIsShowingAverage] = useState<boolean>(true)
@@ -63,12 +67,7 @@ const TermPage = () => {
     // Term processing logic
     let term = originalTerm;
     if (term) {
-        term = term
-            .replace('-', ' ') // Replace '-' with a space
-            .toLowerCase()     // Convert the string to lowercase
-            .split(' ')        // Split the string into words
-            .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // Capitalize first letters
-            .join(' ');        // Join back together
+        term = term.replace('-', ' ') 
     }
 
     const termData = data.find((t) => t.term === term);
@@ -125,6 +124,20 @@ const TermPage = () => {
         }
     }, [termData, data]);
 
+    useEffect(() => {
+        if (isCreatingCompletedCourse || isCreatingCourse) {
+          // Disable scrolling
+          document.body.style.overflow = "hidden";
+        } else {
+          // Re-enable scrolling
+          document.body.style.overflow = "";
+        }
+    
+        // Cleanup on unmount
+        return () => {
+          document.body.style.overflow = "";
+        };
+    }, [isCreatingCourse, isCreatingCompletedCourse]);
 
     const formatNewGradingScheme = (courseInfo: IncomingCourseInfo) => {
         return courseInfo.gradingSchemes.map((scheme) => ({
@@ -148,15 +161,15 @@ const TermPage = () => {
             return;
         }
 
-        if (!courseNumber) {
-            setError('Course Number is required');
+        if (!courseNumber || courseNumber.trim() === "") {
+            setError('Course number is required');
             setIsUploading(false);
             setIsCreatingCourse(true)
             return;
         }
 
         if (!courseSubtitle || courseSubtitle.trim() === "") {
-            setError('Subtitle is required');
+            setError('Course name is required');
             setIsUploading(false);
             setIsCreatingCourse(true)
             return;
@@ -244,6 +257,47 @@ const TermPage = () => {
             console.log(error);
         }
     };
+
+    const createNewCompletedCourse = async (): Promise<void> => {
+        if (!courseCode || courseCode.trim() === "") {
+            setError('Course code is required');
+            setIsUploading(false);
+            setIsCreatingCompletedCourse(true)
+            return;
+        }
+
+        if (!courseNumber || courseNumber.trim() === "") {
+            setError('Course number is required');
+            setIsUploading(false);
+            setIsCreatingCompletedCourse(true)
+            return;
+        }
+
+        if (term) {
+            const newCourse = {
+                courseTitle: courseCode + ' ' + courseNumber,
+                courseSubtitle: courseSubtitle,
+                colour: 'black' as 'green' | 'black' | 'blue' | 'pink' | 'purple' | 'orange' | 'red' ,
+                highestGrade: completedCourseGrade,
+                gradingSchemes: []
+            }
+
+            const repeatedCourseTitle = termData?.courses.find((c) => c.courseTitle.toLowerCase() === newCourse.courseTitle.toLowerCase())
+            if (repeatedCourseTitle) {
+                setError('A course with this name has already been created')
+                return;
+            }
+
+            dispatch(addCourse({ term: term, course: newCourse }));
+            setCourseCode("")
+            setCourseNumber("")
+            setCompletedCourseGrade(0)
+            setError("")
+        }
+
+        setIsCreatingCompletedCourse(false);
+    };
+
 
     return ( 
         <div className="w-full h-dvh min-h-fit px-10 pt-10 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
@@ -379,10 +433,19 @@ const TermPage = () => {
                             <div className="flex flex-col lg:flex-row lg:flex-wrap gap-10 justify-start">
                                 <div className="w-full items-center lg:w-40 h-40 text-xs text-muted-foreground flex flex-col justify-between">
                                     <p className="text-lg lg:text-xs">This term is complete. You may view your grades.</p>
+                                    {!isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100 !text-xs w-[80%] lg:w-[100%]' onClick={() => setIsManagingCourses(!isManagingCourses)}>Manage Courses <PencilIcon/></Button>}
+                                    {isManagingCourses && <Button className='border-2 border-black bg-white text-black hover:bg-gray-100 !text-xs w-[80%] lg:w-[100%]' onClick={() => setIsManagingCourses(!isManagingCourses)}>Save Changes <Check/></Button>}
                                     {!isManagingCourses && !gradesShown && <Button className='!text-xs lg:!w-40 w-[80%]' onClick={() => setGradesShown(!gradesShown)}>Show Grades <EyeIcon /></Button>}
                                     {!isManagingCourses && gradesShown && <Button className='!text-xs lg:!w-40 w-[80%]' onClick={() => setGradesShown(!gradesShown)}>Hide Grades <EyeOffIcon /></Button>}
                                 </div>
                                 {!isManagingCourses && termData && termData.courses.map((course) => { return ( <CompletedTermCourseCard key={course.courseTitle} course={course} gradesShown={gradesShown}/> ); })}
+                                {isManagingCourses && termData && termData.courses.map((course) => { return ( <EditCompletedCourseCard key={course.courseTitle} course={course} /> ); })}
+                                <div onClick={() => setIsCreatingCompletedCourse(!isCreatingCompletedCourse)} 
+                                    className={`h-40 w-40 flex flex-col justify-center items-center border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-md`}
+                                    role="button" 
+                                    tabIndex={0}>
+                                    <h1 className="text-7xl font-extralight">+</h1>
+                                </div>      
                             </div>
                         </div>
                     </div>         
@@ -404,6 +467,18 @@ const TermPage = () => {
                                 setUploadedFile={setUploadedFile}
                                 selectedColour={selectedColour}
                                 setSelectedColour={setSelectedColour}/>
+            <CreateCompletedCoursePopup isUploading={isUploading} 
+                                        isCreatingCourse={isCreatingCompletedCourse} 
+                                        setIsCreatingCourse={setIsCreatingCompletedCourse} 
+                                        courseCode={courseCode} 
+                                        setCourseCode={setCourseCode} 
+                                        courseNumber={courseNumber}
+                                        setCourseNumber={setCourseNumber}
+                                        createNewCourse={createNewCompletedCourse} 
+                                        error={error}
+                                        setError={setError}
+                                        courseGrade={completedCourseGrade}
+                                        setCourseGrade={setCompletedCourseGrade}/>
             {calendarEvents && <ExportGoogleCalPopup isExporting={isExporting}
                                   setIsExporting={setIsExporting}
                                   calendarEvents={calendarEvents}/>}

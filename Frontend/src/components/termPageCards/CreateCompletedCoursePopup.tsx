@@ -3,8 +3,6 @@ import { Button } from "../ui/button";
 import { XIcon } from "lucide-react";
 import { ChangeEvent } from "react";
 
-import ColourPicker from "./ColourPicker";
-
 interface CreateCoursePopupProps {
     isUploading: boolean;
     isCreatingCourse: boolean;
@@ -13,17 +11,14 @@ interface CreateCoursePopupProps {
     setCourseCode: React.Dispatch<React.SetStateAction<string>>;
     courseNumber: string;
     setCourseNumber: React.Dispatch<React.SetStateAction<string>>;
-    courseSubtitle: string;
-    setCourseSubtitle: React.Dispatch<React.SetStateAction<string>>;
+    courseGrade: number;
+    setCourseGrade: React.Dispatch<React.SetStateAction<number>>;
     createNewCourse: () => Promise<void>;
     error: string
     setError: React.Dispatch<React.SetStateAction<string>>;
-    setUploadedFile: React.Dispatch<React.SetStateAction<File | null>>;
-    selectedColour: "green" | "black" | "blue" | "pink" | "purple" | "orange" | "red"
-    setSelectedColour: React.Dispatch<React.SetStateAction<"green" | "black" | "blue" | "pink" | "purple" | "orange" | "red">>;
 }
   
-  const CreateCoursePopup: React.FC<CreateCoursePopupProps> = ({
+  const CreateCompletedCoursePopup: React.FC<CreateCoursePopupProps> = ({
         isUploading,
         isCreatingCourse,
         setIsCreatingCourse,
@@ -31,14 +26,11 @@ interface CreateCoursePopupProps {
         setCourseCode,
         courseNumber,
         setCourseNumber,
-        courseSubtitle,
-        setCourseSubtitle,
         createNewCourse,
         error,
-        setError,
-        setUploadedFile,
-        selectedColour,
-        setSelectedColour
+        courseGrade,
+        setCourseGrade,
+        setError
     }) => {
 
     const manageCourseCode = (e: ChangeEvent<HTMLInputElement>) => {
@@ -51,32 +43,27 @@ interface CreateCoursePopupProps {
         setCourseNumber(inputValue)
     };    
 
-    const manageCourseSubtitle = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value.trimStart().slice(0, 30);
-        setCourseSubtitle(inputValue)
+    const manageCourseGrade = (e: ChangeEvent<HTMLInputElement>) => {
+        const inputValue = e.target.value;
+        const parsedValue = parseInt(inputValue, 10);
+    
+        // Check if the parsed value is a number and within the range [0, 999]
+        if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 200) {
+            setCourseGrade(parsedValue);
+        } else if (inputValue === "") {
+            // Allow clearing the input
+            setCourseGrade(0);
+        }
     }
-
-
-    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
-        let file = null;
-        if (event.target.files) {
-            file = event.target.files[0];
-        } else {
-            file = null;
-        }
-
-        if (file) {
-            setUploadedFile(file);
-        }
-    };
 
     const handleClose = () => {
         setIsCreatingCourse(!isCreatingCourse)
         setError("")
-        setCourseSubtitle("")
+        setCourseGrade(0)
         setCourseCode("")
         setCourseNumber("")
     }
+
 
     return ( 
         <div className="flex flex-row flex-wrap gap-10">
@@ -84,10 +71,10 @@ interface CreateCoursePopupProps {
                 <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-80 z-50">
                     <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-md">
                         <div className="flex flex-row items-center">
-                            <h1 className="mr-auto text-left font-semibold mb-2 text-xl">Add Course</h1>
+                            <h1 className="mr-auto text-left font-semibold mb-2 text-xl">Add Completed Course</h1>
                             <button onClick={handleClose}><XIcon className="ml-auto w-5 h-auto -top-4 left-2 relative hover:text-red-600 transform transition-all duration-200 hover:scale-106"/></button>
                         </div>
-                        <p className="text-sm mb-5 font-extralight">Add a new course by entering its name and uploading the syllabus. Although the upload is optional, we'll use this information to st up your calendar and grading system</p>
+                        <p className="text-sm mb-5 font-extralight">Add a new completed course by entering its name and grade.</p>
                         <div className="flex flex-col gap-6 text-sm">
                             <div className="flex flex-col gap-4">
                                 <h1 className="font-medium">Course Code *</h1>
@@ -98,21 +85,8 @@ interface CreateCoursePopupProps {
                                 <Input placeholder="101" value={courseNumber} onChange={(e) => manageCourseNumber(e)}></Input>
                             </div>
                             <div className="flex flex-col gap-4">
-                                <h1 className="font-medium">Course Name *</h1>
-                                <Input placeholder="Financial Markets and Data Analytics" value={courseSubtitle} onChange={(e) => manageCourseSubtitle(e)}></Input>
-                            </div>
-                            <div className="flex flex-col gap-4">
-                                <h1 className="font-medium">Course Colour *</h1>
-                                <ColourPicker selectedColour={selectedColour} setSelectedColour={setSelectedColour}/>
-                            </div>
-                            <div className="flex flex-col gap-4">
-                                <h1 className="font-medium">Syllabus Upload</h1>
-                                <Input
-                                    type="file" // Accept only PDF files
-                                    accept=".pdf"
-                                    onChange={handleFileChange} // Handle file change
-                                    className="hover:border-gray-200 hover:bg-gray-50 border-gray-100"
-                                />
+                                <h1 className="font-medium">Course Grade *</h1>
+                                <Input placeholder="75" value={courseGrade} onChange={(e) => manageCourseGrade(e)}></Input>
                             </div>
                         </div>
                         <p className="text-left mt-6 text-red-600">{error}</p>
@@ -136,4 +110,4 @@ interface CreateCoursePopupProps {
      );
 }
  
-export default CreateCoursePopup;
+export default CreateCompletedCoursePopup;

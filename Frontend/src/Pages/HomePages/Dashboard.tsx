@@ -20,6 +20,7 @@ import { Term, Course } from "@/types/mainTypes";
 import DisplayTermCard from "@/components/DashboardPageCards/DisplayTermCard";
 import UploadTranscriptPopup from "@/components/DashboardPageCards/UploadTranscriptPopup";
 import { CircularProgress } from "@/components/DashboardPageCards/CircularProgessBar";
+import AddTermPopup from "@/components/DashboardPageCards/AddTermPopup";
 
 const Dashboard = () => {
     const data = useSelector((state: RootState) => state.data.data);
@@ -33,8 +34,12 @@ const Dashboard = () => {
 
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
     const [isUploading, setIsUploading] = useState<boolean>(false)
+    const [isTermComplete, setIsTermComplete] = useState<boolean>(false)
     const [isActive, setIsActive] = useState<boolean>(false)
+    const [isCreatingTerm, setIsCreatingTerm] = useState<boolean>(false)
     const [error, setError] = useState<string>("")
+    const [termName, setTermName] = useState<string>("Fall")
+    const [selectedYear, setSelectedYear] = useState<number>(2015)
 
     const [isShowingAverage, setIsShowingAverage] = useState<boolean>(true)
 
@@ -49,7 +54,13 @@ const Dashboard = () => {
         }, 0);
         return overallTotal + (termTotal / term.courses.length);
     }, 0);
-    const cGPA = totalGrades / data.length
+    const NumberOfValidTerms = data.filter((t) => t.courses.length > 0)
+    let cGPA: number = 0
+    if (NumberOfValidTerms.length <= 0) {
+        cGPA = 0
+    } else {    
+        cGPA = totalGrades / NumberOfValidTerms.length
+    }
 
     const termData = data.find((t) => t.term === data[data.length-1].term);
     const calendarEvents = termData?.courses.flatMap((course) => {
@@ -113,7 +124,7 @@ const Dashboard = () => {
     }
 
     useEffect(() => {
-        if (isUploading || isActive) {
+        if (isUploading || isActive || isCreatingTerm) {
         // Disable scrolling
         document.body.style.overflow = "hidden";
         } else {
@@ -125,12 +136,38 @@ const Dashboard = () => {
         return () => {
         document.body.style.overflow = "";
         };
-    }, [isUploading, isActive]);
+    }, [isUploading, isActive, isCreatingTerm]);
 
     const addTermsToData = (terms: Term[]) => {
         if (terms) {
             dispatch(addTerms({terms}))
         }
+    }
+
+    const createNewTerm = () => {
+        if (!termName.trim()) {
+            setError('Must choose a term')
+            return;
+        }
+    
+        const newTermName = termName + ' ' + selectedYear.toString()
+    
+        const repeatedTerms = data.find((t) => t.term.toLowerCase() === newTermName.toLowerCase())
+    
+        if (repeatedTerms) {
+          setError('This term already exists')
+          return;
+        }
+    
+        setIsTermComplete(false)
+        setTermName('Fall')
+        setSelectedYear(2015)
+        setIsCreatingTerm(!isCreatingTerm)
+        setError("")
+
+        dispatch(addTerms({
+          terms: [{term: newTermName, isCompleted: isTermComplete, courses: []}]
+        }))
     }
 
     const uploadTranscript = async () => {
@@ -187,15 +224,15 @@ const Dashboard = () => {
 
     return ( 
         <div className="min-h-dvh w-full bg-[#f7f7f7] flex flex-row justify-center">
-            <div className="max-w-[1440px] w-full flex flex-col gap-10 px-10 ">
+            <div className="max-w-[1440px] w-full flex flex-col gap-10 px-10">
                 <div className="flex pt-10 flex-row gap-10">
                     <h1 className="text-[1.6rem] font-medium">Welcome, {userName.split(' ')[0]} {userName.split(' ')[1].slice(0, 1)}.</h1>
                     <h1 className="text-[1.3rem] ml-auto font-light">Today is {formattedDate}</h1>
                 </div>
                 <div className="w-[100%] mt-2 flex flex-col lg:flex-row gap-10 h-fit lg:h-[25rem]">
-                    <div className="lg:w-[55%] flex flex-col gap-10 h-[100%]">
+                    <div className="lg:w-[55%] flex flex-col gap-8 h-[100%]">
                         {data.length <= 0 &&
-                            <Card className="p-5 px-7 h-full border">
+                            <Card className="p-5 px-7 h-[15rem] lg:h-full border">
                                 <div className="h-full flex flex-col justify-between ">
                                     <h1>Current Term</h1>
                                     <div>
@@ -208,7 +245,7 @@ const Dashboard = () => {
                             </Card>
                         }
                         {data.length > 0 &&
-                            <Card className="p-5 px-7 h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
+                            <Card className="p-5 px-7 h-[15rem] lg:h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
                                 <Link to={`/home/${data[data.length-1].term.replace(' ', '-')}`} className="h-full flex flex-col justify-between ">
                                     <h1>Current Term</h1>
                                     <div className="w-full flex flex-row justify-between">
@@ -220,7 +257,7 @@ const Dashboard = () => {
                                 </Link>
                             </Card>}
                         {data.length > 1 &&
-                            <Card className="p-5 px-7 h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
+                            <Card className="p-5 px-7 h-[15rem] lg:h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
                                 <Link to={`/home/${data[data.length-2].term.replace(' ', '-')}`} className="h-full flex flex-col justify-between ">
                                     <h1>Last Term</h1>
                                     <div className="w-full flex flex-row justify-between">
@@ -232,21 +269,21 @@ const Dashboard = () => {
                                 </Link>
                             </Card>}
                     </div>
-                    <div className="lg:w-[45%] flex flex-col gap-6 h-[100%]">
-                        <Card className="px-8 py-8 lg:py-0 h-full flex flex-row justify-center lg:justify-between items-center gap-10">
-                            <h1 className="text-6xl font-semibold">{numOfEventsInNext7Days}</h1>
-                            <p className="font-light text-md"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
-                        </Card>
-                        <Card className="px-4 py-4 lg:pb-4 lg:pt-0 h-full flex flex-col">
+                    <div className="lg:w-[45%] flex flex-col gap-10 lg:gap-6 h-[100%]">
+                        <Card className="px-4 pb-5 pt-2 lg:pb-4 lg:pt-0 h-full flex flex-col">
                             <div className="flex flex-row justify-center items-center gap-4">
                                 <CircularProgress percentage={cGPA} label="" description="" setIsShowingAverage={setIsShowingAverage} isShowingAverage={isShowingAverage} />
                                 <div className="flex flex-col justify-center h-full py-4 px-10 text-center gap-10 text-md">
                                     <h1 className="font-medium text-xl text-center">Cumulative GPA</h1>
                                     <p className="text-md ">Upload your transcript to fill out your academic history</p>
-                                    <p className="text-xs text-muted-foreground text-center">* this may include incomplete term(s) with no course data</p>
+                                    <p className="text-xs text-muted-foreground text-center">* only includes terms with at least 1 course</p>
                                 </div>
                             </div>
 
+                        </Card>
+                        <Card className="px-8 py-8 lg:py-0 h-full flex flex-row justify-center lg:justify-between items-center gap-10">
+                            <h1 className="text-6xl font-semibold">{numOfEventsInNext7Days}</h1>
+                            <p className="font-light text-md"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
                         </Card>
                     </div>
                 </div>
@@ -276,13 +313,16 @@ const Dashboard = () => {
                                 </Button>
                             </div>
                         </div>
-                        <div className="flex flex-row justify-start gap-10">
+                        <div className="flex flex-row flex-wrap justify-start gap-10">
                             {data.slice(0).reverse().slice(2).map((term) => (
                                 <DisplayTermCard key={term.term} term={term} isShowingGrades={isShowingGrades} />
                             ))}
-                            {data.length <= 2 &&
-                                <h1>No past terms to display.</h1>
-                            }
+                            <div onClick={() => setIsCreatingTerm(!isCreatingTerm)} 
+                                    className={`h-40 w-40 flex flex-col justify-center items-center border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-md`}
+                                    role="button" 
+                                    tabIndex={0}>
+                                    <h1 className="text-7xl font-extralight">+</h1>
+                            </div>    
                         </div>
 
                     </div>
@@ -295,6 +335,17 @@ const Dashboard = () => {
                                     error={error}
                                     setError={setError}
                                     setUploadedFile={setUploadedFile}/>    
+            <AddTermPopup isCreatingTerm={isCreatingTerm}
+                          setIsCreatingTerm={setIsCreatingTerm}
+                          isTermComplete={isTermComplete}
+                          setIsTermComplete={setIsTermComplete}
+                          termName={termName}
+                          setTermName={setTermName}
+                          selectedYear={selectedYear}
+                          setSelectedYear={setSelectedYear}
+                          createNewTerm={createNewTerm}
+                          error={error}
+                          setError={setError}/>
         </div>
      );
 }
