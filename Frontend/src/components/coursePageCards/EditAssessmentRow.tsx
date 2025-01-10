@@ -73,7 +73,7 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
         const inputValue = e.target.value;
 
         if (inputValue === "") {
-            setLocalAssessmentWeight(null);
+            setLocalAssessmentWeight(0);
             return;
         }
         if (inputValue === null) {
