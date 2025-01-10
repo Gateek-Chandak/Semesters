@@ -21,7 +21,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
   const [date, setDate] = React.useState<Date | null>(dueDate ? new Date(dueDate) : null);
   const [isOpen, setIsOpen] = React.useState(false);
  
-  const hours = Array.from({ length: 12 }, (_, i) => i + 1);
+  const hours = [12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1];
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (selectedDate) {
       setDate(selectedDate);
@@ -58,7 +58,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
         <Button
           variant="outline"
           className={cn(
-            "justify-start text-left font-normal w-72",
+            "justify-start text-left font-normal w-full",
             !date && "text-muted-foreground"
           )}
         >
@@ -81,7 +81,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
           <div className="flex flex-col sm:flex-row sm:h-[300px] divide-y sm:divide-y-0 sm:divide-x">
             <ScrollArea className="w-64 p-2 sm:w-auto">
               <div className="flex sm:flex-col p-2">
-                {hours.reverse().map((hour) => (
+                {hours.map((hour) => (
                   <Button
                     key={hour}
                     size="icon"
@@ -101,7 +101,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
             </ScrollArea>
             <ScrollArea className="w-64 p-2 sm:w-auto">
               <div className="flex sm:flex-col p-2">
-                {Array.from({ length: 12 }, (_, i) => i * 5).map((minute) => (
+                {Array.from({ length: 61 }, (_, i) => (i)).map((minute) => (
                   <Button
                     key={minute}
                     size="icon"

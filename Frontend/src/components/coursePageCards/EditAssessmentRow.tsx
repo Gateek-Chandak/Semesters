@@ -28,7 +28,7 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
 
     const [localAssessmentName, setLocalAssessmentName] = useState<string>(assessment.assessmentName)
     const [localAssessmentDueDate, setLocalAssessmentDueDate] = useState<null | string>(assessment.dueDate)
-    const [localAssessmentWeight, setLocalAssessmentWeight] = useState<number>(assessment.weight)
+    const [localAssessmentWeight, setLocalAssessmentWeight] = useState<number | null>(assessment.weight)
 
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trimStart().slice(0, 25);
@@ -70,22 +70,23 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
     };
 
     const handleWeightChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value.trim();
-    
-        // Default to 0 if input is empty
+        const inputValue = e.target.value;
+
         if (inputValue === "") {
-            setLocalAssessmentWeight(0);
+            setLocalAssessmentWeight(null);
+            return;
+        }
+        if (inputValue === null) {
+            setLocalAssessmentWeight(assessment.weight)
             return;
         }
     
         const parsedValue = parseFloat(inputValue);
     
-        // Ignore invalid or out-of-range values
-        if (isNaN(parsedValue) || parsedValue > 100) {
-            return;
+        if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 200) {
+            const formattedValue = parsedValue.toFixed(2); 
+            setLocalAssessmentWeight(Number(formattedValue)); 
         }
-    
-        setLocalAssessmentWeight(parsedValue);
     };
 
     const updateAssessmentWeight = (assessmentName: string) => {
@@ -203,29 +204,29 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
 
     return ( 
         <TableRow key={assessment.assessmentName} className="">
-            <TableCell className="text-center">
+            <TableCell className="text-center w-[5%]">
                 <Button className="w-5 h-8 hover:text-red-500" variant={'ghost'} onClick={() => deleteAssessment(assessment.assessmentName)}>
                     <XIcon className="!w-3 !h-3"/>
                 </Button>
             </TableCell>
-            <TableCell className="text-center">
+            <TableCell className="text-center w-[23%]">
                 <Input type="text" className="" value={localAssessmentName} onChange={handleNameChange} onBlur={() => updateAssessmentName(assessment.assessmentName)}/>
             </TableCell>
-            <TableCell className="text-center">
+            <TableCell className="text-center w-[20%]">
                 {/* <Input type="datetime-local" className="w-52" value={localAssessmentDueDate ? format(localAssessmentDueDate, `MMMM ${localAssessmentDueDate.getDate()}, yyyy '@' hh:mma`) : 'TBD'} onChange={(e) => updateAssessmentDueDate(e, assessment.assessmentName)}/> */}
                 <DateTimePicker dueDate={localAssessmentDueDate} setLocalDueDate={setLocalAssessmentDueDate}/>
             </TableCell>
-            <TableCell className="text-center">
-                <Input type="text" className="w-14" value={localAssessmentWeight} onChange={handleWeightChange} onBlur={() => updateAssessmentWeight(assessment.assessmentName)}/>
+            <TableCell className="w-[25%]">
+                <Input type="number" className="" value={localAssessmentWeight ? localAssessmentWeight : ""} onChange={handleWeightChange} onBlur={() => updateAssessmentWeight(assessment.assessmentName)}/>
             </TableCell>
-            <TableCell className="text-center"> 
+            <TableCell className="text-center w-[27%]"> 
                 <Input
                     type="number"
                     value={(assessment.grade === 0 || assessment.grade) ? assessment.grade : ""}
                     onWheel={(e) => e.currentTarget.blur()}
                     onChange={(e) => updateGrade(e, assessment.assessmentName)}
                     placeholder="00"
-                    className="w-16 p-2 my-3 inline"
+                    className="w-[60%] p-2 my-3 inline"
                     />{" "}
                     %
             </TableCell>

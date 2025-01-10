@@ -160,14 +160,14 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
                             if (!isEditing) {
                                 return (
                                     <TableRow key={assessment.assessmentName} className="">
-                                        <TableCell className="text-center py-7">{assessment.assessmentName}</TableCell>
-                                        <TableCell className="text-center">
+                                        <TableCell className="text-center w-[25%]">{assessment.assessmentName}</TableCell>
+                                        <TableCell className="text-center w-[25%]">
                                             {assessment.dueDate
                                                 ? format(assessment.dueDate, `MMMM dd, yyyy '@' hh:mma`)
                                                 : 'TBD'}
                                         </TableCell>
-                                        <TableCell className="text-center w-14">{assessment.weight}</TableCell>
-                                        <TableCell className="text-center"> 
+                                        <TableCell className="text-center w-[25%]">{assessment.weight}</TableCell>
+                                        <TableCell className="text-center w-[25%]"> 
                                             <Input
                                                 type="number"
                                                 value={(assessment.grade === 0 || assessment.grade) ? assessment.grade : ""}

@@ -313,9 +313,8 @@ const CoursePage = () => {
                     if (assessment.assessmentName === assessmentName) {
                         assessment = { ...assessment, grade: parsedValue }; // Assign rounded value or null
                     }
-        
                     // Include only completed assessments in the grade calculation
-                    if (assessment.grade !== null && assessment.grade !== undefined) {
+                    if (assessment.grade !== null && assessment.grade !== undefined && assessment.weight) {
                         totalGrade += (assessment.grade * assessment.weight) / 100;
                         totalWeight += assessment.weight;
                     }
@@ -329,17 +328,15 @@ const CoursePage = () => {
         
                 // Calculate final grade, scaled to completed assessments
                 const finalGrade = totalWeight > 0 ? (totalGrade / totalWeight) * 100 : 0;
-        
                 return {
                     ...scheme,
                     assessments: updatedAssessments,
                     grade: parseFloat(finalGrade.toFixed(2)), // Round to 2 decimal places
                 };
             });
-
             if (term && (courseIndex === 0 || courseIndex) && courseData) {
                 const newHighestGrade = determineHighestGrade(updatedSchemes)
-                if (newHighestGrade) {
+                if (newHighestGrade === 0 || newHighestGrade) {
                     dispatch(updateCourse({
                         term: term,
                         courseIndex: courseIndex,

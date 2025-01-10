@@ -34,7 +34,6 @@ import {
   useState,
 } from 'react';
 import { useHotkeys } from 'react-hotkeys-hook';
-import { useEffect } from 'react';
 
 const monthEventVariants = cva('size-2 rounded-full', {
   variants: {
@@ -120,11 +119,6 @@ const Calendar = ({
   const [view, setView] = useState<View>(_defaultMode);
   const [date, setDate] = useState(defaultDate);
   const [events, setEvents] = useState<CalendarEvent[]>(defaultEvents);
-
-  useEffect(() => {
-    setEvents(defaultEvents);
-  }, [defaultEvents]);
-
 
   const changeView = (view: View) => {
     setView(view);

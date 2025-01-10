@@ -50,14 +50,17 @@ const EditCompletedCourseCard: React.FC<CompletedCourseCardProps> = ({ course })
 
     const handleGradeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value;
-        const parsedValue = parseInt(inputValue, 10);
+
+        if (inputValue === "") {
+            setGrade(null);
+            return;
+        }
     
-        // Check if the parsed value is a number and within the range [0, 999]
+        const parsedValue = parseFloat(inputValue);
+    
         if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 200) {
-            setGrade(parsedValue);
-        } else if (inputValue === "") {
-            // Allow clearing the input
-            setGrade(null)
+            const formattedValue = parsedValue.toFixed(2); 
+            setGrade(Number(formattedValue)); 
         }
     }
 
@@ -136,23 +139,27 @@ const EditCompletedCourseCard: React.FC<CompletedCourseCardProps> = ({ course })
 
 
     return (
-        <Card > {/* Use course's title or id as key */}
-            <div className="bg-card rounded-2xl">
-                <div className="h-40 w-40 flex flex-col justify-center gap-2 items-center p-6">
-                    <Input
-                        className="!text-sm"
-                        value={code}
-                        onChange={handleCodeChange}
-                        onBlur={handleTitleChangeBlur} // Trigger the blur function directly
-                    />
-                    <Input
-                        className="!text-sm"
-                        value={number}
-                        onChange={handleNumberChange}
-                        onBlur={handleTitleChangeBlur} // Trigger the blur function directly
-                    />
+        <Card className="h-40 w-40 bg-card rounded-2xl "> {/* Use course's title or id as key */}
+            <div className="h-40 w-40 ">
+                <div className="h-40 w-40 flex flex-col justify-between gap-2 items-center p-4">
+                    <div className="flex flex-row justify-between gap-2 w-full">
+                        <Input
+                            className="!text-sm"
+                            value={code}
+                            onChange={handleCodeChange}
+                            onBlur={handleTitleChangeBlur} // Trigger the blur function directly
+                        />
+                        <Input
+                            className="!text-sm"
+                            value={number}
+                            onChange={handleNumberChange}
+                            onBlur={handleTitleChangeBlur} // Trigger the blur function directly
+                        />
+                    </div>
+
                     <Input
                         className="text-lg"
+                        type="number"
                         value={grade !== null ? grade : ""}
                         onChange={handleGradeChange}
                         onBlur={handleGradeChangeBlur} // Trigger the blur function directly

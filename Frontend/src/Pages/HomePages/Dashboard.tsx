@@ -1,8 +1,7 @@
 import { Card } from "../../components/ui/card";
 import { format } from 'date-fns';
 import { Separator } from "@/components/ui/separator";
-import { ChevronRight } from "lucide-react";
-import { UploadIcon, EyeIcon, EyeOffIcon } from "lucide-react";
+import { UploadIcon, EyeIcon, EyeOffIcon, PencilIcon, ChevronRight, CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
@@ -33,6 +32,7 @@ const Dashboard = () => {
     const formattedDate = format(currentDate, 'EEEE, MMMM dd');
 
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
+    const [isManagingCourses, setIsManagingCourses] = useState<boolean>(false)
     const [isUploading, setIsUploading] = useState<boolean>(false)
     const [isTermComplete, setIsTermComplete] = useState<boolean>(false)
     const [isActive, setIsActive] = useState<boolean>(false)
@@ -107,7 +107,7 @@ const Dashboard = () => {
     }, 0)
     let CurrentTermGPA = null
     if (CurrentTermTotalMarks && CurrentTermData.courses.length >= 1) {
-        CurrentTermGPA = CurrentTermTotalMarks / CurrentTermData.courses.length
+        CurrentTermGPA = parseFloat((CurrentTermTotalMarks / CurrentTermData.courses.length).toFixed(2))
     } else {
         CurrentTermGPA = 0
     }
@@ -293,28 +293,45 @@ const Dashboard = () => {
                         <div className="flex flex-col gap-7 sm:gap-0 sm:flex-row w-ful pr-12">
                             <h1 className="sm:mr-auto text-xl font-light">Term Archive</h1>
                             <div className="sm:ml-auto flex flex-row gap-4">
-                                {!isShowingGrades && <Button variant={'default'} onClick={() => setIsShowingGrades(!isShowingGrades)}>
-                                    <div className="text-white text-sm font-medium flex flex-row justify-between items-center w-full gap-4">
-                                        <h1>Show Grades</h1>
-                                        <EyeIcon />
-                                    </div>
-                                </Button>}
-                                {isShowingGrades && <Button variant={'default'} onClick={() => setIsShowingGrades(!isShowingGrades)}>
-                                    <div className="text-white text-sm font-medium flex flex-row justify-between items-center w-full gap-4">
-                                        <h1>Hide Grades</h1>
-                                        <EyeOffIcon />
-                                    </div>
-                                </Button>}
-                                <Button variant={'outline'} onClick={() => setIsActive(!isActive)}>
-                                    <div className="text-black text-sm font-medium flex flex-row justify-between w-full gap-4">
-                                        <h1>Upload Transcript</h1>
-                                        <UploadIcon />
-                                    </div>
-                                </Button>
+                                {!isManagingCourses && 
+                                    <Button variant={'default'} onClick={() => setIsManagingCourses(!isManagingCourses)}>
+                                        <div className="text-white text-sm font-medium flex flex-row justify-between items-center w-full gap-4">
+                                            <h1>Manage Courses</h1>
+                                            <PencilIcon />
+                                        </div>
+                                    </Button>}
+                                {isManagingCourses && 
+                                    <Button variant={'default'} onClick={() => setIsManagingCourses(!isManagingCourses)}>
+                                        <div className="text-white text-sm font-medium flex flex-row justify-between items-center w-full gap-4">
+                                            <h1>Save Courses</h1>
+                                            <CheckIcon />
+                                        </div>
+                                    </Button>}
+                                {!isShowingGrades && !isManagingCourses &&
+                                    <Button variant={'default'} onClick={() => setIsShowingGrades(!isShowingGrades)}>
+                                        <div className="text-white text-sm font-medium flex flex-row justify-between items-center w-full gap-4">
+                                            <h1>Show Grades</h1>
+                                            <EyeIcon />
+                                        </div>
+                                    </Button>}
+                                {isShowingGrades && !isManagingCourses &&
+                                    <Button variant={'default'} onClick={() => setIsShowingGrades(!isShowingGrades)}>
+                                        <div className="text-white text-sm font-medium flex flex-row justify-between items-center w-full gap-4">
+                                            <h1>Hide Grades</h1>
+                                            <EyeOffIcon />
+                                        </div>
+                                    </Button>}
+                                {!isManagingCourses && 
+                                    <Button variant={'outline'} onClick={() => setIsActive(!isActive)}>
+                                        <div className="text-black text-sm font-medium flex flex-row justify-between w-full gap-4">
+                                            <h1>Upload Transcript</h1>
+                                            <UploadIcon />
+                                        </div>
+                                    </Button>}
                             </div>
                         </div>
                         <div className="flex flex-row flex-wrap justify-start gap-10">
-                            {data.slice(0).reverse().slice(2).map((term) => (
+                            {!isManagingCourses && data.slice(0).reverse().slice(2).map((term) => (
                                 <DisplayTermCard key={term.term} term={term} isShowingGrades={isShowingGrades} />
                             ))}
                             <div onClick={() => setIsCreatingTerm(!isCreatingTerm)} 

@@ -1,6 +1,7 @@
 import { EyeIcon, EyeOffIcon } from "lucide-react"
 import { Separator } from "../ui/separator"
 import { Button } from "../ui/button"
+import { useState, useEffect } from "react"
 
 interface CircularProgressProps {
     percentage: number;
@@ -17,19 +18,20 @@ interface CircularProgressProps {
     if (percentage >= 100) {
       strokeDashoffset = circumference - (100 / 100) * circumference
     }
-    const strokeColour = 'currentColor'
 
-    // useEffect(() => {
-    //   if (percentage == 0) {
-    //     setStrokeColour('currentColor')
-    //   } else if (percentage < 50) {
-    //     setStrokeColour('red')
-    //   } else if (percentage >= 50 && percentage < 65) {
-    //     setStrokeColour('orange')
-    //   } else if (percentage >= 65) {
-    //     setStrokeColour('green')
-    //   }
-    // }, [percentage])
+    const [strokeColour, setStrokeColour] = useState<string>('currentColor')
+
+    useEffect(() => {
+      if (percentage <= 0) {
+        setStrokeColour('currentColor')
+      } else if (percentage < 50) {
+        setStrokeColour('red')
+      } else if (percentage >= 50 && percentage < 65) {
+        setStrokeColour('orange')
+      } else if (percentage >= 65) {
+        setStrokeColour('green')
+      }
+    }, [percentage])
   
     return (
       <div className="flex flex-col items-center text-center py-4 gap-6">
