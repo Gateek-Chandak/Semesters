@@ -28,7 +28,7 @@ const EditAssessmentRow: React.FC<EditAssessmentRowProps> = ( { assessment, targ
 
     const [localAssessmentName, setLocalAssessmentName] = useState<string>(assessment.assessmentName)
     const [localAssessmentDueDate, setLocalAssessmentDueDate] = useState<null | string>(assessment.dueDate)
-    const [localAssessmentWeight, setLocalAssessmentWeight] = useState<number | null>(assessment.weight)
+    const [localAssessmentWeight, setLocalAssessmentWeight] = useState<number>(assessment.weight)
 
     const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trimStart().slice(0, 25);
