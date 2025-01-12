@@ -1,7 +1,7 @@
 import { Card } from "../../components/ui/card";
 import { format } from 'date-fns';
 import { Separator } from "@/components/ui/separator";
-import { UploadIcon, EyeIcon, EyeOffIcon, PencilIcon, ChevronRight, CheckIcon } from "lucide-react";
+import { UploadIcon, EyeIcon, EyeOffIcon, PencilIcon, CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
