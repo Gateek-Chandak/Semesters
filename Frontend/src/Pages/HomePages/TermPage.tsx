@@ -420,7 +420,7 @@ const TermPage = () => {
                             <h1 className="text-3xl font-bold">{term}</h1>
                         </div>
                         <div className="flex flex-col lg:flex-row  justify-start gap-10">
-                            <Card className="h-full px-6">
+                            <Card className="h-fit px-6">
                                 <CircularProgress 
                                     percentage={termGrade} 
                                     label="Term Average"

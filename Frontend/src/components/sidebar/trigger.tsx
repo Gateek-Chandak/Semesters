@@ -20,7 +20,7 @@ import AddTermPopup from "../DashboardPageCards/AddTermPopup"
 export function Trigger() {
   const data = useSelector((state: RootState) => state.data.data);
   const isMobile = useIsMobile()
-  const { openMobile } = useSidebar()
+  const { open, openMobile } = useSidebar()
   const dispatch = useDispatch()
 
   const [isCreatingTerm, setIsCreatingTerm] = useState<boolean>(false)
@@ -68,11 +68,11 @@ export function Trigger() {
                 ${(!isMobile) ? 'pb-4' : ''}
                 px-6 pt-4 mr-auto`} />
           </div>
-          <div className="w-full flex flex-row items-center mb-2 mx-2">
+          {(openMobile || open) && <div className="w-full flex flex-row items-center mb-2 mx-2">
             <Button variant={'ghost'} className="ml-auto text-xl" onClick={() => setIsCreatingTerm(!isCreatingTerm)}>
               +
             </Button>
-          </div>
+          </div>}
         </div>
         
         {isMobile && openMobile && <SidebarSeparator />}

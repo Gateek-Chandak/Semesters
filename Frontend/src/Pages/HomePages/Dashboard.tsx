@@ -3,7 +3,6 @@ import { format } from 'date-fns';
 import { Separator } from "@/components/ui/separator";
 import { UploadIcon, EyeIcon, EyeOffIcon, PencilIcon, ChevronRight, CheckIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router-dom";
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useDispatch } from "react-redux";
@@ -20,6 +19,8 @@ import DisplayTermCard from "@/components/DashboardPageCards/DisplayTermCard";
 import UploadTranscriptPopup from "@/components/DashboardPageCards/UploadTranscriptPopup";
 import { CircularProgress } from "@/components/DashboardPageCards/CircularProgessBar";
 import AddTermPopup from "@/components/DashboardPageCards/AddTermPopup";
+import EditTermCard from "@/components/DashboardPageCards/EditTermCard";
+import MainTermCard from "@/components/DashboardPageCards/MainTermCard";
 
 const Dashboard = () => {
     const data = useSelector((state: RootState) => state.data.data);
@@ -42,7 +43,7 @@ const Dashboard = () => {
     const [selectedYear, setSelectedYear] = useState<number>(2015)
 
     const [isShowingAverage, setIsShowingAverage] = useState<boolean>(true)
-
+    const [isDeletingTerm, setIsDeletingTerm] = useState<boolean>(false)
     const [isShowingGrades, setIsShowingGrades] = useState<boolean>(false)
 
     const totalGrades = data.reduce((overallTotal: number, term) => {
@@ -237,37 +238,30 @@ const Dashboard = () => {
                                     <h1>Current Term</h1>
                                     <div>
                                         <h1 className="text-4xl font-medium">No term to display</h1>
-                                        <p className="pt-3 text-sm">upload a transcript to import terms</p>
+                                        <p className="pt-3 text-sm">upload a transcript to import terms, or create a new one using the + icon in the sidebar or section below.</p>
                                     </div>
-                                    <Separator />
-                                    <h1 className="text-sm text-muted-foreground flex flex-row items-center ml-auto">click for a more detailed view&nbsp;&nbsp; <ChevronRight className="!w-4 !h-4 text-muted-foreground" /></h1>
+                                    <div></div>
                                 </div>
                             </Card>
                         }
                         {data.length > 0 &&
-                            <Card className="p-5 px-7 h-[15rem] lg:h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
-                                <Link to={`/home/${data[data.length-1].term.replace(' ', '-')}`} className="h-full flex flex-col justify-between ">
-                                    <h1>Current Term</h1>
-                                    <div className="w-full flex flex-row justify-between">
-                                        <h1 className="text-4xl font-medium">{data[data.length-1].term}</h1>
-                                        {isShowingGrades && <h1 className="ml-0 text-4xl font-medium">{CurrentTermGPA}%</h1>}
-                                    </div>
-                                    <Separator />
-                                    <h1 className="text-sm text-muted-foreground flex flex-row items-center ml-auto">click for a more detailed view&nbsp;&nbsp; <ChevronRight className="!w-4 !h-4 text-muted-foreground" /></h1>
-                                </Link>
-                            </Card>}
+                            <MainTermCard   name={'Current Term'}
+                                            isManagingCourses={isManagingCourses}
+                                            term={data[data.length-1]}
+                                            isShowingGrades={isShowingGrades}
+                                            gpa={CurrentTermGPA}
+                                            setIsDeletingTerm={setIsDeletingTerm}
+                                            isDeletingTerm={isDeletingTerm}/>
+                        }
                         {data.length > 1 &&
-                            <Card className="p-5 px-7 h-[15rem] lg:h-full transform transition-all duration-300 hover:scale-[1.02] hover:shadow-sm hover:border-slate-400 border">
-                                <Link to={`/home/${data[data.length-2].term.replace(' ', '-')}`} className="h-full flex flex-col justify-between ">
-                                    <h1>Last Term</h1>
-                                    <div className="w-full flex flex-row justify-between">
-                                        <h1 className="text-4xl font-medium">{data[data.length-2].term}</h1>
-                                        {isShowingGrades && <h1 className="ml-0 text-4xl font-medium">{LastTermGPA}%</h1>}
-                                    </div>
-                                    <Separator />
-                                    <h1 className="text-sm text-muted-foreground flex flex-row items-center ml-auto">click for a more detailed view&nbsp;&nbsp; <ChevronRight className="!w-4 !h-4 text-muted-foreground" /></h1>
-                                </Link>
-                            </Card>}
+                            <MainTermCard   name={'Last Term'}
+                                            isManagingCourses={isManagingCourses}
+                                            term={data[data.length-2]}
+                                            isShowingGrades={isShowingGrades}
+                                            gpa={LastTermGPA}
+                                            setIsDeletingTerm={setIsDeletingTerm}
+                                            isDeletingTerm={isDeletingTerm}/>
+                        }
                     </div>
                     <div className="lg:w-[45%] flex flex-col gap-10 lg:gap-6 h-[100%]">
                         <Card className="px-4 pb-5 pt-2 lg:pb-4 lg:pt-0 h-full flex flex-col">
@@ -275,7 +269,7 @@ const Dashboard = () => {
                                 <CircularProgress percentage={cGPA} label="" description="" setIsShowingAverage={setIsShowingAverage} isShowingAverage={isShowingAverage} />
                                 <div className="flex flex-col justify-center h-full py-4 px-10 text-center gap-10 text-md">
                                     <h1 className="font-medium text-xl text-center">Cumulative GPA</h1>
-                                    <p className="text-md ">Upload your transcript to fill out your academic history</p>
+                                    <p className="text-md ">Represents your average across all terms and courses taken</p>
                                     <p className="text-xs text-muted-foreground text-center">* only includes terms with at least 1 course</p>
                                 </div>
                             </div>
@@ -296,14 +290,14 @@ const Dashboard = () => {
                                 {!isManagingCourses && 
                                     <Button variant={'default'} onClick={() => setIsManagingCourses(!isManagingCourses)}>
                                         <div className="text-white text-sm font-medium flex flex-row justify-between items-center w-full gap-4">
-                                            <h1>Manage Courses</h1>
+                                            <h1>Manage Terms</h1>
                                             <PencilIcon />
                                         </div>
                                     </Button>}
                                 {isManagingCourses && 
                                     <Button variant={'default'} onClick={() => setIsManagingCourses(!isManagingCourses)}>
                                         <div className="text-white text-sm font-medium flex flex-row justify-between items-center w-full gap-4">
-                                            <h1>Save Courses</h1>
+                                            <h1>Save Terms</h1>
                                             <CheckIcon />
                                         </div>
                                     </Button>}
@@ -333,6 +327,9 @@ const Dashboard = () => {
                         <div className="flex flex-row flex-wrap justify-start gap-10">
                             {!isManagingCourses && data.slice(0).reverse().slice(2).map((term) => (
                                 <DisplayTermCard key={term.term} term={term} isShowingGrades={isShowingGrades} />
+                            ))}
+                            {isManagingCourses && data.slice(0).reverse().slice(2).map((term) => (
+                                <EditTermCard key={term.term} term={term} isDeleting={isDeletingTerm} setIsDeleting={setIsDeletingTerm} />
                             ))}
                             <div onClick={() => setIsCreatingTerm(!isCreatingTerm)} 
                                     className={`h-40 w-40 flex flex-col justify-center items-center border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-md`}

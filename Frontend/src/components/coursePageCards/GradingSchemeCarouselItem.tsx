@@ -26,6 +26,7 @@ import { useDispatch } from "react-redux";
 import { Course, GradingScheme } from "@/types/mainTypes";
 
 import EditAssessmentRow from "./EditAssessmentRow";
+import ConfirmDeletePopup from "../ConfirmDeletePopup";
 
 interface GradingSchemeCarouselItemProps {
     isEditing: boolean;
@@ -58,6 +59,7 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
     const dispatch = useDispatch()
     
     const [schemeName, setSchemeName] = useState<string>(scheme.schemeName)
+    const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
     const handleSchemeNameUpdate = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trim().slice(0, 25); // Use `e.target.value` to get the input's current value
@@ -91,9 +93,9 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
         }
     };    
 
-    const deleteScheme = () => {
+    const deleteScheme = (name: string) => {
         const updatedSchemes = courseData.gradingSchemes.filter((s) => 
-            s.schemeName !== scheme.schemeName // Ensure this returns a boolean
+            s.schemeName !== name // Ensure this returns a boolean
         );
     
         const updatedCourse = {
@@ -115,12 +117,12 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
         <CarouselItem className={`w-full pt-5 rounded-2xl bg-card text-card-foreground flex flex-col gap-8`}>
             <div className='w-full pr-7 flex flex-row justify-between items-center gap-3'>
             {!isEditing && <h1 className="mr-auto text-left relative left-20 top-1 text-lg font-medium">{scheme.schemeName}</h1>}
-            {isEditing && <Input className="w-60 text-left relative left-20 h-10 !text-lg font-medium" 
+            {isEditing && <Input className="w-52 text-left relative left-20 h-10 !text-lg font-medium" 
                                  value={schemeName}
                                  onChange={handleSchemeNameUpdate}
                                  onBlur={handleSchemeNameBlur}/>}
             {isEditing && 
-                <Button variant="outline" className="ml-auto bg-white text-black border border-red-500 hover:bg-gray-100" onClick={() => deleteScheme()}>
+                <Button variant="outline" className="ml-auto bg-white text-black border border-red-500 hover:bg-gray-100" onClick={() => setIsDeleting(!isDeleting)}>
                     <Trash2Icon className="text-red-500" />
                 </Button>}
                 <Button className='bg-white text-black border-2 border-black hover:bg-gray-100'
@@ -197,6 +199,10 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
                     </TableBody> 
                 </Table>
             </div>
+            <ConfirmDeletePopup name={scheme.schemeName}
+                                deleteItem={deleteScheme}
+                                isDeleting={isDeleting}
+                                setIsDeleting={setIsDeleting}/>
         </CarouselItem>
      );
 }

@@ -103,7 +103,6 @@ const retrieve_transcript = async (req, res) => {
     const response = await parseCourses(aiResponse)
 
     // Respond with the result from OpenAI
-    console.log(response)
     res.status(200).json({ result: response });
     return;
   } catch (error) {

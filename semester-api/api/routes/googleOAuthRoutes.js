@@ -66,7 +66,7 @@ router.get('/redirect', async (req, res) => {
         res.redirect(`${process.env.URL}/home`);
     } catch (err) {
         console.log(err);
-        res.status(500).json({error: 'Authentication failed' })
+        res.redirect(`${process.env.URL}`)
     }
 })
 

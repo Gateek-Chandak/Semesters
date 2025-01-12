@@ -12,6 +12,8 @@ import { deleteCourse, updateCourseName, updateCourseSubtitle } from "@/redux/sl
 import { useParams } from "react-router-dom";
 import { useState } from "react";
 
+import ConfirmDeletePopup from "../ConfirmDeletePopup";
+
 interface CourseCardProps {
   course: Course;
 }
@@ -37,6 +39,7 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
     const [code, setCode] = useState<string>(course.courseTitle.split(' ')[0]);
     const [number, setNumber] = useState<string>(course.courseTitle.split(' ')[1]);
     const [subtitle, setSubtitle] = useState<string>(course.courseSubtitle);
+    const [isDeleting, setIsDeleting] = useState<boolean>(false)
 
     const handleCodeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = e.target.value.trimStart().slice(0, 6);
@@ -143,11 +146,15 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
                         onChange={handleSubtitleChange}
                         onBlur={handleSubtitleChangeBlur} // Trigger the blur function directly
                     />
-                    <Button variant="outline" className="border border-red-500" onClick={() => handleDeleteCourse(course.courseTitle)}>
-                        <Trash2Icon className="text-red-500" />
+                    <Button variant="destructive" className="h-8" onClick={() => setIsDeleting(!isDeleting)}>
+                        Delete <Trash2Icon className="text-white" />
                     </Button>
                 </div>
             </div>
+            <ConfirmDeletePopup name={course.courseTitle}
+                                isDeleting={isDeleting}
+                                setIsDeleting={setIsDeleting}
+                                deleteItem={handleDeleteCourse}/>
         </Card>
     );
 };
