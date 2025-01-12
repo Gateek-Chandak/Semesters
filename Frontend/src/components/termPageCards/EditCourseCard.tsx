@@ -146,8 +146,8 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
                         onChange={handleSubtitleChange}
                         onBlur={handleSubtitleChangeBlur} // Trigger the blur function directly
                     />
-                    <Button variant="destructive" className="h-8" onClick={() => setIsDeleting(!isDeleting)}>
-                        Delete <Trash2Icon className="text-white" />
+                    <Button variant="outline" className="h-7 w-full mt-1 border border-red-500 text-red-500 text-xs hover:bg-red-500 hover:text-white" onClick={() => setIsDeleting(!isDeleting)}>
+                        <Trash2Icon className="" />
                     </Button>
                 </div>
             </div>

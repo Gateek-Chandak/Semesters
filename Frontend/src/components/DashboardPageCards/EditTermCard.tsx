@@ -33,9 +33,9 @@ const EditTermCard: React.FC<EditTermCardProps> = ({ term, isDeleting, setIsDele
     return (
         <div>
             <div className="border-2 border-slate-200 bg-card rounded-2xl">
-                <div className="h-40 w-40 flex flex-col justify-center gap-4 items-center">
+                <div className="h-40 w-40 flex flex-col justify-between gap-4 items-center py-8">
                     <h1 className='text-xl'>{term.term}</h1>
-                    <Button variant="destructive" className="h-10 w-fit" onClick={() => setIsDeleting(!isDeleting)}>
+                    <Button variant="outline" className="h-10 border border-red-500 text-red-500 text-xs hover:bg-red-500 hover:text-white" onClick={() => setIsDeleting(!isDeleting)}>
                         Delete <Trash2Icon className="" />
                     </Button>
                 </div>

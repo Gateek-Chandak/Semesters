@@ -167,8 +167,8 @@ const EditCompletedCourseCard: React.FC<CompletedCourseCardProps> = ({ course })
                         onChange={handleGradeChange}
                         onBlur={handleGradeChangeBlur} // Trigger the blur function directly
                     />
-                    <Button variant="outline" className="border border-red-500" onClick={() => setIsDeleting(!isDeleting)}>
-                        <Trash2Icon className="text-red-500" />
+                    <Button variant="outline" className="h-8 w-full mt-1 border border-red-500 text-red-500 text-xs hover:bg-red-500 hover:text-white" onClick={() => setIsDeleting(!isDeleting)}>
+                        <Trash2Icon className="" />
                     </Button>
                 </div>
             </div>

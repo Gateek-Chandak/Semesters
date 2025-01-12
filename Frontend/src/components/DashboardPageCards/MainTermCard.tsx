@@ -64,7 +64,7 @@ const MainTermCard: React.FC<MainTermCardProps> = ({
                 <div className="flex flex-row justify-between">
                     <h1>Current Term</h1>
                     {isManagingCourses && 
-                    <Button variant="destructive" className="ml-auto h-8 w-fit" onClick={() => setIsDeletingTerm(!isDeletingTerm)}>
+                    <Button variant="outline" className="ml-auto h-8 border border-red-500 text-red-500 text-xs hover:bg-red-500 hover:text-white" onClick={() => setIsDeletingTerm(!isDeletingTerm)}>
                         Delete <Trash2Icon className="" />
                     </Button>}
                 </div>
