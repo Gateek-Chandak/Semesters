@@ -111,6 +111,15 @@ const TermPage = () => {
     });
     const numOfEventsInNext7Days = eventsNext7Days? eventsNext7Days.length : 0
 
+    // DELIVERABLES REMAINING FOR THE TERM
+    let deliverablesRemaining = 0;
+    const pendingDeliverablesList = termData?.courses.flatMap((course) => 
+        course.gradingSchemes?.[0]?.assessments?.filter((assessment) => 
+            assessment.grade === null || assessment.grade === undefined
+        ) || []
+    );
+    deliverablesRemaining = pendingDeliverablesList?.length || 0;
+
     useEffect(() => {
         if (termData && termData.courses?.length > 0) {
             const courseGrades = termData.courses.reduce((total: number, course) => {
@@ -319,12 +328,13 @@ const TermPage = () => {
                                     />
                                 </Card>
                                 <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-6">
-                                    <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
+                                    <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-start items-center ">
                                         <h1 className="text-5xl font-semibold">{numOfEventsInNext7Days}</h1>
-                                        <p className="font-light text-sm"><span className="font-bold">deliverables due this week.</span> Good luck! You may or may not be cooked...</p>
+                                        <p className="font-light text-sm"><span className="font-bold">deliverables due this week.</span> Good luck!</p>
                                     </Card>
-                                    <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-center items-center ">
-                                        
+                                    <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-start items-center ">
+                                        <h1 className="text-5xl font-semibold">{deliverablesRemaining}</h1>
+                                        <p className="font-light text-sm"><span className="font-bold">deliverables remaining to complete the term.</span> Keep it up!</p>
                                     </Card>
                                 </div>
                                 

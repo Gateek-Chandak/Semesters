@@ -127,19 +127,21 @@ const EditCourseCard: React.FC<CourseCardProps> = ({ course }) => {
     return (
         <Card > {/* Use course's title or id as key */}
             <div className="bg-card rounded-2xl">
-                <div className="h-40 w-40 flex flex-col justify-center gap-2 items-center p-6">
-                    <Input
-                        className="!text-sm"
-                        value={code}
-                        onChange={handleCodeChange}
-                        onBlur={handleTitleChangeBlur} // Trigger the blur function directly
-                    />
-                    <Input
-                        className="!text-sm"
-                        value={number}
-                        onChange={handleNumberChange}
-                        onBlur={handleTitleChangeBlur} // Trigger the blur function directly
-                    />
+                <div className="h-40 w-40 flex flex-col justify-center gap-2 items-center p-4">
+                    <div className="flex flex-row justify-between gap-2">
+                        <Input
+                            className="!text-sm"
+                            value={code}
+                            onChange={handleCodeChange}
+                            onBlur={handleTitleChangeBlur} // Trigger the blur function directly
+                        />
+                        <Input
+                            className="!text-sm"
+                            value={number}
+                            onChange={handleNumberChange}
+                            onBlur={handleTitleChangeBlur} // Trigger the blur function directly
+                        />
+                    </div>
                     <Input
                         className="text-lg"
                         value={subtitle}

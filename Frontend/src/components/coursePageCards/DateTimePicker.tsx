@@ -66,7 +66,7 @@ export function DateTimePicker({ dueDate, setLocalDueDate }: DateTimePickerProps
           {(date) ? (
             format(date, `MMMM dd, yyyy '@' hh:mma`)
           ) : (
-            <span>MM/DD/YYYY hh:mm aa</span>
+            <span>Date Unavailable</span>
           )}
         </Button>
       </PopoverTrigger>
