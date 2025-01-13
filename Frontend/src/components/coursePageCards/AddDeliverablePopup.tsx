@@ -63,22 +63,19 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
     };
 
     const handleGradeChange = (e: ChangeEvent<HTMLInputElement>) => {
-        const inputValue = e.target.value.trim();
-    
-        // Default to 0 if input is empty
+        const inputValue = e.target.value;
+
         if (inputValue === "") {
-            setGrade(0);
+            setGrade(null);
             return;
         }
     
         const parsedValue = parseFloat(inputValue);
     
-        // Ignore invalid or out-of-range values
-        if (isNaN(parsedValue) || parsedValue > 999) {
-            return;
+        if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 200) {
+            const formattedValue = parsedValue.toFixed(2); 
+            setGrade(Number(formattedValue)); 
         }
-    
-        setGrade(parsedValue);
     };
 
     const handleClose = () => {
@@ -161,7 +158,7 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
                             </div>
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-medium">Grade</h1>
-                                <Input placeholder="ex. 85" value={grade || ''} onChange={handleGradeChange}></Input>
+                                <Input type="number" placeholder="ex. 85" value={grade || ''} onChange={handleGradeChange}></Input>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-medium">Due Date</h1>

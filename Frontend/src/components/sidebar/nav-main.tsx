@@ -34,7 +34,7 @@ export function NavMain({ data }: {data: any}) {
 
   return (
     <SidebarGroup className="">
-      <SidebarGroupLabel className="text-md mb-3">Courses</SidebarGroupLabel>
+      <SidebarGroupLabel className="text-md mb-3">Terms</SidebarGroupLabel>
       {(isMobile || open) && 
       <SidebarMenu className="">
         {data.slice().reverse().map((term: Term) => (

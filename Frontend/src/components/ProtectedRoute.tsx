@@ -53,7 +53,7 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   // If still loading, show a loading indicator or nothing
   if (loading) {
     return (
-      <div className='w-full h-dvh bg-[#f7f7f7] flex flex-row justify-center items-start gap-4 pt-96'>
+      <div className='w-full h-dvh bg-[#f7f7f7] flex flex-row justify-center items-start gap-4 pt-60'>
         <img src="/Objects/SemesterLogo.svg" className='bg-[#f7f7f7] h-10 w-10' alt="Semester Logo" />
         <h1 className='bg-[#f7f7f7] text-4xl'>Loading</h1>
       </div>

@@ -8,7 +8,7 @@ interface FacultyCardProps {
 
 const FacultyCard: React.FC<FacultyCardProps> = ({colour, title, position}) => {
     return ( 
-        <Card className={`fixed rounded-sm px-4 py-2 text-gray-300 ${position}`} style={{ backgroundColor: colour, opacity: 0.35}}>
+        <Card className={`absolute rounded-sm px-4 py-2 text-gray-300 ${position}`} style={{ backgroundColor: colour, opacity: 0.28}}>
             {title}
         </Card>
      );
