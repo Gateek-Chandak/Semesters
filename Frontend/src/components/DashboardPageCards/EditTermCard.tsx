@@ -41,9 +41,9 @@ const EditTermCard: React.FC<EditTermCardProps> = ({ term, isDeleting, setIsDele
                 </div>
             </div>
             <ConfirmDeletePopup name={term.term}
-                                    deleteItem={deleteTerm}
-                                    isDeleting={isDeleting}
-                                    setIsDeleting={setIsDeleting}/>
+                                deleteItem={deleteTerm}
+                                isDeleting={isDeleting}
+                                setIsDeleting={setIsDeleting}/>
         </div>
     );
 };

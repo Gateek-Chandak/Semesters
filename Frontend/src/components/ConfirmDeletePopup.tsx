@@ -17,7 +17,7 @@ const ConfirmDeletePopup: React.FC<ConfirmDeletePopupProps> = ({
     return ( 
         <div className="flex flex-row flex-wrap gap-10">
             {isDeleting && 
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-70 z-50">
+                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
                     <div className="bg-white rounded-xl shadow-lg p-6 w-[90%] max-w-md">
                         <div className="flex flex-row items-center">
                             <h1 className="mr-auto text-left font-semibold mb-2 text-xl">Delete {name}?</h1>

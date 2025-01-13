@@ -110,7 +110,7 @@ const LandingPage = () => {
 
         {/* Track Your Grades Page */}
         <div className="flex items-center justify-center h-dvh w-[80%]">
-          <div className="py-[120px] flex flex-col lg:flex-row items-center justify-center gap-20">
+          <div className="py-[120px] flex flex-col lg:flex-row items-center justify-center gap-[72px]">
             <div className="w-[320px] h-[180px] md:w-[640px] md:h-[360px] bg-[#d9d9d9]"></div>
             <div className="grow shrink basis-0 flex-col justify-start items-start gap-8 inline-flex px-4">
               <h1 className="self-stretch text-black text-3xl lg:text-5xl font-medium">Track Your Grades.</h1>
