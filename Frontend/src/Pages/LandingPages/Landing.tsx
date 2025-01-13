@@ -151,8 +151,9 @@ const LandingPage = () => {
             <AccordionItem value="item-3 flex">
               <AccordionTrigger className="text-xl md:text-2xl">Can I use this if I'm not a UW student?</AccordionTrigger>
               <AccordionContent className="text-md md:text-lg">
-              Yes! You can use this app if you’re not a Waterloo student. However, the app is optimized for 
-              University of Waterloo documentation and as a result, 
+                Yes! You can use this app if you’re not a Waterloo student. However, the app is optimized for 
+                University of Waterloo documentation and as a result, other school's transcripts and syllabus' may
+                not be accurate.
               </AccordionContent>
             </AccordionItem>
           </Accordion>
