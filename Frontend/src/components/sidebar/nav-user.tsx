@@ -98,11 +98,11 @@ export function NavUser({
           </div>}
           {(!open && !openMobile) && 
             <div className="w-full flex flex-col items-center gap-5">
-              <Avatar className="!h-8 !w-8 rounded-full">
+              <Avatar className="!h-6 !w-6 rounded-full">
                 <AvatarImage className="" src={user.picture} alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
-              <Avatar className="!h-8 !w-8 rounded-lg">
+              <Avatar className="!h-6 !w-6 rounded-lg">
                 <AvatarImage className="" src='/Objects/SemesterLogo.svg' alt={user.name} />
                 <AvatarFallback className="rounded-lg">CN</AvatarFallback>
               </Avatar>
