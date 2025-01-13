@@ -59,11 +59,11 @@ const LandingPage = () => {
 
           {/* Background Cards */}
           <FacultyCard colour="#270D63" title="Assignment Due @ 11:59" position="top-8 left-[30%]"/>
-          <FacultyCard colour="#334FC0" title="22% Needed to Pass" position="top-48 right-[25%]"/>
+          <FacultyCard colour="#334FC0" title="22% Needed to Pass" position="top-44 right-[25%]"/>
           <FacultyCard colour="#59BFC7" title="92% Predicted cGPA" position="bottom-40 left-[38%]"/>
           <FacultyCard colour="#629315" title="Upcoming Quiz on Tuesday" position="bottom-14 left-[7%]"/>
           <FacultyCard colour="#883116" title="5 Deliverables Due This Week" position="top-20 right-[7%]"/>
-          <FacultyCard colour="purple" title="Export to Google Calendar" position="top-36 left-[4%]"/>
+          <FacultyCard colour="purple" title="Export to Google Calendar" position="top-32 left-[4%]"/>
           <FacultyCard colour="#8A0D0F" title="85% Max. Grade Possible " position=" bottom-28 right-[8%]"/>
         </ div>
 
@@ -72,14 +72,15 @@ const LandingPage = () => {
         {/* Upload Schedule Page */}
         <div className="flex items-center justify-center h-dvh w-[80%] px-4" id="infoPage">
           <div className="py-[120px] flex flex-col lg:flex-row items-center justify-center gap-[72px]">
-            <div className="w-[480px] h-[270px] md:w-[640px] md:h-[360px] bg-[#d9d9d9]"></div>
+            <div className="w-[320px] h-[180px] md:w-[640px] md:h-[360px] bg-[#d9d9d9]"></div>
             <div className="grow shrink basis-0 flex-col justify-start items-start gap-8 inline-flex px-4">
               <h1 className="self-stretch text-black text-3xl lg:text-5xl font-medium">Upload your syllabus.</h1>
               <h1 className="self-stretch text-black text-md lg:text-xl">We use your syllabus to gather deliverable due dates, class times and the grading scheme.</h1>
               <h1 className="self-stretch">
                 <span className="text-zinc-500">If you are a Waterloo student, you can view and download your syllabuses on </span>
                 <a href="https://outline.uwaterloo.ca/browse/" target="_blank" className="text-zinc-500 underline">outline.uwaterloo.ca</a>
-                <span className="text-zinc-500"> if you’re a waterloo student.</span></h1>
+                <span className="text-zinc-500"> if you’re a waterloo student.</span>
+              </h1>
             </div>
           </div>
         </div>
@@ -89,7 +90,7 @@ const LandingPage = () => {
         {/* Export Calendar Page */}
         <div className="flex items-center justify-center h-dvh w-[80%]">
           <div className="py-[120px] flex flex-col lg:flex-row items-center justify-center gap-[72px]">
-            <div className="w-[480px] h-[270px] md:w-[640px] md:h-[360px] bg-[#d9d9d9]"></div>
+            <div className="w-[320px] h-[180px] md:w-[640px] md:h-[360px] bg-[#d9d9d9]"></div>
             <div className="grow shrink basis-0 flex-col justify-start items-start gap-8 inline-flex px-4">
               <h1 className="self-stretch text-black text-3xl lg:text-5xl font-medium">Export Your Calendar.</h1>
               <h1 className="self-stretch text-black text-md lg:text-xl">
@@ -109,8 +110,8 @@ const LandingPage = () => {
 
         {/* Track Your Grades Page */}
         <div className="flex items-center justify-center h-dvh w-[80%]">
-          <div className="py-[120px] flex flex-col lg:flex-row items-center justify-center gap-[72px]">
-            <div className="w-[480px] h-[270px] md:w-[640px] md:h-[360px] bg-[#d9d9d9]"></div>
+          <div className="py-[120px] flex flex-col lg:flex-row items-center justify-center gap-20">
+            <div className="w-[320px] h-[180px] md:w-[640px] md:h-[360px] bg-[#d9d9d9]"></div>
             <div className="grow shrink basis-0 flex-col justify-start items-start gap-8 inline-flex px-4">
               <h1 className="self-stretch text-black text-3xl lg:text-5xl font-medium">Track Your Grades.</h1>
               <h1 className="self-stretch text-black text-md lg:text-xl">
@@ -128,7 +129,7 @@ const LandingPage = () => {
         <Separator />
         
         {/* FAQ */}
-        <div className="flex flex-col items-center justify-center h-[60dvh] w-[90%] md:w-[60%] z-50 gap-10">
+        <div className="flex flex-col items-center justify-center h-[80dvh] w-[90%] md:w-[60%] z-50 gap-10">
           <h1 className="flex w-full justify-start text-3xl font-medium">Frequently Asked Questions</h1>
           <Accordion type="single" collapsible className="w-[95%]">
             <AccordionItem value="item-1">
@@ -163,7 +164,7 @@ const LandingPage = () => {
         <Separator />
 
         {/* Footer */}
-        <div className="flex flex-row items-center justify-around pt-10 pb-14 w-[90%] z-50 gap-10">
+        <div className="flex flex-col md:flex-row items-center justify-around pt-10 pb-14 w-[90%] z-50 gap-4 md:gap-10">
           <div className="flex justify-start gap-2">
             <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 md:w-6 h-auto"/>
             <h1 className="text-lg md:text-xl font-medium">Semesters</h1>
