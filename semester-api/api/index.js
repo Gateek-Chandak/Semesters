@@ -15,7 +15,7 @@ const termDatabaseRoutes = require('./routes/termDatabaseRoutes')
 
 // MIDDLEWARE
 const corsOptions = {
-    origin: ['http://localhost:5173', 'https://semester-gateek-chandaks-projects.vercel.app', 'https://semesters.ca/', 'https://www.semesters.ca/'],
+    origin: ['http://localhost:5173', 'https://semester-gateek-chandaks-projects.vercel.app', 'https://semesters.ca', 'https://www.semesters.ca'],
     methods: 'GET,POST',    
     credentials: true,
   };
