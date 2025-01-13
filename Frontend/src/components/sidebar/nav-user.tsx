@@ -61,7 +61,7 @@ export function NavUser({
                 >
                   <Avatar className="!h-10 !w-10 rounded-full">
                     <AvatarImage src={user.picture} alt={user.name} />
-                    <AvatarFallback className="rounded-lg">{user.name.slice(0, 1)}{user.name.split(' ')[0].slice(0, 1)}</AvatarFallback>
+                    <AvatarFallback className="rounded-lg">{user.name.slice(0, 1)}{user.name.split(' ')[1].slice(0, 1)}</AvatarFallback>
                   </Avatar>
                   <div className="grid flex-1 text-left text-sm leading-tight">
                     <span className="truncate font-semibold">{user.name}</span>
@@ -80,7 +80,7 @@ export function NavUser({
                   <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                     <Avatar className="h-8 w-8 rounded-full">
                       <AvatarImage src={user.picture} alt={user.name} />
-                      <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                      <AvatarFallback className="rounded-lg">{user.name.slice(0, 1)}{user.name.split(' ')[1].slice(0, 1)}</AvatarFallback>
                     </Avatar>
                     <div className="grid flex-1 text-left text-sm leading-tight">
                       <span className="truncate font-semibold">{user.name}</span>
@@ -98,13 +98,9 @@ export function NavUser({
           </div>}
           {(!open && !openMobile) && 
             <div className="w-full flex flex-col items-center gap-5">
-              <Avatar className="!h-6 !w-6 rounded-full">
+              <Avatar className="!h-7 !w-7 rounded-full">
                 <AvatarImage className="" src={user.picture} alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
-              </Avatar>
-              <Avatar className="!h-6 !w-6 rounded-lg">
-                <AvatarImage className="" src='/Objects/SemesterLogo.svg' alt={user.name} />
-                <AvatarFallback className="rounded-lg">CN</AvatarFallback>
+                <AvatarFallback className="rounded-lg border">{user.name.slice(0, 1)}{user.name.split(' ')[1].slice(0, 1)}</AvatarFallback>
               </Avatar>
             </div>  
             

@@ -309,13 +309,13 @@ const TermPage = () => {
 
 
     return ( 
-        <div className="w-full h-dvh min-h-fit px-10 pt-10 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
+        <div className="w-full h-dvh min-h-fit px-10 pt-7 bg-[#f7f7f7] flex flex-col gap-11 justify-start items-center overflow-hidden">
             {!termData?.isCompleted && 
                 <div className="max-w-[1840px] w-full flex flex-col gap-10">
                     <div className="w-[100%] lg:h-[25rem] flex flex-col gap-10 lg:flex-row">
                         <div className="w-[100%] lg:w-[60%] flex flex-col gap-10">
                             <div className="flex flex-row items-center justify-start gap-4">
-                                <h1 className="text-3xl font-bold">{term}</h1>
+                                <h1 className="text-3xl font-medium">{term}</h1>
                             </div>
                             <div className="w-[100%] h-full flex flex-col items-center md:flex-row gap-10">
                                 <Card className="w-[100%] md:w-[35%] h-full px-6">

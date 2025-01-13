@@ -364,14 +364,14 @@ const CoursePage = () => {
 
     return ( 
 
-        <div className="w-full h-dvh min-h-fit px-10 pt-10 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
+        <div className="w-full h-dvh min-h-fit px-10 pt-7 bg-[#f7f7f7] flex flex-col justify-start items-center overflow-hidden">
             <div className='max-w-[1840px] w-full'>
                 <div>   
                     <div className="w-[100%] flex flex-row items-center justify-start gap-4 text-2xl">
-                        <h1 className={`font-bold text-${courseData?.colour}-600`}>{courseData?.courseTitle}</h1>
+                        <h1 className={`font-medium text-${courseData?.colour}-600`}>{courseData?.courseTitle}</h1>
                         <h1 className="font-extralight">{courseData?.courseSubtitle}</h1>
                     </div>
-                    <div className="lg:h-[20rem] mt-12 lg:mb-16 w-full flex flex-col lg:flex-row mb-20 gap-4 justify-between">
+                    <div className="lg:h-[20rem] mt-10 lg:mb-16 w-full flex flex-col lg:flex-row mb-20 gap-4 justify-between">
                         <Card className="w-[100%] px-6">
                             <CircularProgress 
                                 percentage={highestCourseGrade} 
@@ -430,7 +430,7 @@ const CoursePage = () => {
                 <div className={`h-fit w-full mt-8 mb-10 flex ${isMobile ? 'flex-col' : 'flex-row'} justify-center gap-14 lg:gap-16`}>
                     <div className={`${isMobile ? 'w-[100%]' : 'w-[55%]'} flex flex-col items-center justify-start gap-8 rounded-2xl`}>
                         <h1 className="mr-auto text-2xl font-light">Deliverables</h1>
-                        <Carousel className="w-full shadow-md border border-slate-200 rounded-2xl">
+                        <Carousel className="w-full shadow-md rounded-2xl">
                             <CarouselContent className=''>
                                 {courseData && (courseData.gradingSchemes.length > 0) && courseData.gradingSchemes.map((scheme, index) => (
                                     <GradingSchemeCarouselItem  key={index}

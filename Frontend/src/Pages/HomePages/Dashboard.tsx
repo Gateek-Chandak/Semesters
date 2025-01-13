@@ -226,9 +226,8 @@ const Dashboard = () => {
     return ( 
         <div className="min-h-dvh w-full bg-[#f7f7f7] flex flex-row justify-center">
             <div className="max-w-[1440px] w-full flex flex-col gap-10 px-10">
-                <div className="flex pt-10 flex-row gap-10">
-                    {userName.split(' ')[0] === 'Afnan' && <h1 className="text-[1.6rem] font-medium">Welcome, Noon.</h1>}
-                    {userName.split(' ')[0] !== 'Afnan' && <h1 className="text-[1.6rem] font-medium">Welcome, {userName.split(' ')[0]} {userName.split(' ')[1].slice(0, 1)}.</h1>}
+                <div className="flex pt-7 flex-row gap-10">
+                    <h1 className="text-[1.6rem] font-medium">Welcome, {userName.split(' ')[0]} {userName.split(' ')[1].slice(0, 1)}.</h1>
                     <h1 className="text-[1.3rem] ml-auto font-light">Today is {formattedDate}</h1>
                 </div>
                 <div className="w-[100%] mt-2 flex flex-col lg:flex-row gap-10 h-fit lg:h-[25rem]">

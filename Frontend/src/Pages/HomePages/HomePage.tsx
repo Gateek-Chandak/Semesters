@@ -74,7 +74,18 @@ const HomePage = ( ) => {
           </div>
         </header>
         <Outlet/>
-        {/* <div className="bg-[#f7f7f7] flex flex-row justify-center border-t border-t-gray-2-- py-2 text-muted-foreground">Developed by Gateek Chandak and Designed by David Stirling</div> */}
+        <Separator />
+        <div className="bg-[#f7f7f7] flex flex-col md:flex-row items-center justify-around py-5 w-[100%] z-50 gap-4 md:gap-10">
+          <a onClick={() => document.getElementById("top")?.scrollIntoView({ behavior: "smooth" })} className="flex justify-start gap-2">
+            <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 md:w-6 h-auto"/>
+            <h1 className="text-lg md:text-xl font-medium">Semesters</h1>
+          </a>
+          <a href="/" className="text-xs md:text-md text-muted-foreground">Privacy Policy</a>
+          <a href="/" className="text-xs md:text-md text-muted-foreground">Terms & Conditions</a>
+          <h1 className="text-xs md:text-md">
+            Made by <a href="https://www.linkedin.com/in/gateek-chandak/" target="_blank" className="underline">Gateek Chandak</a> & <a href="https://www.davidstirling.me/" target="_blank" className="underline">David Stirling</a>
+          </h1>
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );
