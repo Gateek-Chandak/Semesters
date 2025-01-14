@@ -3,10 +3,10 @@ import { Separator } from "@/components/ui/separator";
 const PrivacyPolicyTermsConditions = () => {
     return ( 
         <div className="lg:bg-[#f1f0f0]w-full h-dvh">
-            <div className="fixed top-4 left-4 flex justify-start gap-2 z-50" onClick={() => document.getElementById("top")?.scrollIntoView({ behavior: "smooth" })}>
+            <a className="fixed top-4 left-4 flex justify-start gap-2 z-50" href="/">
                 <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 h-auto"/>
                 <h1 className="text-xl font-medium">Semesters</h1>
-            </div>
+            </a>
             <div className="flex flex-col items-start justify-start h-fit mt-32 px-10">
                 <div className="mb-20 flex flex-col gap-10">
                     <h1 className="text-2xl font-medium">Privacy Policy</h1>
@@ -27,13 +27,13 @@ const PrivacyPolicyTermsConditions = () => {
                 </div>
             </div>
 
-            <div className="fixed bottom-0 bg-[#f7f7f7] flex flex-col md:flex-row items-center justify-around py-5 w-[100%] z-50 gap-4 md:gap-10 border-t border-t-gray-300">
-                <a onClick={() => document.getElementById("top")?.scrollIntoView({ behavior: "smooth" })} className="flex justify-start gap-2">
+            <div className="fixed bottom-0 flex flex-col md:flex-row items-center justify-around pt-10 pb-14 px-16 w-[100%] z-50 gap-4 md:gap-10 border-t border-gray-200">
+                <a href="/" className="flex justify-start gap-2">
                     <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 md:w-6 h-auto"/>
                     <h1 className="text-lg md:text-xl font-medium">Semesters</h1>
                 </a>
-                <a href="/" className="text-xs md:text-md text-muted-foreground">Privacy Policy</a>
-                <a href="/" className="text-xs md:text-md text-muted-foreground">Terms & Conditions</a>
+                <a href="/privacy-policy-and-terms-conditions" className="text-xs md:text-md text-muted-foreground">Privacy Policy</a>
+                <a href="/privacy-policy-and-terms-conditions" className="text-xs md:text-md text-muted-foreground">Terms & Conditions</a>
                 <h1 className="text-xs md:text-md">
                     Made by <a href="https://www.linkedin.com/in/gateek-chandak/" target="_blank" className="underline">Gateek Chandak</a> & <a href="https://www.davidstirling.me/" target="_blank" className="underline">David Stirling</a>
                 </h1>
