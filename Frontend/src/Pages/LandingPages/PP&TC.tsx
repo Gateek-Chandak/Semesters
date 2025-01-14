@@ -3,11 +3,11 @@ import { Separator } from "@/components/ui/separator";
 const PrivacyPolicyTermsConditions = () => {
     return ( 
         <div className="lg:bg-[#f1f0f0] w-full h-dvh">
-            <a className="fixed top-4 left-4 flex justify-start gap-2 z-50" href="/">
+            <a className="bg-[#f1f0f0] fixed top-4 left-4 flex justify-start gap-2 z-50" href="/">
                 <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 h-auto"/>
                 <h1 className="text-xl font-medium">Semesters</h1>
             </a>
-            <div className="flex flex-col items-start justify-start h-fit mt-32 px-10">
+            <div className="flex flex-col items-start justify-start h-fit pt-32 px-10">
                 <div className="mb-20 flex flex-col gap-10">
                     <h1 className="text-2xl font-medium">Privacy Policy</h1>
                     <p className="mx-10">
