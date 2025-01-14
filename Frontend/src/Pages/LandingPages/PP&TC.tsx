@@ -2,7 +2,7 @@ import { Separator } from "@/components/ui/separator";
 
 const PrivacyPolicyTermsConditions = () => {
     return ( 
-        <div className="lg:bg-[#f1f0f0]w-full h-dvh">
+        <div className="lg:bg-[#f1f0f0] w-full h-dvh">
             <a className="fixed top-4 left-4 flex justify-start gap-2 z-50" href="/">
                 <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 h-auto"/>
                 <h1 className="text-xl font-medium">Semesters</h1>
@@ -27,8 +27,8 @@ const PrivacyPolicyTermsConditions = () => {
                 </div>
             </div>
 
-            <div className="fixed bottom-0 w-[100%] border-t border-gray-200">
-                <div className="w-[90%] flex flex-col md:flex-row items-center justify-around pt-10 pb-14 z-50 gap-4 md:gap-10">
+            <div className="bg-[#f1f0f0] fixed bottom-0 w-[100%] border-t border-gray-200 flex flex-row justify-center z-50">
+                <div className="w-[90%] flex flex-col md:flex-row items-center justify-around pt-10 pb-14 gap-4 md:gap-10">
                     <a href="/" className="flex justify-start gap-2">
                         <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 md:w-6 h-auto"/>
                         <h1 className="text-lg md:text-xl font-medium">Semesters</h1>
