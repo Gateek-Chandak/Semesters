@@ -3,7 +3,7 @@ import { Separator } from "@/components/ui/separator";
 const PrivacyPolicyTermsConditions = () => {
     return ( 
         <div className="lg:bg-[#f1f0f0] w-full h-dvh">
-            <a className="bg-[#f1f0f0] fixed top-4 left-4 flex justify-start gap-2 z-50" href="/">
+            <a className="bg-[#f1f0f0] w-[100%] p-3 fixed top-0 left-0 flex justify-start gap-2 z-50" href="/">
                 <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 h-auto"/>
                 <h1 className="text-xl font-medium">Semesters</h1>
             </a>
