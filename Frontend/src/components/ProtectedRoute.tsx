@@ -40,8 +40,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
         } else {
           dispatch(logout())
         }
-      } catch (error) {
-        console.error('Authentication verification failed', error);
+      } catch {
+        // console.error('Authentication verification failed', error);
+        dispatch(logout())
       } finally {
         setLoading(false); // Set loading to false once verification is done
       }

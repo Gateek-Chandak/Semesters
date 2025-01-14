@@ -8,6 +8,7 @@ import HomePage from './Pages/HomePages/HomePage';
 import CoursePage from './Pages/HomePages/CoursePage';
 import Dashboard from './Pages/HomePages/Dashboard';
 import TermPage from './Pages/HomePages/TermPage';
+import PrivacyPolicyTermsConditions from './Pages/LandingPages/PP&TC.js';
 
 import ProtectedRoute from './components/ProtectedRoute.js'
 
@@ -19,7 +20,7 @@ function App() {
         <Routes>
           {/* Landing page route */}
           <Route path="/" element={<LandingPage />} />
-          
+          <Route path="/privacy-policy-and-terms-conditions" element={<PrivacyPolicyTermsConditions />} />
           {/* Home route with nested routes */}
           <Route path="/home" 
                  element={
