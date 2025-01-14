@@ -98,7 +98,7 @@ export function NavUser({
           </div>}
           {(!open && !openMobile) && 
             <div className="w-full flex flex-col items-center gap-5">
-              <Avatar className="!h-7 !w-7 rounded-full">
+              <Avatar className="!h-8 !w-8 rounded-full">
                 <AvatarImage className="" src={user.picture} alt={user.name} />
                 <AvatarFallback className="rounded-lg border">{user.name.slice(0, 1)}{user.name.split(' ')[1].slice(0, 1)}</AvatarFallback>
               </Avatar>

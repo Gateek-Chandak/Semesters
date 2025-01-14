@@ -27,16 +27,19 @@ const PrivacyPolicyTermsConditions = () => {
                 </div>
             </div>
 
-            <div className="fixed bottom-0 flex flex-col md:flex-row items-center justify-around pt-10 pb-14 px-16 w-[100%] z-50 gap-4 md:gap-10 border-t border-gray-200">
-                <a href="/" className="flex justify-start gap-2">
-                    <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 md:w-6 h-auto"/>
-                    <h1 className="text-lg md:text-xl font-medium">Semesters</h1>
-                </a>
-                <a href="/privacy-policy-and-terms-conditions" className="text-xs md:text-md text-muted-foreground">Privacy Policy</a>
-                <a href="/privacy-policy-and-terms-conditions" className="text-xs md:text-md text-muted-foreground">Terms & Conditions</a>
-                <h1 className="text-xs md:text-md">
-                    Made by <a href="https://www.linkedin.com/in/gateek-chandak/" target="_blank" className="underline">Gateek Chandak</a> & <a href="https://www.davidstirling.me/" target="_blank" className="underline">David Stirling</a>
-                </h1>
+            <div className="fixed bottom-0 flex flex-col md:flex-row items-center justify-around pt-10 pb-14 w-[100%] z-50 gap-4 md:gap-10 border-t border-gray-200">
+                <div className="w-[90%]">
+                    <a href="/" className="flex justify-start gap-2">
+                        <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 md:w-6 h-auto"/>
+                        <h1 className="text-lg md:text-xl font-medium">Semesters</h1>
+                    </a>
+                    <a href="/privacy-policy-and-terms-conditions" className="text-xs md:text-md text-muted-foreground">Privacy Policy</a>
+                    <a href="/privacy-policy-and-terms-conditions" className="text-xs md:text-md text-muted-foreground">Terms & Conditions</a>
+                    <h1 className="text-xs md:text-md">
+                        Made by <a href="https://www.linkedin.com/in/gateek-chandak/" target="_blank" className="underline">Gateek Chandak</a> & <a href="https://www.davidstirling.me/" target="_blank" className="underline">David Stirling</a>
+                    </h1>
+                </div>
+
             </div>
         </div>
      );
