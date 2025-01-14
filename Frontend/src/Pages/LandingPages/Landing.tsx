@@ -31,7 +31,7 @@ const LandingPage = () => {
 
   return ( 
       <div className="lg:bg-[#f1f0f0] flex flex-col items-center justify-center w-full">
-        <div className="fixed top-4 left-4 flex justify-start gap-2 z-50" onClick={() => document.getElementById("top")?.scrollIntoView({ behavior: "smooth" })}>
+        <div className="fixed top-4 left-4 flex justify-start items-center gap-2 z-50" onClick={() => document.getElementById("top")?.scrollIntoView({ behavior: "smooth" })}>
           <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 h-auto"/>
           <h1 className="text-xl font-medium">Semesters</h1>
         </div>

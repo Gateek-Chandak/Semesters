@@ -77,7 +77,7 @@ interface CircularProgressProps {
                 cx="120"
                 cy="95"
                 r="75"
-                stroke={strokeColour}
+                stroke="currentColor"
                 strokeWidth="7"
                 fill="none"
                 strokeLinecap="round"

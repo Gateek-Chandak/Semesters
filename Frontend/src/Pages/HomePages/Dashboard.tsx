@@ -42,7 +42,7 @@ const Dashboard = () => {
     const [termName, setTermName] = useState<string>("Fall")
     const [selectedYear, setSelectedYear] = useState<number>(2015)
 
-    const [isShowingAverage, setIsShowingAverage] = useState<boolean>(true)
+    const [isShowingAverage, setIsShowingAverage] = useState<boolean>(false)
     const [isDeletingTerm, setIsDeletingTerm] = useState<boolean>(false)
     const [isShowingGrades, setIsShowingGrades] = useState<boolean>(false)
 
