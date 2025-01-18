@@ -45,3 +45,4 @@ const PrivacyPolicyTermsConditions = () => {
 }
  
 export default PrivacyPolicyTermsConditions;
+
