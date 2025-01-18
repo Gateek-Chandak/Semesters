@@ -14,7 +14,7 @@ import { updateCourse } from "@/redux/slices/dataSlice";
 
 import { useState } from "react";
 
-import { Course } from "@/types/mainTypes";
+import { Course, GradingScheme } from "@/types/mainTypes";
 
 import { DateTimePicker } from "./DateTimePicker";
 import { ChangeEvent } from "react";
@@ -25,9 +25,10 @@ interface AddDeliverablePopupProps {
     term: string;
     courseIndex: number;
     courseData: Course;
+    determineGrade: (updatedSchemes: GradingScheme[]) => number | undefined;
 }
 
-const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliverable, setIsAddingDeliverable, term, courseIndex, courseData} ) => {
+const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliverable, setIsAddingDeliverable, term, courseIndex, courseData, determineGrade} ) => {
 
     const dispatch  = useDispatch()
 
@@ -123,18 +124,27 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
             }
             return scheme; // Return unchanged schemes
         });
-    
+
+        const newGrade = determineGrade(updatedSchemes)
+
         dispatch(
             updateCourse({
                 term: term,
                 courseIndex: courseIndex,
                 course: {
                     ...courseData,
+                    highestGrade: newGrade ||  0,
                     gradingSchemes: updatedSchemes,
                 },
             })
         );
+        determineGrade(updatedSchemes)
         setIsAddingDeliverable(false);
+        setName('')
+        setWeight(0)
+        setGrade(null)
+        setDate(null)
+        setSelectedScheme(null)
     };
     
 

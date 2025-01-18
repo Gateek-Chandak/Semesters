@@ -94,6 +94,8 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
     };    
 
     const deleteScheme = (name: string) => {
+        setIsEditing(false)
+        
         const updatedSchemes = courseData.gradingSchemes.filter((s) => 
             s.schemeName !== name // Ensure this returns a boolean
         );
@@ -122,8 +124,8 @@ const GradingSchemeCarouselItem: React.FC<GradingSchemeCarouselItemProps> = ({
                                  onChange={handleSchemeNameUpdate}
                                  onBlur={handleSchemeNameBlur}/>}
             {isEditing && 
-                <Button variant="outline" className="ml-auto bg-white text-black border border-red-500 hover:bg-gray-100" onClick={() => setIsDeleting(!isDeleting)}>
-                    <Trash2Icon className="text-red-500" />
+                <Button variant="outline" className="ml-auto bg-white border border-red-500 text-red-500 text-xs hover:bg-red-500 hover:text-white" onClick={() => setIsDeleting(!isDeleting)}>
+                    <Trash2Icon className="" />
                 </Button>}
                 <Button className='bg-white text-black border-2 border-black hover:bg-gray-100'
                         onClick={() => setIsEditing(!isEditing)}>
