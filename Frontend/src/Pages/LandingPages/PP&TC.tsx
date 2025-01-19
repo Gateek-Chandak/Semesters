@@ -24,14 +24,15 @@ const PrivacyPolicyTermsConditions = () => {
                     Our integration with Google Calendar is restricted to only the necessary permissions required to create and manage calendar events. We do not access or store other data from your Google account.
                     {/* </p>
                     <p className="mx-10"> */}
-                    Semesters follows standard procedures for using log files. These files log visitors when they use the application. The information collected may include internet protocol (IP) addresses, browser type, Internet Service 
+                    {/* Semesters follows standard procedures for using log files. These files log visitors when they use the application. The information collected may include internet protocol (IP) addresses, browser type, Internet Service 
                     Provider (ISP), date and time stamp, referring/exit pages, and possibly the number of clicks. This information is not linked to any personally identifiable information. It is used to analyze trends, administer the site, 
-                    and gather demographic information.
+                    and gather demographic information. */}
                     </p>
                     <p className="mx-10">
                     <b>Cookies and Web Beacons</b> <br></br>
-                    Like many applications, Semesters uses cookies to enhance your user experience. These cookies store information such as your preferences and the pages or features you access. This data helps us customize your experience 
-                    and improve our services. You can manage or disable cookies through your browser settings.
+                    Like many applications, Semesters uses cookies to enhance your user experience. These cookies store information such as your name, email, and Google Calendar access tokens. 
+                    These tokens expire every hour and can be renewed by logging in again. We do not store any Google access token in our database. This data helps us customize your experience 
+                    and improve our services. You can manage or disable cookies through your browser settings. However, this will result in you being unable to use the application.
                     </p>
                     <p className="mx-10">
                     <b>Third-Party Services</b> <br></br>
@@ -55,7 +56,8 @@ const PrivacyPolicyTermsConditions = () => {
                     </p>
                     <p className="mx-10">
                     <b>Third-Party Privacy policies</b> <br></br>
-                    You can delete your account and associated data directly through your profile page in the Semesters app. For other inquiries or data deletion requests, please email us via the LinkedIn links left in the application footer. 
+                    {/* You can delete your account and associated data directly through your profile page in the Semesters app.  */}
+                    For inquiries or data deletion requests, please email us via the LinkedIn links left in the application footer. 
                     </p>
                     <p className="mx-10">
                     <b>Online Privacy Policy Only</b> <br></br>
@@ -76,9 +78,9 @@ const PrivacyPolicyTermsConditions = () => {
 
                     <p className="mx-10">
                         <b>1. Use of the Application</b> <br />
-                        <b>1.1 Eligibility:</b> You must be at least 13 years old to use Semesters. By using the application, you confirm that you meet this age requirement. <br />
-                        <b>1.2 Purpose:</b> Semesters is designed to help students manage their academic schedules by parsing syllabi and transcripts, creating Google Calendar events, and exporting schedules. Use the application only for its intended purpose. <br />
-                        <b>1.3 Account Security:</b> You are responsible for maintaining the confidentiality of your account login information and are fully responsible for all activities under your account. Notify us immediately if you suspect unauthorized use of your account.
+                        {/* <b>1.1 Eligibility:</b> You must be at least 13 years old to use Semesters. By using the application, you confirm that you meet this age requirement. <br /> */}
+                        <b>1.1 Purpose:</b> Semesters is designed to help students manage their academic schedules by parsing syllabi and transcripts, creating Google Calendar events, and exporting schedules. Use the application only for its intended purpose. <br />
+                        <b>1.2 Account Security:</b> You are responsible for maintaining the confidentiality of your account login information and are fully responsible for all activities under your account. Notify us immediately if you suspect unauthorized use of your account.
                     </p>
 
                     <p className="mx-10">
@@ -90,7 +92,8 @@ const PrivacyPolicyTermsConditions = () => {
                     <p className="mx-10">
                         <b>3. Data and Privacy</b> <br />
                         <b>3.1 Data Use:</b> All data provided to or generated by Semesters is handled in accordance with our <a href="#">Privacy Policy</a>. By using Semesters, you agree to the collection and use of your data as described in the Privacy Policy. <br />
-                        <b>3.2 Google Integration:</b> Semesters uses Google APIs to integrate with Google Calendar. By connecting your Google account, you agree to comply with Google’s terms of service and grant Semesters the necessary permissions to create and manage events.
+                        <b>3.2 Google Integration:</b> Semesters uses Google APIs to integrate with Google Calendar. By connecting your Google account, you agree to comply with Google’s terms of service and grant Semesters the necessary permissions to create and manage 
+                        secondary calendars and events.
                     </p>
 
                     <p className="mx-10">
@@ -102,8 +105,8 @@ const PrivacyPolicyTermsConditions = () => {
 
                     <p className="mx-10">
                         <b>5. Termination</b> <br />
-                        <b>5.1 Termination by User:</b> You may stop using Semesters at any time. If you wish to delete your account, you can do so via the profile page or by contacting us. <br />
-                        <b>5.2 Termination by Semesters:</b> We reserve the right to suspend or terminate your account if you violate these Terms and Conditions or engage in prohibited activities.
+                        {/* <b>5.1 Termination by User:</b> You may stop using Semesters at any time. If you wish to delete your account, you can do so via the profile page or by contacting us. <br /> */}
+                        <b>5.1 Termination by Semesters:</b> We reserve the right to suspend or terminate your account if you violate these Terms and Conditions or engage in prohibited activities.
                     </p>
 
                     <p className="mx-10">
