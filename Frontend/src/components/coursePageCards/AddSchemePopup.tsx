@@ -33,6 +33,11 @@ const AddSchemePopup: React.FC<AddSchemePopupProps> = ( {isAddingScheme, setIsAd
     }
 
     const handleSchemeAdd = () => {
+        if (name.trim() === '' || name.length === 0) {
+            setError('Name must have at least one character')
+            return
+        }
+
         const newScheme = {
             schemeName: name,
             grade: 0,

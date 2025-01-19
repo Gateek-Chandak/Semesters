@@ -508,7 +508,9 @@ const CoursePage = () => {
                     </div>
                 </div>
             </div>
-            {courseData && <AddDeliverablePopup term={term ? term : ""} 
+            {courseData && <AddDeliverablePopup 
+                                determineGrade={determineHighestGrade}
+                                term={term ? term : ""} 
                                  courseIndex={(courseIndex === 0 || courseIndex) ? courseIndex : -1}
                                  courseData={courseData} 
                                  isAddingDeliverable={isAddingDeliverable} 

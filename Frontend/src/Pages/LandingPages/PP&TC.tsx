@@ -3,12 +3,12 @@ import { Separator } from "@/components/ui/separator";
 const PrivacyPolicyTermsConditions = () => {
     return ( 
         <div className="lg:bg-[#f1f0f0] w-full h-dvh">
-            <a className="bg-[#f1f0f0] w-[100%] p-3 fixed top-0 left-0 flex justify-start gap-2 z-50" href="/">
+            <a className="bg-[#f1f0f0] w-[100%] p-4 fixed top-0 left-0 flex justify-start gap-2 z-50" href="/">
                 <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 h-auto"/>
                 <h1 className="text-xl font-medium">Semesters</h1>
             </a>
-            <div className="flex flex-col items-start justify-start h-fit pt-32 px-10">
-                <div className="mb-20 flex flex-col gap-10">
+            <div className="flex flex-col items-start justify-start h-dvh overflow-auto pt-24 px-10">
+                <div className="mb-16 flex flex-col gap-10">
                     <h1 className="text-2xl font-medium">Privacy Policy</h1>
                     <p className="mx-10">
                     At Semesters, accessible from semesters.ca, one of our main priorities is the privacy of our users. This Privacy Policy document outlines the types of information we collect, how we use it, and the steps we take to 
@@ -68,7 +68,7 @@ const PrivacyPolicyTermsConditions = () => {
                     </p>
                 </div>
                 <Separator />
-                <div className="mb-20 flex flex-col gap-10 mt-20">
+                <div className="mb-16 mt-16 flex flex-col gap-10">
                     <h1 className="text-2xl font-medium">Terms and Conditions</h1>
                     <p className="mx-10">
                         Welcome to Semesters! These Terms and Conditions outline the rules and regulations for using our application and services. By accessing or using Semesters, you agree to comply with and be bound by these terms. If you disagree with any part of these terms, please do not use our application.
@@ -124,7 +124,7 @@ const PrivacyPolicyTermsConditions = () => {
 
             </div>
 
-            <div className="bg-[#f1f0f0] fixed bottom-0 w-[100%] border-t border-gray-200 flex flex-row justify-center z-50">
+            <div className="bg-[#f1f0f0] w-[100%] border-t border-gray-200 flex flex-row justify-center z-50">
                 <div className="w-[90%] flex flex-col md:flex-row items-center justify-around pt-10 pb-14 gap-4 md:gap-10">
                     <a href="/" className="flex justify-start gap-2">
                         <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-5 md:w-6 h-auto"/>
@@ -142,3 +142,4 @@ const PrivacyPolicyTermsConditions = () => {
 }
  
 export default PrivacyPolicyTermsConditions;
+
