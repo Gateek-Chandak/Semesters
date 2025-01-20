@@ -42,7 +42,7 @@ const LandingPage = () => {
             <div className="flex flex-col gap-4">
               <div className="flex flex-row justify-start gap-6 items-center">
                 <img src="/Objects/SemesterLogo.svg" alt="Semesters Logo" className="w-8 md:w-12 lg:w-14 h-auto"/>
-                <h1 className="text-xl md:text-3xl lg:text-[2.8rem] font-medium">Helping Students Keep It Together.</h1>
+                <h1 className="text-xl md:text-3xl lg:text-[2.8rem] font-medium">Helping students keep it together.</h1>
               </div>
               <h1 className="text-sm md:text-md lg:text-xl">Stay on top of assignments, track your grades, and be ahead of every deadline.</h1>
             </div>
