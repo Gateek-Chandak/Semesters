@@ -20,6 +20,7 @@ router.post('/get-term-data', async (req, res) => {
   
       if (result.rows.length > 0) {
         // User exists
+        await pool.query('UPDATE user_data SET updated_at = NOW() WHERE google_id = $1', [googleId]);
         return res.status(200).json({ exists: true, user: result.rows[0] });
       } else {
         return res.status(201).json({ exists: false });
