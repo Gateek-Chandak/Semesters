@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { useSelector } from 'react-redux';
 import { RootState } from '../../redux/store';
 import { useDispatch } from "react-redux";
-import { addTerms } from "@/redux/slices/dataSlice";
+import { addTerms, setData } from "@/redux/slices/dataSlice";
 import axios, { AxiosError } from "axios";
 import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
@@ -21,6 +21,7 @@ import { CircularProgress } from "@/components/DashboardPageCards/CircularProges
 import AddTermPopup from "@/components/DashboardPageCards/AddTermPopup";
 import EditTermCard from "@/components/DashboardPageCards/EditTermCard";
 import MainTermCard from "@/components/DashboardPageCards/MainTermCard";
+import ConfirmDeletePopup from "@/components/ConfirmDeletePopup";
 
 const Dashboard = () => {
     const data = useSelector((state: RootState) => state.data.data);
@@ -41,6 +42,7 @@ const Dashboard = () => {
     const [error, setError] = useState<string>("")
     const [termName, setTermName] = useState<string>("Fall")
     const [selectedYear, setSelectedYear] = useState<number>(2015)
+    const [termBeingDeleted, setTermBeingDeleted] = useState<string>('')
 
     const [isShowingAverage, setIsShowingAverage] = useState<boolean>(false)
     const [isDeletingTerm, setIsDeletingTerm] = useState<boolean>(false)
@@ -223,6 +225,14 @@ const Dashboard = () => {
         }
     }
 
+    const deleteTerm = (name: string) => {
+        const updatedTerms = data.filter((t) => t.term !== name)
+
+        dispatch(setData(updatedTerms))
+        setIsDeletingTerm(false)
+        setTermBeingDeleted('')
+    }
+
     return ( 
         <div className="min-h-dvh w-full bg-[#f7f7f7] flex flex-row justify-center">
             <div className="max-w-[1440px] w-full flex flex-col gap-10 px-10">
@@ -251,7 +261,8 @@ const Dashboard = () => {
                                             isShowingGrades={isShowingGrades}
                                             gpa={CurrentTermGPA}
                                             setIsDeletingTerm={setIsDeletingTerm}
-                                            isDeletingTerm={isDeletingTerm}/>
+                                            isDeletingTerm={isDeletingTerm}
+                                            setTermBeingDeleted={setTermBeingDeleted}/>
                         }
                         {data.length > 1 &&
                             <MainTermCard   name={'Last Term'}
@@ -260,7 +271,8 @@ const Dashboard = () => {
                                             isShowingGrades={isShowingGrades}
                                             gpa={LastTermGPA}
                                             setIsDeletingTerm={setIsDeletingTerm}
-                                            isDeletingTerm={isDeletingTerm}/>
+                                            isDeletingTerm={isDeletingTerm}
+                                            setTermBeingDeleted={setTermBeingDeleted}/>
                         }
                     </div>
                     <div className="lg:w-[45%] flex flex-col gap-10 lg:gap-6 h-[100%]">
@@ -329,7 +341,7 @@ const Dashboard = () => {
                                 <DisplayTermCard key={term.term} term={term} isShowingGrades={isShowingGrades} />
                             ))}
                             {isManagingCourses && data.slice(0).reverse().slice(2).map((term) => (
-                                <EditTermCard key={term.term} term={term} isDeleting={isDeletingTerm} setIsDeleting={setIsDeletingTerm} />
+                                <EditTermCard key={term.term} term={term} isDeleting={isDeletingTerm} setIsDeleting={setIsDeletingTerm} setTermBeingDeleted={setTermBeingDeleted}/>
                             ))}
                             <div onClick={() => setIsCreatingTerm(!isCreatingTerm)} 
                                     className={`h-40 w-40 flex flex-col justify-center items-center border-2 border-slate-200 bg-card rounded-2xl transform transition-all duration-300 hover:scale-105 hover:shadow-md`}
@@ -360,7 +372,11 @@ const Dashboard = () => {
                           createNewTerm={createNewTerm}
                           error={error}
                           setError={setError}/>
-        </div>
+            <ConfirmDeletePopup name={termBeingDeleted}
+                                deleteItem={deleteTerm}
+                                isDeleting={isDeletingTerm}
+                                setIsDeleting={setIsDeletingTerm}/>
+    </div>
      );
 }
  

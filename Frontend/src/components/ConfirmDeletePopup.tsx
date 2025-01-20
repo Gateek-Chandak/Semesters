@@ -14,6 +14,8 @@ const ConfirmDeletePopup: React.FC<ConfirmDeletePopupProps> = ({
     setIsDeleting,
     deleteItem,
 }) => {
+
+    console.log(name)
     return ( 
         <div className="flex flex-row flex-wrap gap-10">
             {isDeleting && 

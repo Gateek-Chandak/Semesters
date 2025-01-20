@@ -6,13 +6,6 @@ import { Trash2Icon, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Term } from "@/types/mainTypes";
 
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
-import { useDispatch } from "react-redux";
-import { setData } from "@/redux/slices/dataSlice";
-
-import ConfirmDeletePopup from "../ConfirmDeletePopup";
-
 interface MainTermCardProps {
     name: string,
     isManagingCourses: boolean;
@@ -21,6 +14,7 @@ interface MainTermCardProps {
     gpa: number;
     setIsDeletingTerm: React.Dispatch<React.SetStateAction<boolean>>;
     isDeletingTerm: boolean;
+    setTermBeingDeleted: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const MainTermCard: React.FC<MainTermCardProps> = ({
@@ -30,18 +24,13 @@ const MainTermCard: React.FC<MainTermCardProps> = ({
     isShowingGrades,
     gpa,
     setIsDeletingTerm,
-    isDeletingTerm
+    isDeletingTerm,
+    setTermBeingDeleted
 }) => {
 
-    const data = useSelector((state: RootState) => state.data.data);
-
-    const dispatch = useDispatch()
-
-    const deleteTerm = (name: string) => {
-        const updatedTerms = data.filter((t) => t.term !== name)
-
-        dispatch(setData(updatedTerms))
-        setIsDeletingTerm(false)
+    const handleDelete = () => {
+        setTermBeingDeleted(term.term)
+        setIsDeletingTerm(!isDeletingTerm)
     }
 
     return ( 
@@ -64,7 +53,7 @@ const MainTermCard: React.FC<MainTermCardProps> = ({
                 <div className="flex flex-row justify-between">
                     <h1>Current Term</h1>
                     {isManagingCourses && 
-                    <Button variant="outline" className="ml-auto h-8 border border-red-500 text-red-500 text-xs hover:bg-red-500 hover:text-white" onClick={() => setIsDeletingTerm(!isDeletingTerm)}>
+                    <Button variant="outline" className="ml-auto h-8 border border-red-500 text-red-500 text-xs hover:bg-red-500 hover:text-white" onClick={handleDelete}>
                         Delete <Trash2Icon className="" />
                     </Button>}
                 </div>
@@ -76,10 +65,6 @@ const MainTermCard: React.FC<MainTermCardProps> = ({
                 <Separator />
                 <h1 className="text-sm text-muted-foreground flex flex-row items-center ml-auto">click for a more detailed view&nbsp;&nbsp; <ChevronRight className="!w-4 !h-4 text-muted-foreground" /></h1>
             </div>}
-            <ConfirmDeletePopup name={term.term}
-                                deleteItem={deleteTerm}
-                                isDeleting={isDeletingTerm}
-                                setIsDeleting={setIsDeletingTerm}/>
         </Card>
      );
 }
