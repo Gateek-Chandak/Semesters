@@ -65,9 +65,13 @@ const Dashboard = () => {
     //     cGPA = totalGrades / NumberOfValidTerms.length
     // }
     const totalGrades = data.reduce((overallTotal: number, term) => {
-        return overallTotal + term.courses.reduce((termSum: number, course) => {
-            return termSum + course.highestGrade;
-        }, 0);
+        if (term.isCompleted) {
+            return overallTotal + term.courses.reduce((termSum: number, course) => {
+                return termSum + course.highestGrade;
+            }, 0);
+        } else {
+            return overallTotal + 0
+        } 
     }, 0);
     
     const totalCourses = data.reduce((count: number, term) => {
@@ -298,7 +302,7 @@ const Dashboard = () => {
                                 <div className="flex flex-col justify-center h-full py-4 px-10 text-center gap-10 text-md">
                                     <h1 className="font-medium text-xl text-center">Cumulative GPA</h1>
                                     <p className="text-md ">Represents your average across all terms and courses taken</p>
-                                    <p className="text-xs text-muted-foreground text-center">* only includes terms with at least 1 course</p>
+                                    <p className="text-xs text-muted-foreground text-center">* only includes completed terms</p>
                                 </div>
                             </div>
 
