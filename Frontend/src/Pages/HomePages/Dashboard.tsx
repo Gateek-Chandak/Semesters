@@ -75,7 +75,11 @@ const Dashboard = () => {
     }, 0);
     
     const totalCourses = data.reduce((count: number, term) => {
-        return count + term.courses.length;
+        if (term.isCompleted) {
+            return count + term.courses.length;
+        } else {
+            return count + 0;
+        }
     }, 0);
     
     let cGPA: number = 0;
