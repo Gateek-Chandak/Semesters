@@ -48,21 +48,37 @@ const Dashboard = () => {
     const [isDeletingTerm, setIsDeletingTerm] = useState<boolean>(false)
     const [isShowingGrades, setIsShowingGrades] = useState<boolean>(false)
 
+    // const totalGrades = data.reduce((overallTotal: number, term) => {
+    //     if (term.courses.length <= 0) {
+    //         return overallTotal + 0
+    //     }
+    //     const termTotal = term.courses.reduce((termSum: number, course) => {
+    //       return termSum + course.highestGrade;
+    //     }, 0);
+    //     return overallTotal + (termTotal / term.courses.length);
+    // }, 0);
+    // const NumberOfValidTerms = data.filter((t) => t.courses.length > 0)
+    // let cGPA: number = 0
+    // if (NumberOfValidTerms.length <= 0) {
+    //     cGPA = 0
+    // } else {    
+    //     cGPA = totalGrades / NumberOfValidTerms.length
+    // }
     const totalGrades = data.reduce((overallTotal: number, term) => {
-        if (term.courses.length <= 0) {
-            return overallTotal + 0
-        }
-        const termTotal = term.courses.reduce((termSum: number, course) => {
-          return termSum + course.highestGrade;
+        return overallTotal + term.courses.reduce((termSum: number, course) => {
+            return termSum + course.highestGrade;
         }, 0);
-        return overallTotal + (termTotal / term.courses.length);
     }, 0);
-    const NumberOfValidTerms = data.filter((t) => t.courses.length > 0)
-    let cGPA: number = 0
-    if (NumberOfValidTerms.length <= 0) {
-        cGPA = 0
-    } else {    
-        cGPA = totalGrades / NumberOfValidTerms.length
+    
+    const totalCourses = data.reduce((count: number, term) => {
+        return count + term.courses.length;
+    }, 0);
+    
+    let cGPA: number = 0;
+    if (totalCourses > 0) {
+        cGPA = totalGrades / totalCourses;
+    } else {
+        cGPA = 0;
     }
 
     const termData = data.find((t) => t.term === data[data.length-1].term);
