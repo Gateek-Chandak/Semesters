@@ -258,7 +258,7 @@ const Dashboard = () => {
     }
 
     return ( 
-        <div className="min-h-dvh w-full bg-[#f7f7f7] flex flex-row justify-center">
+        <div className="min-h-dvh h-fit w-full bg-[#f7f7f7] flex flex-row justify-center">
             <div className="max-w-[1440px] w-full flex flex-col gap-10 px-10">
                 <div className="flex pt-7 flex-row gap-10">
                     <h1 className="text-[1.6rem] font-medium">Welcome, {userName.split(' ')[0]} {userName.split(' ').length > 1 && userName.split(' ').at(-1)?.slice(0, 1)}.</h1>
@@ -318,7 +318,7 @@ const Dashboard = () => {
                     </div>
                 </div>
                 <Separator />
-                <div className="h-96 flex flex-row w-full gap-10">
+                <div className="min-h-96 flex flex-row w-full gap-10 mb-8">
                     <div className="w-full flex flex-col gap-8"> 
                         <div className="flex flex-col gap-7 sm:gap-0 sm:flex-row w-ful pr-12">
                             <h1 className="sm:mr-auto text-xl font-light">Term Archive</h1>
@@ -360,7 +360,7 @@ const Dashboard = () => {
                                     </Button>}
                             </div>
                         </div>
-                        <div className="flex flex-row flex-wrap justify-start gap-10">
+                        <div className="flex flex-row flex-wrap justify-start gap-10 h-fit">
                             {!isManagingCourses && data.slice(0).reverse().slice(2).map((term) => (
                                 <DisplayTermCard key={term.term} term={term} isShowingGrades={isShowingGrades} />
                             ))}
