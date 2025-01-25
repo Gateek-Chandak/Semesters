@@ -330,7 +330,7 @@ const TermPage = () => {
                                 <div className="md:w-[65%] w-[100%] h-full flex flex-col items-center gap-6">
                                     <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-start items-center ">
                                         <h1 className="text-5xl font-semibold">{numOfEventsInNext7Days}</h1>
-                                        <p className="font-light text-sm"><span className="font-bold">deliverables due this week.</span> Good luck!</p>
+                                        <p className="font-light text-sm"><span className="font-bold">deliverables due in the next 7 days.</span> Good luck!</p>
                                     </Card>
                                     <Card className="w-[100%] h-full py-16 md:py-0 px-10 flex flex-row gap-10 justify-start items-center ">
                                         <h1 className="text-5xl font-semibold">{deliverablesRemaining}</h1>
