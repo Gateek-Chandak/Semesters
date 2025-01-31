@@ -5,7 +5,7 @@ const pdfParse = require("pdf-parse");
 
 const prompt = `
 Help me break down how I will be graded in this course. The semester begins on September 6th and ends on December 2nd. 
-Warning: The file presented may not have any grading scheme data. If you do not detect any grading scheme data, please return the text: "no assessment schedule found"
+Warning: The file presented may not be a syllabus. If you do not detect a syllabus, please return the text: "no assessment schedule found"
 
 Only list out the information on the assessments I will be assessed on. I want a separate line item for each assessment. That means
 breaking down 3 quizzes into quiz 1, 2, 3. If there are any weekly assessments, make sure to break it down, week by week.

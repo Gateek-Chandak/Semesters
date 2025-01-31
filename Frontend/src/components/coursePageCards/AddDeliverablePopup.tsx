@@ -45,22 +45,23 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
     }
 
     const handleWeightChange = (e: ChangeEvent<HTMLInputElement>) => {
-            const inputValue = e.target.value.trim();
+        const inputValue = e.target.value;
 
-            // Default to 0 if input is empty
-            if (inputValue === "") {
-                setWeight(0);
-                return;
-            }
-        
-            const parsedValue = parseFloat(inputValue);
-        
-            // Ignore invalid or out-of-range values
-            if (isNaN(parsedValue) || parsedValue > 100) {
-                return;
-            }
-        
-            setWeight(parsedValue);
+        if (inputValue === "") {
+            setWeight(0);
+            return;
+        }
+        if (inputValue === null) {
+            setWeight(0)
+            return;
+        }
+    
+        const parsedValue = parseFloat(inputValue);
+    
+        if (!isNaN(parsedValue) && parsedValue >= 0 && parsedValue <= 200) {
+            const formattedValue = parsedValue.toFixed(2); 
+            setWeight(Number(formattedValue)); 
+        }
     };
 
     const handleGradeChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -164,7 +165,7 @@ const AddDeliverablePopup: React.FC<AddDeliverablePopupProps> = ( {isAddingDeliv
                             </div>
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-medium">Weight</h1>
-                                <Input placeholder="ex. 10" value={weight} onChange={handleWeightChange}></Input>
+                                <Input type="number" placeholder="ex. 10" value={weight} onChange={handleWeightChange}></Input>
                             </div>
                             <div className="flex flex-col gap-1">
                                 <h1 className="font-medium">Grade</h1>
